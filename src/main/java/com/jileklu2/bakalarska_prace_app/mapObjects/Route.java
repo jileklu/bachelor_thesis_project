@@ -12,14 +12,15 @@ public class Route {
     public Route(Coordinates origin, Coordinates destination, Collection<Coordinates>... waypoints) {
         this.origin = origin;
         this.destination = destination;
+        this.routeSteps = new ArrayList<>();
         this.waypoints = waypoints.length > 0 ? new LinkedHashSet<>(waypoints[0]) : new LinkedHashSet<>();
     }
 
     public Route(Route another) {
-        this.origin = another.getOrigin();
-        this.destination = another.getDestination();
+        this.origin = new Coordinates(another.getOrigin());
+        this.destination = new Coordinates(another.getDestination());
         this.waypoints = new LinkedHashSet<>(another.getWaypoints());
-        this.routeSteps = another.getRouteSteps();
+        this.routeSteps = new ArrayList<>(another.getRouteSteps());
     }
 
     @Override

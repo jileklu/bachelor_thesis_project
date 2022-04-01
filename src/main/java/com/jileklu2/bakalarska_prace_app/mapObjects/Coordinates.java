@@ -13,8 +13,8 @@ public class Coordinates {
     }
 
     public Coordinates(Coordinates other) {
-        this.lat = other.getLat();
-        this.lng = other.getLng();
+        this.lat = Double.valueOf(other.getLat());
+        this.lng = Double.valueOf(other.getLng());
     }
 
     @Override
