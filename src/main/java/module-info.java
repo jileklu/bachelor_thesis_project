@@ -11,10 +11,10 @@ module com.example.bakalarska_prace_app {
     requires eu.hansolo.tilesfx;
     requires java.net.http;
 
-    opens com.example.bakalarska_prace_app to javafx.fxml;
-    exports com.example.bakalarska_prace_app;
-    exports com.example.bakalarska_prace_app.ui;
-    opens com.example.bakalarska_prace_app.ui to javafx.fxml;
+    opens com.jileklu2.bakalarska_prace_app to javafx.fxml;
+    exports com.jileklu2.bakalarska_prace_app;
+    exports com.jileklu2.bakalarska_prace_app.ui;
+    opens com.jileklu2.bakalarska_prace_app.ui to javafx.fxml;
 
     requires json;
 }

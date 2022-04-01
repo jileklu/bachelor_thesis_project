@@ -124,7 +124,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.bakalarska_prace_app/com.example.bakalarska_prace_app.AppStarter
+                                com.jileklu2.bakalarska_prace_app/com.jileklu2.bakalarska_prace_app.AppStarter
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

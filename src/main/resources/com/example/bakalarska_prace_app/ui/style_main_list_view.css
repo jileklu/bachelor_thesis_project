@@ -1,8 +1,0 @@
-.list-cell {
-    -fx-text-fill: white;
-    -fx-background-color: #0f1114;
-}
-
-.list-cell:even {
-    -fx-background-color: #1a1e24;
-}
