@@ -7,8 +7,8 @@ module com.example.bakalarska_prace_app {
     requires com.dlsc.formsfx;
     requires validatorfx;
     requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.bootstrapfx.core;
-    requires eu.hansolo.tilesfx;
+    requires org.kordamp.ikonli.fontawesome;
+    requires org.kordamp.ikonli.fontawesome5;
     requires java.net.http;
 
     opens com.jileklu2.bakalarska_prace_app to javafx.fxml;
