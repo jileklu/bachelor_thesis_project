@@ -29,7 +29,7 @@
                   <Font name="System Bold" size="20.0" />
                </font>
                <graphic>
-                  <FontIcon iconColor="WHITE" iconSize="24" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-icon-code: fa-level-up;" wrappingWidth="45.7142858505249" />
+                  <FontIcon iconColor="WHITE" iconSize="20" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-icon-code: fa-level-up;" wrappingWidth="45.7142858505249" />
                </graphic></Button>
             <Button layoutY="194.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="200.0" style="-fx-background-color: #0f1114;" text="Add Waypoint" textFill="WHITE">
                <font>
