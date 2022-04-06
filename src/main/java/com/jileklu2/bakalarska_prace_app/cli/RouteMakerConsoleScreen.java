@@ -2,7 +2,7 @@ package com.jileklu2.bakalarska_prace_app.cli;
 
 import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
-import com.jileklu2.bakalarska_prace_app.routesLogic.RouteStepsFinder;
+import com.jileklu2.bakalarska_prace_app.routesLogic.RouteInfoFinder;
 
 import java.util.LinkedHashSet;
 import java.util.Locale;
@@ -18,7 +18,7 @@ public class RouteMakerConsoleScreen {
         LinkedHashSet<Coordinates> waypoints = getWaypoints();
 
         route = new Route(origin, destination, waypoints);
-        RouteStepsFinder.findRouteSteps(route, true);
+        RouteInfoFinder.findRouteInfo(route, true);
 
         return route;
     }

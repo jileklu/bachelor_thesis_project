@@ -42,7 +42,7 @@ public class MainConsoleScreen {
     private static void showMenuText() {
         System.out.println("Select Action:");
         System.out.println("[1] Make Route");
-        System.out.println("[2] Print Route Steps");
+        System.out.println("[2] Print Route Info");
         System.out.println("[3] Import Route");
         System.out.println("[4] Export Route");
         System.out.println("[0] Exit");

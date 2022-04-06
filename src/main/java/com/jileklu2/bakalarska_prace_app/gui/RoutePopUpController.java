@@ -2,7 +2,7 @@ package com.jileklu2.bakalarska_prace_app.gui;
 
 import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
-import com.jileklu2.bakalarska_prace_app.routesLogic.RouteStepsFinder;
+import com.jileklu2.bakalarska_prace_app.routesLogic.RouteInfoFinder;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -89,7 +89,7 @@ public class RoutePopUpController implements RoutePopUpContext, Initializable {
             waypoints.add(waypoint);
         }
         Route newRoute = new Route(origin, destination, waypoints);
-        RouteStepsFinder.findRouteSteps(newRoute, true);
+        RouteInfoFinder.findRouteInfo(newRoute, true);
         routesContext.setDefaultRoute(newRoute);
         mapViewContext.showDefaultRoute();
         routeInfoPanelContext.showDefaultRouteInfo();

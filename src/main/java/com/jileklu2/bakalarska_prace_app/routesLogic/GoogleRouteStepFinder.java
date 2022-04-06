@@ -1,15 +1,15 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic;
 
-import com.jileklu2.bakalarska_prace_app.scriptBuilders.HttpRequestStringBuilder;
 import com.jileklu2.bakalarska_prace_app.errorHandlers.ErrorHandler;
 import com.jileklu2.bakalarska_prace_app.errorHandlers.GoogleRoutingErrorHandler;
 import com.jileklu2.bakalarska_prace_app.errors.GoogleDirectionsStatus;
 import com.jileklu2.bakalarska_prace_app.errors.GoogleRoutingError;
 import com.jileklu2.bakalarska_prace_app.errors.RoutingError;
 import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.mapObjects.RouteStep;
 import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.mapObjects.RouteStep;
 import com.jileklu2.bakalarska_prace_app.parsers.GoogleJsonStepParser;
+import com.jileklu2.bakalarska_prace_app.scriptBuilders.HttpRequestStringBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,9 +21,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-public class RouteStepsFinder {
-
-    public static void findRouteSteps(Route route, Boolean optimize){
+public class GoogleRouteStepFinder {
+    public static void findRouteSteps(Route route, Boolean optimize) {
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(HttpRequestStringBuilder.googleDirectionsRequest(route, optimize)))
@@ -81,10 +80,10 @@ public class RouteStepsFinder {
             }
 
             route.setRouteSteps(routeSteps);
+
             if(optimize) {
                 route.setWaypoints(newWaypointsOrder);
             }
-
         }
     }
 
