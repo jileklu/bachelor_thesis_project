@@ -13,8 +13,10 @@ module com.example.bakalarska_prace_app {
 
     opens com.jileklu2.bakalarska_prace_app to javafx.fxml;
     exports com.jileklu2.bakalarska_prace_app;
-    exports com.jileklu2.bakalarska_prace_app.ui;
-    opens com.jileklu2.bakalarska_prace_app.ui to javafx.fxml;
+    exports com.jileklu2.bakalarska_prace_app.gui;
+    opens com.jileklu2.bakalarska_prace_app.gui to javafx.fxml;
+    exports com.jileklu2.bakalarska_prace_app.cli;
+    opens com.jileklu2.bakalarska_prace_app.cli to javafx.fxml;
 
     requires json;
 }

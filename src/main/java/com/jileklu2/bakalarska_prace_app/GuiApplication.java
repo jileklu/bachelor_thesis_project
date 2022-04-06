@@ -6,10 +6,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Application extends javafx.application.Application {
+public class GuiApplication extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ui/main_view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(GuiApplication.class.getResource("gui/main_view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
         stage.setTitle("Route App");
         stage.setScene(scene);

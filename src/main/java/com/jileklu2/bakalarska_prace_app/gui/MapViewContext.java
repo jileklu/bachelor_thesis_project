@@ -1,4 +1,4 @@
-package com.jileklu2.bakalarska_prace_app.ui;
+package com.jileklu2.bakalarska_prace_app.gui;
 
 import com.jileklu2.bakalarska_prace_app.mapObjects.Marker;
 import com.jileklu2.bakalarska_prace_app.mapObjects.Route;

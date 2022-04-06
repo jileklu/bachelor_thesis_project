@@ -7,7 +7,7 @@
 <?import javafx.scene.web.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0f1114;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.ui.MainViewController">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #0f1114;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.MainViewController">
    <center>
       <WebView fx:id="webView" prefHeight="670.0" style="-fx-background-color: #0f1114;" BorderPane.alignment="CENTER" />
    </center>

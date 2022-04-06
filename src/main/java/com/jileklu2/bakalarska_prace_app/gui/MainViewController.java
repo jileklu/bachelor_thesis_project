@@ -1,6 +1,6 @@
-package com.jileklu2.bakalarska_prace_app.ui;
+package com.jileklu2.bakalarska_prace_app.gui;
 
-import com.jileklu2.bakalarska_prace_app.Application;
+import com.jileklu2.bakalarska_prace_app.GuiApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -47,7 +47,7 @@ public class MainViewController implements Initializable {
     private void routeButtonAction() throws IOException {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ui/route_popup.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(GuiApplication.class.getResource("gui/route_popup.fxml"));
         Parent popUpRoot = fxmlLoader.load();
         RoutePopUpController routesPopUpController = fxmlLoader.getController();
         routesPopUpController.setRoutesContext(routesContext);

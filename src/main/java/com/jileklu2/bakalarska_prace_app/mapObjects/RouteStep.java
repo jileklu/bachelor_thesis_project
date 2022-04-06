@@ -52,6 +52,6 @@ public class RouteStep {
                 "Duration: " +
                 "\n\t" + String.format("%.0f", duration) + " sec\n" +
                 "Average speed: " +
-                "\n\t" + String.format("%.2f", averageSpeed) + "km/h";
+                "\n\t" + String.format("%.2f", averageSpeed) + " km/h";
     }
 }
