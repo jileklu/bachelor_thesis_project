@@ -1,0 +1,11 @@
+{
+  "origin": {
+    "lng": 1.0,
+    "lat": 1.0
+  },
+  "destination": {
+    "lng": 2.0,
+    "lat": 2.0
+  },
+  "waypoints": []
+}

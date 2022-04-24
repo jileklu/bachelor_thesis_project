@@ -1,0 +1,301 @@
+{
+  "origin": {
+    "lng": 0.979328,
+    "lat": 51.97039
+  },
+  "destination": {
+    "lng": 0.668408,
+    "lat": 52.094427
+  },
+  "waypoints": [{
+    "lng": 0.730226,
+    "lat": 52.038683
+  }],
+  "steps": [
+    {
+      "duration": 20,
+      "variables": [],
+      "distance": 199,
+      "origin": {
+        "lng": 0.9794579000000001,
+        "lat": 51.9702667
+      },
+      "destination": {
+        "lng": 0.9815406000000001,
+        "lat": 51.9715011
+      },
+      "averageSpeed": 35.82,
+      "stepNumber": 0
+    },
+    {
+      "duration": 55,
+      "variables": [],
+      "distance": 502,
+      "origin": {
+        "lng": 0.9815406000000001,
+        "lat": 51.9715011
+      },
+      "destination": {
+        "lng": 0.9769199000000001,
+        "lat": 51.9746069
+      },
+      "averageSpeed": 32.86,
+      "stepNumber": 1
+    },
+    {
+      "duration": 121,
+      "variables": [],
+      "distance": 1363,
+      "origin": {
+        "lng": 0.9769199000000001,
+        "lat": 51.9746069
+      },
+      "destination": {
+        "lng": 0.9612474000000001,
+        "lat": 51.9813876
+      },
+      "averageSpeed": 40.55,
+      "stepNumber": 2
+    },
+    {
+      "duration": 6,
+      "variables": [],
+      "distance": 55,
+      "origin": {
+        "lng": 0.9612474000000001,
+        "lat": 51.9813876
+      },
+      "destination": {
+        "lng": 0.9607263,
+        "lat": 51.9817595
+      },
+      "averageSpeed": 33,
+      "stepNumber": 3
+    },
+    {
+      "duration": 643,
+      "variables": [],
+      "distance": 9427,
+      "origin": {
+        "lng": 0.9607263,
+        "lat": 51.9817595
+      },
+      "destination": {
+        "lng": 0.8442913999999999,
+        "lat": 52.0023548
+      },
+      "averageSpeed": 52.78,
+      "stepNumber": 4
+    },
+    {
+      "duration": 512,
+      "variables": [],
+      "distance": 8123,
+      "origin": {
+        "lng": 0.8442913999999999,
+        "lat": 52.0023548
+      },
+      "destination": {
+        "lng": 0.7527919,
+        "lat": 52.0402885
+      },
+      "averageSpeed": 57.11,
+      "stepNumber": 5
+    },
+    {
+      "duration": 123,
+      "variables": [],
+      "distance": 1379,
+      "origin": {
+        "lng": 0.7527919,
+        "lat": 52.0402885
+      },
+      "destination": {
+        "lng": 0.7334033,
+        "lat": 52.03846780000001
+      },
+      "averageSpeed": 40.36,
+      "stepNumber": 6
+    },
+    {
+      "duration": 4,
+      "variables": [],
+      "distance": 27,
+      "origin": {
+        "lng": 0.7334033,
+        "lat": 52.03846780000001
+      },
+      "destination": {
+        "lng": 0.7333611,
+        "lat": 52.0382261
+      },
+      "averageSpeed": 24.3,
+      "stepNumber": 7
+    },
+    {
+      "duration": 14,
+      "variables": [],
+      "distance": 71,
+      "origin": {
+        "lng": 0.7333611,
+        "lat": 52.0382261
+      },
+      "destination": {
+        "lng": 0.7327861999999999,
+        "lat": 52.0383734
+      },
+      "averageSpeed": 18.26,
+      "stepNumber": 8
+    },
+    {
+      "duration": 6,
+      "variables": [],
+      "distance": 31,
+      "origin": {
+        "lng": 0.7327861999999999,
+        "lat": 52.0383734
+      },
+      "destination": {
+        "lng": 0.7323510999999999,
+        "lat": 52.03844309999999
+      },
+      "averageSpeed": 18.6,
+      "stepNumber": 9
+    },
+    {
+      "duration": 11,
+      "variables": [],
+      "distance": 66,
+      "origin": {
+        "lng": 0.7323510999999999,
+        "lat": 52.03844309999999
+      },
+      "destination": {
+        "lng": 0.7316615999999999,
+        "lat": 52.0388361
+      },
+      "averageSpeed": 21.6,
+      "stepNumber": 10
+    },
+    {
+      "duration": 34,
+      "variables": [],
+      "distance": 100,
+      "origin": {
+        "lng": 0.7316615999999999,
+        "lat": 52.0388361
+      },
+      "destination": {
+        "lng": 0.730371,
+        "lat": 52.0384892
+      },
+      "averageSpeed": 10.59,
+      "stepNumber": 11
+    },
+    {
+      "duration": 14,
+      "variables": [],
+      "distance": 56,
+      "origin": {
+        "lng": 0.730371,
+        "lat": 52.0384892
+      },
+      "destination": {
+        "lng": 0.7297161,
+        "lat": 52.0382171
+      },
+      "averageSpeed": 14.4,
+      "stepNumber": 12
+    },
+    {
+      "duration": 42,
+      "variables": [],
+      "distance": 222,
+      "origin": {
+        "lng": 0.7297161,
+        "lat": 52.0382171
+      },
+      "destination": {
+        "lng": 0.7265051,
+        "lat": 52.0380949
+      },
+      "averageSpeed": 19.03,
+      "stepNumber": 13
+    },
+    {
+      "duration": 210,
+      "variables": [],
+      "distance": 2341,
+      "origin": {
+        "lng": 0.7265051,
+        "lat": 52.0380949
+      },
+      "destination": {
+        "lng": 0.7151795,
+        "lat": 52.0557164
+      },
+      "averageSpeed": 40.13,
+      "stepNumber": 14
+    },
+    {
+      "duration": 288,
+      "variables": [],
+      "distance": 3475,
+      "origin": {
+        "lng": 0.7151795,
+        "lat": 52.0557164
+      },
+      "destination": {
+        "lng": 0.7222041,
+        "lat": 52.0848988
+      },
+      "averageSpeed": 43.44,
+      "stepNumber": 15
+    },
+    {
+      "duration": 13,
+      "variables": [],
+      "distance": 145,
+      "origin": {
+        "lng": 0.7222041,
+        "lat": 52.0848988
+      },
+      "destination": {
+        "lng": 0.7208905,
+        "lat": 52.0858985
+      },
+      "averageSpeed": 40.15,
+      "stepNumber": 16
+    },
+    {
+      "duration": 210,
+      "variables": [],
+      "distance": 3543,
+      "origin": {
+        "lng": 0.7208905,
+        "lat": 52.0858985
+      },
+      "destination": {
+        "lng": 0.6700651,
+        "lat": 52.0870512
+      },
+      "averageSpeed": 60.74,
+      "stepNumber": 17
+    },
+    {
+      "duration": 86,
+      "variables": [],
+      "distance": 845,
+      "origin": {
+        "lng": 0.6700651,
+        "lat": 52.0870512
+      },
+      "destination": {
+        "lng": 0.6686403,
+        "lat": 52.0944638
+      },
+      "averageSpeed": 35.37,
+      "stepNumber": 18
+    }
+  ]
+}

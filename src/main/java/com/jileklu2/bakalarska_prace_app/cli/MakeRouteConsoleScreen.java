@@ -8,8 +8,15 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class RouteMakerConsoleScreen {
-    public static Route getRoute() {
+public class MakeRouteConsoleScreen {
+
+    private final ControllerCli controller;
+
+    public MakeRouteConsoleScreen(ControllerCli controller) {
+        this.controller = controller;
+    }
+
+    public void getRoute() {
         Route route;
         System.out.println("Please enter origin:");
         Coordinates origin = getCoordinates();
@@ -20,10 +27,10 @@ public class RouteMakerConsoleScreen {
         route = new Route(origin, destination, waypoints);
         RouteInfoFinder.findRouteInfo(route, true);
 
-        return route;
+        controller.setCurrentRoute(route);
     }
 
-    private static LinkedHashSet<Coordinates> getWaypoints() {
+    private LinkedHashSet<Coordinates> getWaypoints() {
         LinkedHashSet<Coordinates> waypoints = new LinkedHashSet<>();
         int selection;
         while(true) {
@@ -40,13 +47,13 @@ public class RouteMakerConsoleScreen {
         }
     }
 
-    private static void showWaypointsGetterText() {
+    private void showWaypointsGetterText() {
         System.out.println("Do you want to add route waypoint?");
         System.out.println("[1] Yes");
         System.out.println("[2] No");
     }
 
-    private static int getSelection() {
+    private int getSelection() {
         Scanner scanner = new Scanner(System.in);
         int selection;
         while(true) {
@@ -62,7 +69,7 @@ public class RouteMakerConsoleScreen {
         return selection;
     }
 
-    private static Coordinates getCoordinates() {
+    private Coordinates getCoordinates() {
         Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
         Double lat;
         Double lng;
@@ -94,6 +101,7 @@ public class RouteMakerConsoleScreen {
             }
         }
 
+        scanner.close();
         return coordinates;
     }
 }

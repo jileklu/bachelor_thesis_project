@@ -1,5 +1,9 @@
 package com.jileklu2.bakalarska_prace_app.mapObjects;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.*;
 
 public class Route {
@@ -10,8 +14,8 @@ public class Route {
 
     @SafeVarargs
     public Route(Coordinates origin, Coordinates destination, Collection<Coordinates>... waypoints) {
-        this.origin = origin;
-        this.destination = destination;
+        this.origin = new Coordinates(origin);
+        this.destination = new Coordinates(destination);
         this.routeSteps = new ArrayList<>();
         this.waypoints = waypoints.length > 0 ? new LinkedHashSet<>(waypoints[0]) : new LinkedHashSet<>();
     }
@@ -19,33 +23,36 @@ public class Route {
     public Route(Route another) {
         this.origin = new Coordinates(another.getOrigin());
         this.destination = new Coordinates(another.getDestination());
-        this.waypoints = new LinkedHashSet<>(another.getWaypoints());
         this.routeSteps = new ArrayList<>(another.getRouteSteps());
+        this.waypoints = new LinkedHashSet<>(another.getWaypoints());
+    }
+
+    public Route(JSONObject jsonObject) {
+        try{
+            this.origin = new Coordinates(jsonObject.getJSONObject("origin"));
+            this.destination = new Coordinates(jsonObject.getJSONObject("destination"));
+            this.waypoints = new LinkedHashSet<>();
+            JSONArray waypointsJsonArr = jsonObject.getJSONArray("waypoints");
+            for(int i = 0; i < waypointsJsonArr.length(); i++) {
+                this.waypoints.add(new Coordinates(waypointsJsonArr.getJSONObject(i)));
+            }
+            this.routeSteps = new ArrayList<>();
+            JSONArray stepsJsonArr = jsonObject.getJSONArray("steps");
+            for(int i = 0; i < stepsJsonArr.length(); i++) {
+                this.routeSteps.add(new RouteStep(stepsJsonArr.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            throw new IllegalArgumentException("Wrong JSON file structure.");
+        }
     }
 
     @Override
     public String toString() {
-        return "{origin: " + origin.toString() +
-                ", waypoints: " + waypointsToString() +
-                ", destination: " + destination.toString() +"}";
+        return String.format("{origin:%s,waypoints:%s,destination:%s,steps:%s}",origin,waypoints,destination,routeSteps);
     }
 
-    private String waypointsToString() {
-        StringBuilder waypointsStringBuilder = new StringBuilder();
-        waypointsStringBuilder.append("[");
-
-        List<String> waypointsStrings = new ArrayList<>();
-        for(Coordinates waypoint : this.getWaypoints()) {
-            waypointsStrings.add(waypoint.toString());
-        }
-
-        StringJoiner joiner = new StringJoiner(",");
-        for (String partString : waypointsStrings) {
-            joiner.add(partString);
-        }
-        waypointsStringBuilder.append(joiner);
-        waypointsStringBuilder.append("]");
-        return waypointsStringBuilder.toString();
+    public JSONObject toJSON(){
+        return new JSONObject(this.toString());
     }
 
     public Coordinates getOrigin() {
@@ -85,7 +92,7 @@ public class Route {
     }
 
     public void setRouteSteps(List<RouteStep> routeSteps) {
-        this.routeSteps = routeSteps;
+        this.routeSteps = new ArrayList<>(routeSteps);
     }
 
     /**

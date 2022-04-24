@@ -1,35 +1,40 @@
 package com.jileklu2.bakalarska_prace_app.cli;
 
-import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
-import com.jileklu2.bakalarska_prace_app.mapObjects.RouteStep;
+import com.jileklu2.bakalarska_prace_app.cli.route.RouteHandlerCli;
 
 import java.util.Scanner;
 
-public class MainConsoleScreen {
+public class ConsoleMainMenu {
 
-    private static Route createdRoute = null;
+    private final ControllerCli controller;
 
-    public static void launchMenu() {
+    public ConsoleMainMenu(ControllerCli createdRoute) {
+        this.controller = createdRoute;
+    }
+
+    public void showMenu(){
         while(true) {
             int selection = getSelection();
             switch(selection) {
                 case 1:
-                    createdRoute = RouteMakerConsoleScreen.getRoute();
+                    controller.showMakeRouteScreen();
                     break;
                 case 2:
-                    if(createdRoute == null) {
+                    if(RouteHandlerCli.getCurrentRoute() == null) {
                         System.out.println("Route was not created yet.");
                     } else {
-                        for(RouteStep routeStep : createdRoute.getRouteSteps()) {
-                            System.out.println(routeStep.toFormattedString());
-                        }
+                        System.out.println(RouteHandlerCli.getCurrentRoute().toJSON().toString(2));
                     }
                     break;
                 case 3:
-                    System.out.println("Import selected");
+                    controller.showMakeRouteImportScreen();
                     break;
                 case 4:
-                    System.out.println("Export selected");
+                    if(RouteHandlerCli.getCurrentRoute() == null) {
+                        System.out.println("Route was not created yet.");
+                    } else {
+                        controller.showMakeRouteExportScreen();
+                    }
                     break;
                 case 0:
                     return;
@@ -42,7 +47,7 @@ public class MainConsoleScreen {
     private static void showMenuText() {
         System.out.println("Select Action:");
         System.out.println("[1] Make Route");
-        System.out.println("[2] Print Route Info");
+        System.out.println("[2] Print Route JSON");
         System.out.println("[3] Import Route");
         System.out.println("[4] Export Route");
         System.out.println("[0] Exit");
@@ -61,6 +66,8 @@ public class MainConsoleScreen {
                 scanner.next();
             }
         }
+
+        scanner.close();
         return selection;
     }
 }

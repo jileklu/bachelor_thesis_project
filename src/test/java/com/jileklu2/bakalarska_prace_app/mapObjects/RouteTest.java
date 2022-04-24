@@ -1,11 +1,15 @@
-package com.jileklu2.bakalarska_prace_app;
+package com.jileklu2.bakalarska_prace_app.mapObjects;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.util.*;
 
@@ -52,21 +56,25 @@ public class RouteTest {
     private Route testRoute17;
     private Route testRoute18;
 
+    private JSONObject testJsonObj01;
+
+    private JSONObject testJsonObj02;
+
     @BeforeEach
     public void setUp() {
-        testOrigin01 = new Coordinates(51.970390, 0.979328);
-        testOrigin02 = new Coordinates(51.956771,1.268376);
+        testOrigin01 = new Coordinates(1.0, 1.0);
+        testOrigin02 = new Coordinates(2.0,2.0);
 
-        testDestination01 = new Coordinates(52.038683,0.668408);
-        testDestination02 = new Coordinates(52.097693,0.667931);
+        testDestination01 = new Coordinates(3.0,3.0);
+        testDestination02 = new Coordinates(4.0,4.0);
 
         testDestination03 = new Coordinates(testOrigin02);
         testOrigin03 = new Coordinates(testDestination02);
 
-        testWaypoint01 = new Coordinates(52.007232, 0.902119);
-        testWaypoint02 = new Coordinates(51.983350, 1.158283);
-        testWaypoint03 = new Coordinates(52.007232, 0.902119);
-        testWaypoint04 = new Coordinates(52.028706, 0.895637);
+        testWaypoint01 = new Coordinates(5.0, 5.0);
+        testWaypoint02 = new Coordinates(6.0, 6.0);
+        testWaypoint03 = new Coordinates(5.0, 5.0);
+        testWaypoint04 = new Coordinates(7.0, 7.0);
 
         testWaypointsList01 = Arrays.asList(testWaypoint01, testWaypoint02);
 
@@ -101,6 +109,18 @@ public class RouteTest {
         testRoute16 = new Route(testOrigin01, testDestination01, testWaypointsSet01);
         testRoute17 = new Route(testOrigin02, testDestination01, testWaypointsSet02);
         testRoute18 = new Route(testOrigin01, testOrigin02, testWaypointsSet07);
+
+        testJsonObj01 = new JSONObject()
+                        .put("origin", testOrigin01.toJSON())
+                        .put("destination", testDestination01.toJSON())
+                        .put("steps", new JSONArray())
+                        .put("waypoints", new JSONArray());
+
+        testJsonObj02 = new JSONObject()
+                        .put("origin", testOrigin01.toJSON())
+                        .put("destination", testDestination01.toJSON())
+                        .put("steps", new JSONArray())
+                        .put("waypoints", new JSONArray(testWaypointsSet01));
     }
 
     @Test
@@ -210,12 +230,36 @@ public class RouteTest {
 
     @Test
     public void toStringTest() {
-        String string01 = "{origin: {lat: 51.97039, lng: 0.979328}, waypoints: []," +
-                          " destination: {lat: 52.038683, lng: 0.668408}}";
-        String string02 = "{origin: {lat: 51.97039, lng: 0.979328}" +
-                          ", waypoints: [{lat: 52.007232, lng: 0.902119},{lat: 51.98335, lng: 1.158283}]" +
-                          ", destination: {lat: 52.038683, lng: 0.668408}}";
-        Assertions.assertEquals(testRoute01.toString(), string01);
-        Assertions.assertEquals(testRoute02.toString(), string02);
+        String string01 = "{origin:{lat:1.0, lng:1.0},waypoints:[],destination:{lat:3.0, lng:3.0},steps:[]}";
+        String string02 = "{origin:{lat:1.0, lng:1.0},waypoints:[{lat:5.0, lng:5.0}, {lat:6.0, lng:6.0}]," +
+                          "destination:{lat:3.0, lng:3.0},steps:[]}";
+        Assertions.assertEquals(string01,testRoute01.toString());
+        Assertions.assertEquals(string02,testRoute02.toString());
     }
+
+    @Test
+    public void toJsonTest(){
+        JSONAssert.assertEquals(testJsonObj01,testRoute01.toJSON(), false);
+        JSONAssert.assertEquals(testJsonObj02,testRoute02.toJSON(), false);
+    }
+
+    @Test
+    public void jsonConstructorTest(){
+    }
+    @Test
+    public void jsonConstructorAssertionsTest(){
+        JSONObject jsonObject = new JSONObject()
+                .put("origin", "10");
+
+        try {
+            Route testRouteStep = new Route(jsonObject);
+            Assertions.fail("No exception was thrown");
+        }
+        catch (IllegalArgumentException e) {
+            if(!Objects.equals(e.getMessage(), "Wrong JSON file structure."))
+                Assertions.fail("Wrong exception message.");
+        }
+    }
+
+
 }

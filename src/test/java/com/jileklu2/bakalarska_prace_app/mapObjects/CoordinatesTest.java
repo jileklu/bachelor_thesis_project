@@ -1,6 +1,7 @@
-package com.jileklu2.bakalarska_prace_app;
+package com.jileklu2.bakalarska_prace_app.mapObjects;
 
 import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class CoordinatesTest {
     }
 
     @Test
-    public void exceptionsTest() {
+    public void baseConstructorExceptionsTest() {
         // Incorrect boundaries test
         try {
             Coordinates testCoordinates05 = new Coordinates(-190.0,8.0);
@@ -93,11 +94,35 @@ public class CoordinatesTest {
 
     @Test
     public void toStringTest() {
-        Assertions.assertEquals("{lat: 10.0, lng: 8.0}", testCoordinates01.toString());
+        Assertions.assertEquals("{lat:10.0, lng:8.0}", testCoordinates01.toString());
     }
 
     @Test
     public void toFormattedStringTest(){
         Assertions.assertEquals("lat: 10.0, lng: 8.0", testCoordinates01.toFormattedString());
+    }
+
+    @Test
+    public void jsonConstructorTest(){
+        JSONObject jsonObject = new JSONObject()
+                                .put("lat", "10")
+                                .put("lng", "8");
+        Coordinates testCoordinates = new Coordinates(jsonObject);
+        Assertions.assertEquals(testCoordinates, testCoordinates01);
+    }
+
+    @Test
+    public void jsonConstructorAssertionsTest(){
+        JSONObject jsonObject = new JSONObject()
+                .put("lat", "10");
+
+        try {
+            Coordinates testCoordinates = new Coordinates(jsonObject);
+            Assertions.fail("No exception was thrown");
+        }
+        catch (IllegalArgumentException e) {
+            if(!Objects.equals(e.getMessage(), "Wrong JSON file structure."))
+                Assertions.fail("Wrong exception message.");
+        }
     }
 }

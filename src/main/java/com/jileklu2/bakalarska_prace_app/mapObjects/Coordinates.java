@@ -1,5 +1,8 @@
 package com.jileklu2.bakalarska_prace_app.mapObjects;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Coordinates {
     private Double lat;
     private Double lng;
@@ -17,9 +20,23 @@ public class Coordinates {
         this.lng = Double.valueOf(other.getLng());
     }
 
+    public Coordinates(JSONObject jsonObject) {
+        try{
+            this.lat = jsonObject.getDouble("lat");
+            this.lng = jsonObject.getDouble("lng");
+        } catch (JSONException e) {
+            throw new IllegalArgumentException("Wrong JSON file structure.");
+        }
+
+    }
+
     @Override
     public String toString() {
-        return "{lat: " + lat + ", lng: " + lng +"}";
+        return String.format("{lat:%s, lng:%s}", lat,lng);
+    }
+
+    public JSONObject toJSON(){
+        return new JSONObject(this.toString());
     }
 
     public String toFormattedString() {
