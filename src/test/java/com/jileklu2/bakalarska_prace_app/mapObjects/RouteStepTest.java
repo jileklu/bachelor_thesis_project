@@ -63,6 +63,7 @@ public class RouteStepTest {
                 .put("distance", 10.0)
                 .put("duration", 5.0)
                 .put("stepNumber", 3)
+                .put("averageSpeed", 15.4)
                 .put("variables", new JSONArray());
 
         RouteStep testRouteStep = new RouteStep(jsonObject);
@@ -74,6 +75,7 @@ public class RouteStepTest {
                 .put("distance", 10.0)
                 .put("duration", 5.0)
                 .put("stepNumber", 3)
+                .put("averageSpeed", 15.4)
                 .put("variables", new JSONArray().put(jsonVariable));
 
         testRouteStep = new RouteStep(jsonObject);
@@ -90,7 +92,7 @@ public class RouteStepTest {
             Assertions.fail("No exception was thrown");
         }
         catch (IllegalArgumentException e) {
-            if(!Objects.equals(e.getMessage(), "Invalid in-file path."))
+            if(!Objects.equals(e.getMessage(), "Wrong JSON file structure."))
                 Assertions.fail("Wrong exception message.");
         }
     }

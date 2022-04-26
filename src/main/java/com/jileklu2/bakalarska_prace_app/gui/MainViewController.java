@@ -37,7 +37,7 @@ public class MainViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Main View Init");
         routesContext = new RoutesHandler();
-        mapViewContext = new MapContentHandler(webView, routesContext);
+        mapViewContext = new MapContentController(webView, routesContext);
         routeInfoPanelContext = new RouteInfoPanelController(routesContext, listView);
         mapViewContext.loadMap();
         webView.requestFocus();

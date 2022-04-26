@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapContentHandler implements MapViewContext{
+public class MapContentController implements MapViewContext{
     @FXML
     private WebView webView;
 
@@ -20,7 +20,7 @@ public class MapContentHandler implements MapViewContext{
 
     private RoutesContext routesContext;
 
-    public MapContentHandler(WebView webView, RoutesContext routesContext){
+    public MapContentController(WebView webView, RoutesContext routesContext){
         this.routesContext = routesContext;
         this.webView = webView;
         webEngine = this.webView.getEngine();

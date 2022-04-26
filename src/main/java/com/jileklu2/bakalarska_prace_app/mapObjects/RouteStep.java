@@ -38,7 +38,7 @@ public class RouteStep {
             this.distance = jsonObject.getDouble("distance");
             this.duration = jsonObject.getDouble("duration");
             this.stepNumber = jsonObject.getInt("stepNumber");
-            this.averageSpeed = (distance / 1000) / ((duration / 60) / 60);
+            this.averageSpeed = jsonObject.getDouble("averageSpeed");
             this.variables = new HashSet<>();
             JSONArray variablesJsonArr = jsonObject.getJSONArray("variables");
             for(int i = 0; i < variablesJsonArr.length(); i++) {
