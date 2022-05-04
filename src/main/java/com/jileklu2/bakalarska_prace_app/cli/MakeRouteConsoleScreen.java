@@ -1,11 +1,11 @@
 package com.jileklu2.bakalarska_prace_app.cli;
 
-import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.routesLogic.RouteInfoFinder;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class MakeRouteConsoleScreen {
@@ -25,8 +25,7 @@ public class MakeRouteConsoleScreen {
         LinkedHashSet<Coordinates> waypoints = getWaypoints();
 
         route = new Route(origin, destination, waypoints);
-        RouteInfoFinder.findRouteInfo(route, true);
-
+        RouteInfoFinder.findRouteInfo(route, true, new HashSet<>());
         controller.setCurrentRoute(route);
     }
 
@@ -54,7 +53,8 @@ public class MakeRouteConsoleScreen {
     }
 
     private int getSelection() {
-        Scanner scanner = new Scanner(System.in);
+        controller.resetScanner();
+        Scanner scanner = controller.getScanner();
         int selection;
         while(true) {
             showWaypointsGetterText();
@@ -70,9 +70,11 @@ public class MakeRouteConsoleScreen {
     }
 
     private Coordinates getCoordinates() {
-        Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
+        controller.resetScanner();
+        Scanner scanner = controller.getScanner();
         Double lat;
         Double lng;
+        Double elevation;
         Coordinates coordinates;
         while(true) {
             try {
@@ -100,8 +102,6 @@ public class MakeRouteConsoleScreen {
                 System.out.println("Coordinates out of boundaries.");
             }
         }
-
-        scanner.close();
         return coordinates;
     }
 }

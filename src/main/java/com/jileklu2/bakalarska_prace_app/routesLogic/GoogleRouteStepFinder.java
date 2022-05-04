@@ -1,15 +1,15 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic;
 
-import com.jileklu2.bakalarska_prace_app.errorHandlers.ErrorHandler;
-import com.jileklu2.bakalarska_prace_app.errorHandlers.GoogleRoutingErrorHandler;
+import com.jileklu2.bakalarska_prace_app.handlers.errorHandlers.ErrorHandler;
+import com.jileklu2.bakalarska_prace_app.handlers.errorHandlers.GoogleRoutingErrorHandler;
 import com.jileklu2.bakalarska_prace_app.errors.GoogleDirectionsStatus;
 import com.jileklu2.bakalarska_prace_app.errors.GoogleRoutingError;
 import com.jileklu2.bakalarska_prace_app.errors.RoutingError;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
-import com.jileklu2.bakalarska_prace_app.mapObjects.RouteStep;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
 import com.jileklu2.bakalarska_prace_app.parsers.GoogleJsonStepParser;
-import com.jileklu2.bakalarska_prace_app.scriptBuilders.HttpRequestStringBuilder;
+import com.jileklu2.bakalarska_prace_app.builders.scriptBuilders.HttpRequestStringBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -58,11 +58,20 @@ public class GoogleRouteStepFinder {
 
                     for(int k = 0; k < steps.length(); k++) {
                         JSONObject jsonStep = steps.getJSONObject(k);
-                        Coordinates stepOrigin = GoogleJsonStepParser.parseOrigin(jsonStep);
-                        Coordinates stepDestination = GoogleJsonStepParser.parseDestination(jsonStep);
+                        Coordinates stepOrigin;
+                        if( i == 0 && j == 0 && k == 0)
+                            stepOrigin = route.getOrigin();
+                        else
+                            stepOrigin = GoogleJsonStepParser.parseOrigin(jsonStep);
+
+                        Coordinates stepDestination;
+                        if(i == routes.length() - 1 && j == steps.length() - 1 && k == steps.length() - 1)
+                            stepDestination = route.getDestination();
+                        else
+                            stepDestination= GoogleJsonStepParser.parseDestination(jsonStep);
+
                         int stepDistance = GoogleJsonStepParser.parseDistance(jsonStep);
                         int stepDuration = GoogleJsonStepParser.parseDuration(jsonStep);
-
                         routeSteps.add(
                                 new RouteStep(stepOrigin, stepDestination, (double) stepDistance,
                                         (double) stepDuration, totalStepsNum)

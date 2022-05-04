@@ -1,4 +1,4 @@
-package com.jileklu2.bakalarska_prace_app.mapObjects;
+package com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Locale;
 
 public class RouteStep {
@@ -65,6 +64,8 @@ public class RouteStep {
         return destination;
     }
 
+    public Double getDuration(){return duration;}
+
     public void addVariable(Variable variable) {
         variables.add(variable);
     }
@@ -75,7 +76,6 @@ public class RouteStep {
 
     @Override
     public String toString() {
-
         return String.format("{stepNumber:%s,origin:%s,destination:%s,distance:%s,duration:%s,averageSpeed:%s" +
                 ",variables:%s}",
             stepNumber, origin, destination, String.format("%.0f", distance),
@@ -84,24 +84,42 @@ public class RouteStep {
         );
     }
 
+    public String toGPX(String prefix) {
+        StringBuilder gpxStringBuilder = new StringBuilder(prefix + "<trkseg>\n");
+        gpxStringBuilder.append(origin.toGPX(prefix + "\t")).append("\n");
+        gpxStringBuilder.append(destination.toGPX(prefix + "\t")).append("\n");
+        gpxStringBuilder.append(prefix).append("</trkseg>");
+
+        return gpxStringBuilder.toString();
+    }
+
     public JSONObject toJSON(){
         return new JSONObject(this.toString());
     }
 
     public String toFormattedString() {
-        return "\t\tStep number: " + stepNumber + "\n" +
-                "Origin: " +
-                "\n\tLat: " + origin.getLat() +
-                "\n\tLng: " + origin.getLng() + "\n" +
-                "Destination: " +
-                "\n\tLat: " + destination.getLat() +
-                "\n\tLng: " + destination.getLng() + "\n" +
-                "Distance: " +
-                "\n\t" + String.format("%.0f", distance) + " m\n" +
-                "Duration: " +
-                "\n\t" + String.format("%.0f", duration) + " sec\n" +
-                "Average speed: " +
-                "\n\t" + String.format("%.2f", averageSpeed) + " km/h";
+        StringBuilder formattedString = new StringBuilder();
+        formattedString.append("\t\tStep number: ").append(stepNumber).append("\n");
+        formattedString.append("Origin: \n");
+        formattedString.append("\tLat: ").append(origin.getLat()).append("\n");
+        formattedString.append("\tLng: ").append(origin.getLng()).append("\n");
+        formattedString.append("\tElevation: ").append(String.format("%.2f", origin.getElevation())).append(" mamsl\n");
+        formattedString.append("Destination: \n");
+        formattedString.append("\tLat: ").append(destination.getLat()).append("\n");
+        formattedString.append("\tLng: ").append(destination.getLng()).append("\n");
+        formattedString.append("\tElevation: ").append(String.format("%.2f", destination.getElevation())).append(" mamsl\n");
+        formattedString.append("Distance: \n");
+        formattedString.append("\t").append(String.format("%.0f", distance)).append(" m\n");
+        formattedString.append("Duration: \n");
+        formattedString.append("\t").append(String.format("%.0f", duration)).append(" sec\n");
+        formattedString.append("Average speed: \n");
+        formattedString.append("\t").append(String.format("%.2f", averageSpeed)).append(" km/h");
+        for(Variable variable : variables) {
+            formattedString.append(variable.getName()).append(": \n");
+            formattedString.append("\t").append(variable.getValue());
+        }
+
+        return formattedString.toString();
     }
 
     @Override

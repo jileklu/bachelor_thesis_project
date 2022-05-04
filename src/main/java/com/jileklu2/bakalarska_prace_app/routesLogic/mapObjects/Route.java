@@ -1,4 +1,4 @@
-package com.jileklu2.bakalarska_prace_app.mapObjects;
+package com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,11 +48,21 @@ public class Route {
 
     @Override
     public String toString() {
-        return String.format("{origin:%s,waypoints:%s,destination:%s,steps:%s}",origin,waypoints,destination,routeSteps);
+        return String.format("{origin:%s,waypoints:%s,destination:%s,duration:%s,steps:%s}",origin,waypoints,destination,
+            getDuration(),routeSteps);
     }
 
     public JSONObject toJSON(){
         return new JSONObject(this.toString());
+    }
+
+    public String toGPX() {
+        StringBuilder gpxStringBuilder = new StringBuilder("<trk>\n");
+        for(RouteStep step : routeSteps) {
+            gpxStringBuilder.append(step.toGPX("\t")).append("\n");
+        }
+        gpxStringBuilder.append("</trk>");
+        return gpxStringBuilder.toString();
     }
 
     public Coordinates getOrigin() {
@@ -85,6 +95,15 @@ public class Route {
 
     public void addWaypoints(Collection<Coordinates> waypoints) {
         this.waypoints.addAll(new LinkedHashSet<>(waypoints));
+    }
+
+    public Double getDuration() {
+        Double duration = 0.0;
+        for(RouteStep routeStep : routeSteps) {
+            duration += routeStep.getDuration();
+        }
+
+        return duration;
     }
 
     public List<RouteStep> getRouteSteps() {

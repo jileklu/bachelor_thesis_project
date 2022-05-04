@@ -53,8 +53,9 @@ public class ConsoleMainMenu {
         System.out.println("[0] Exit");
     }
 
-    private static int getSelection() {
-        Scanner scanner = new Scanner(System.in);
+    private int getSelection() {
+        controller.resetScanner();
+        Scanner scanner = controller.getScanner();
         int selection;
         while(true) {
             showMenuText();
@@ -66,8 +67,6 @@ public class ConsoleMainMenu {
                 scanner.next();
             }
         }
-
-        scanner.close();
         return selection;
     }
 }

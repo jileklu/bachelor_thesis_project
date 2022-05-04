@@ -1,28 +1,38 @@
 package com.jileklu2.bakalarska_prace_app.cli;
 
+import com.jileklu2.bakalarska_prace_app.builders.GpxBuilder;
 import com.jileklu2.bakalarska_prace_app.cli.route.RouteHandlerCli;
 import com.jileklu2.bakalarska_prace_app.handlers.FileHandler;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class RouteExportConsoleScreen {
+    private final ControllerCli controller;
+    public RouteExportConsoleScreen(ControllerCli controller) {
+        this.controller = controller;
+    }
     public void exportRoute(){
         System.out.println("Please enter file path:");
         Path filePath = getFilePath();
-
+/*
         FileHandler.createJsonFile(
             String.valueOf(filePath),
             RouteHandlerCli.getCurrentRoute().toJSON()
+        );
+*/
+        FileHandler.createGpxFile(
+            String.valueOf(filePath),
+            GpxBuilder.buildRouteGpx(RouteHandlerCli.getCurrentRoute())
         );
 
         System.out.println("Export successful.");
     }
 
     private Path getFilePath() {
-        Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
+        controller.resetScanner();
+        Scanner scanner = controller.getScanner();
         String path;
         Path filePath;
         while(true) {
@@ -40,8 +50,6 @@ public class RouteExportConsoleScreen {
                 scanner.next();
             }
         }
-
-        scanner.close();
         return filePath;
     }
 }

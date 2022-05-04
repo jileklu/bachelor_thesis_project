@@ -1,4 +1,4 @@
-package com.jileklu2.bakalarska_prace_app.errorHandlers;
+package com.jileklu2.bakalarska_prace_app.handlers.errorHandlers;
 
 import com.jileklu2.bakalarska_prace_app.errors.GoogleRoutingError;
 

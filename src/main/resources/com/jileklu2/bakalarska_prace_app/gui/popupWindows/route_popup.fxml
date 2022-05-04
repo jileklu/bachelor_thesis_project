@@ -5,15 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.RoutePopUpController">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeHandling.RouteWindowController">
    <children>
       <BorderPane prefHeight="300.0" prefWidth="400.0">
-         <top>
-            <Text fx:id="mainText" strokeType="OUTSIDE" strokeWidth="0.0" text="Route parameters" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="MS Outlook" size="20.0" />
-               </font></Text>
-         </top>
          <bottom>
             <VBox prefHeight="71.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                <children>
@@ -32,7 +26,7 @@
             </VBox>
          </bottom>
          <center>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="grid" stylesheets="@style_scroll_pane.css" BorderPane.alignment="CENTER">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="grid" stylesheets="@../style_scroll_pane.css" BorderPane.alignment="CENTER">
                <content>
                   <GridPane fx:id="gridPane" alignment="TOP_CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0">
                     <columnConstraints>
@@ -62,6 +56,13 @@
                </content>
             </ScrollPane>
          </center>
+         <top>
+            <Text fx:id="mainText" strokeType="OUTSIDE" strokeWidth="0.0" text="Route waypoints" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="MS Outlook" size="20.0" />
+               </font>
+            </Text>
+         </top>
       </BorderPane>
    </children>
 </AnchorPane>

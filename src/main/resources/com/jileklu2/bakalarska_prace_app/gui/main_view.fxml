@@ -19,25 +19,46 @@
       </ButtonBar>
    </top>
    <right>
-      <ListView fx:id="listView" prefHeight="670.0" prefWidth="270.0" style="-fx-background-color: #0f1114;" stylesheets="@style_main_list_view.css" BorderPane.alignment="CENTER" />
+      <ListView fx:id="listView" prefHeight="670.0" prefWidth="260.0" style="-fx-background-color: #0f1114;" stylesheets="@style_main_list_view.css" BorderPane.alignment="CENTER" />
    </right>
    <left>
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-          <Button fx:id="routeButton" layoutY="87.0" mnemonicParsing="false" onAction="#routeButtonAction" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #0f1114;" text="Make route" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-               <graphic>
-                  <FontIcon iconColor="WHITE" iconSize="20" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-icon-code: fa-level-up;" wrappingWidth="45.7142858505249" />
-               </graphic></Button>
-            <Button layoutY="194.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="200.0" style="-fx-background-color: #0f1114;" text="Add Waypoint" textFill="WHITE">
+             <Button fx:id="addWaypointButton" layoutY="58.0" mnemonicParsing="false" onAction="#addWaypointButtonAction" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #0f1114;" text="Add Waypoint" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
                <graphic>
                   <FontIcon iconColor="WHITE" iconSize="20" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-icon-code: fa-map-marker;" wrappingWidth="24.428571701049805" />
                </graphic></Button>
+             <Button fx:id="routeButton" layoutY="14.0" mnemonicParsing="false" onAction="#routeButtonAction" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #0f1114;" text="Make route" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+               <graphic>
+                  <FontIcon iconColor="WHITE" iconSize="20" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-icon-code: fa-car;" wrappingWidth="56.7142858505249" />
+               </graphic></Button>
+             <Button fx:id="dateButton" layoutY="102.0" mnemonicParsing="false" onAction="#dateButtonAction" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #0f1114;" text="Set interval" textAlignment="CENTER" textFill="WHITE">
+                 <font>
+                     <Font name="System Bold" size="20.0" />
+                 </font>
+               <graphic>
+                     <FontIcon iconColor="WHITE" iconSize="20" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-icon-code: fa-calendar;" wrappingWidth="50.7142858505249" />
+               </graphic></Button>
+             <Button fx:id="importButton" layoutY="568.0" mnemonicParsing="false" onAction="#importButtonAction" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #0f1114;" text="Import route" textAlignment="CENTER" textFill="WHITE">
+                 <font>
+                     <Font name="System Bold" size="20.0" />
+                 </font>
+                 <graphic>
+                     <FontIcon iconColor="WHITE" iconSize="20" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-icon-code: fa-file-o;" wrappingWidth="45.7142858505249" />
+                 </graphic></Button>
+             <Button fx:id="exportButton" layoutY="612.0" mnemonicParsing="false" onAction="#exportButtonAction" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #0f1114;" text="Export route" textAlignment="CENTER" textFill="WHITE">
+                 <font>
+                     <Font name="System Bold" size="20.0" />
+                 </font>
+                 <graphic>
+                     <FontIcon iconColor="WHITE" iconSize="20" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-icon-code: fa-file-code-o;" wrappingWidth="45.7142858505249" />
+                 </graphic></Button>
          </children></Pane>
    </left>
 </BorderPane>

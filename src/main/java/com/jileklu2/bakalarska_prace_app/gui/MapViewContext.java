@@ -1,7 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.gui;
 
-import com.jileklu2.bakalarska_prace_app.mapObjects.Marker;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Marker;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 
 import java.util.List;
 

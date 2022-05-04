@@ -1,4 +1,4 @@
-package com.jileklu2.bakalarska_prace_app.mapObjects;
+package com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects;
 
 public class Variable {
 
@@ -8,6 +8,14 @@ public class Variable {
     public Variable(String name, String value) {
         this.name = String.valueOf(name);
         this.value =  String.valueOf(value);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     @Override

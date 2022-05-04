@@ -1,9 +1,10 @@
 package com.jileklu2.bakalarska_prace_app.gui;
 
-import com.jileklu2.bakalarska_prace_app.scriptBuilders.JavascriptBuilder;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Marker;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
-import com.jileklu2.bakalarska_prace_app.mapObjects.RouteStep;
+import com.jileklu2.bakalarska_prace_app.gui.routeHandling.RoutesContext;
+import com.jileklu2.bakalarska_prace_app.builders.scriptBuilders.JavascriptBuilder;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Marker;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
 import javafx.fxml.FXML;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;

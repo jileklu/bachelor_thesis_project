@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.dateIntervalHandling.DateIntervalWindowController">
+   <children>
+      <DatePicker fx:id="fromDatePicker" layoutX="300.0" layoutY="64.0" promptText="dd.mm.yyyy" />
+      <DatePicker fx:id="toDatePicker" layoutX="300.0" layoutY="109.0" promptText="dd.mm.yyyy" />
+      <CheckBox fx:id="mondayCheckBox" layoutX="350.0" layoutY="150.0" mnemonicParsing="false" selected="true" text="Monday" />
+      <CheckBox fx:id="wednesdayCheckBox" layoutX="350.0" layoutY="200.0" mnemonicParsing="false" selected="true" text="Wednesday" />
+      <CheckBox fx:id="thursdayCheckBox" layoutX="350.0" layoutY="225.0" mnemonicParsing="false" selected="true" text="Thursday" />
+      <CheckBox fx:id="fridayCheckBox" layoutX="350.0" layoutY="250.0" mnemonicParsing="false" selected="true" text="Friday" />
+      <CheckBox fx:id="tuesdayCheckBox" layoutX="350.0" layoutY="175.0" mnemonicParsing="false" selected="true" text="Tuesday" />
+      <Button fx:id="okButton" layoutX="169.0" layoutY="348.0" mnemonicParsing="false" onAction="#okButtonAction" text="OK" />
+      <Button fx:id="cancelButton" layoutX="387.0" layoutY="348.0" mnemonicParsing="false" onAction="#cancelButtonAction" text="Cancel" />
+      <CheckBox fx:id="saturdayCheckBox" layoutX="350.0" layoutY="275.0" mnemonicParsing="false" selected="true" text="Saturday" />
+      <CheckBox fx:id="sundayCheckBox" layoutX="350.0" layoutY="300.0" mnemonicParsing="false" selected="true" text="Sunday" />
+      <ComboBox fx:id="fromTimeComboBox" layoutX="94.0" layoutY="64.0" prefWidth="150.0" />
+      <ComboBox fx:id="toTimeComboBox" layoutX="94.0" layoutY="109.0" prefWidth="150.0" />
+      <ComboBox fx:id="intervalComboBox" layoutX="94.0" layoutY="159.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>

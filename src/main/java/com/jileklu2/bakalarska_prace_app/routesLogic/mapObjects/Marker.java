@@ -1,4 +1,4 @@
-package com.jileklu2.bakalarska_prace_app.mapObjects;
+package com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects;
 
 public class Marker {
     private final Coordinates coordinates;

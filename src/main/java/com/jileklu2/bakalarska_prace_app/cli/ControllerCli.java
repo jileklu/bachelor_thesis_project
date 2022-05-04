@@ -3,20 +3,21 @@ package com.jileklu2.bakalarska_prace_app.cli;
 import com.jileklu2.bakalarska_prace_app.cli.arguments.ArgumentsHandlerCli;
 import com.jileklu2.bakalarska_prace_app.cli.route.RouteHandlerCli;
 import com.jileklu2.bakalarska_prace_app.handlers.FileHandler;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
+import java.util.Locale;
+import java.util.Scanner;
 
 import static com.jileklu2.bakalarska_prace_app.cli.arguments.ArgumentType.*;
 
 public class ControllerCli {
-    ArgumentsHandlerCli argumentsHandler;
-    ConsoleMainMenu mainMenu;
-    RouteImportConsoleScreen routeImportScreen;
-    MakeRouteConsoleScreen makeRouteScreen;
-
-    RouteExportConsoleScreen routeExportScreen;
+    private ArgumentsHandlerCli argumentsHandler;
+    private ConsoleMainMenu mainMenu;
+    private RouteImportConsoleScreen routeImportScreen;
+    private MakeRouteConsoleScreen makeRouteScreen;
+    private RouteExportConsoleScreen routeExportScreen;
+    private Scanner scanner;
 
 
     public ControllerCli(String[] args) {
@@ -24,7 +25,8 @@ public class ControllerCli {
         this.mainMenu = new ConsoleMainMenu(this);
         this.makeRouteScreen = new MakeRouteConsoleScreen(this);
         this.routeImportScreen = new RouteImportConsoleScreen(this);
-        this.routeExportScreen = new RouteExportConsoleScreen();
+        this.routeExportScreen = new RouteExportConsoleScreen(this);
+        this.scanner = new Scanner(System.in).useLocale(Locale.US);
     }
 
     public void start() {
@@ -72,4 +74,10 @@ public class ControllerCli {
    public void showMakeRouteExportScreen() {
         routeExportScreen.exportRoute();
    }
+
+   public Scanner getScanner(){return scanner;}
+
+    public void resetScanner(){scanner=new Scanner(System.in).useLocale(Locale.US);}
+
+    public void stop(){scanner.close();}
 }

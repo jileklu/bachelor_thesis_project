@@ -1,9 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.mapObjects;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
@@ -230,9 +228,9 @@ public class RouteTest {
 
     @Test
     public void toStringTest() {
-        String string01 = "{origin:{lat:1.0, lng:1.0},waypoints:[],destination:{lat:3.0, lng:3.0},steps:[]}";
-        String string02 = "{origin:{lat:1.0, lng:1.0},waypoints:[{lat:5.0, lng:5.0}, {lat:6.0, lng:6.0}]," +
-                          "destination:{lat:3.0, lng:3.0},steps:[]}";
+        String string01 = "{origin:{lat:1.0, lng:1.0, ele:0.0},waypoints:[],destination:{lat:3.0, lng:3.0, ele:0.0},steps:[]}";
+        String string02 = "{origin:{lat:1.0, lng:1.0, ele:0.0},waypoints:[{lat:5.0, lng:5.0, ele:0.0}, {lat:6.0, lng:6.0, ele:0.0}]," +
+                          "destination:{lat:3.0, lng:3.0, ele:0.0},steps:[]}";
         Assertions.assertEquals(string01,testRoute01.toString());
         Assertions.assertEquals(string02,testRoute02.toString());
     }

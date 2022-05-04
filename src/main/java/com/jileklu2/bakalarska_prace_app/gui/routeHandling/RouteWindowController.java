@@ -1,8 +1,9 @@
-package com.jileklu2.bakalarska_prace_app.gui;
+package com.jileklu2.bakalarska_prace_app.gui.routeHandling;
 
-import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
-import com.jileklu2.bakalarska_prace_app.routesLogic.RouteInfoFinder;
+import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
+import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -15,7 +16,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.*;
 
-public class RoutePopUpController implements RoutePopUpContext, Initializable {
+public class RouteWindowController implements RouteWindowContext, Initializable {
 
     private RoutesContext routesContext;
 
@@ -62,7 +63,7 @@ public class RoutePopUpController implements RoutePopUpContext, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Route Popup Init");
+        System.out.println("New Route Popup Init");
         orgLatTextField.requestFocus();
         latTextFields = new ArrayList<>();
         lngTextFields = new ArrayList<>();
@@ -89,7 +90,7 @@ public class RoutePopUpController implements RoutePopUpContext, Initializable {
             waypoints.add(waypoint);
         }
         Route newRoute = new Route(origin, destination, waypoints);
-        RouteInfoFinder.findRouteInfo(newRoute, true);
+        routesContext.findRouteInfo(newRoute);
         routesContext.setDefaultRoute(newRoute);
         mapViewContext.showDefaultRoute();
         routeInfoPanelContext.showDefaultRouteInfo();

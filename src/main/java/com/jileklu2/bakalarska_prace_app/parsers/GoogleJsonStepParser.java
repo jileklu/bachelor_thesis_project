@@ -1,6 +1,6 @@
 package com.jileklu2.bakalarska_prace_app.parsers;
 
-import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import org.json.JSONObject;
 
 public class GoogleJsonStepParser {
@@ -16,6 +16,7 @@ public class GoogleJsonStepParser {
 
     public static Coordinates parseOrigin(JSONObject object) {
         JSONObject jsonOrigin = object.getJSONObject("start_location");
+
         return new Coordinates(jsonOrigin.getDouble("lat"), jsonOrigin.getDouble("lng"));
     }
 

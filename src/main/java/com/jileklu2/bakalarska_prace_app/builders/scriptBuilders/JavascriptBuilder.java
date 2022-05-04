@@ -1,4 +1,4 @@
-package com.jileklu2.bakalarska_prace_app.scriptBuilders;
+package com.jileklu2.bakalarska_prace_app.builders.scriptBuilders;
 
 public class JavascriptBuilder {
     public static String createScriptString(String scriptName, Object... args) {

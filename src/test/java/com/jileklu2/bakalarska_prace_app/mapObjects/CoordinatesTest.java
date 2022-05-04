@@ -1,6 +1,6 @@
 package com.jileklu2.bakalarska_prace_app.mapObjects;
 
-import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

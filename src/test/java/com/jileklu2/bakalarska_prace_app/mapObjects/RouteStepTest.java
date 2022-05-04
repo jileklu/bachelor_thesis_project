@@ -1,8 +1,8 @@
 package com.jileklu2.bakalarska_prace_app.mapObjects;
 
-import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.mapObjects.RouteStep;
-import com.jileklu2.bakalarska_prace_app.mapObjects.Variable;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Variable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
@@ -48,11 +48,13 @@ public class RouteStepTest {
     public void jsonConstructorTest(){
         JSONObject jsonOrigin = new JSONObject()
                 .put("lat", "1")
-                .put("lng", "1");
+                .put("lng", "1")
+                .put("ele", "0");
 
         JSONObject jsonDest = new JSONObject()
                 .put("lat", "2")
-                .put("lng", "2");
+                .put("lng", "2")
+                .put("ele", "0");
 
         JSONObject jsonVariable = new JSONObject()
                 .put("test","0");

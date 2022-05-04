@@ -4,9 +4,7 @@ import com.jileklu2.bakalarska_prace_app.handlers.FileHandler;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class RouteImportConsoleScreen {
@@ -23,7 +21,8 @@ public class RouteImportConsoleScreen {
     }
 
     private JSONObject getRouteJson() {
-        Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
+        controller.resetScanner();
+        Scanner scanner = controller.getScanner();
         JSONObject routeJson;
         while(true) {
             try {
@@ -41,9 +40,8 @@ public class RouteImportConsoleScreen {
                 System.out.println("Please enter existing path");
                 scanner.next();
             }
-        }
 
-        scanner.close();
+        }
         return routeJson;
     }
 

@@ -19,6 +19,15 @@ public class FileHandler {
         }
     }
 
+    public static void createGpxFile(String filePath, String content) {
+        try (
+            PrintWriter out = new PrintWriter(new FileWriter(filePath))) {
+            out.write(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static JSONObject readJsonFile(String filePath) throws FileNotFoundException {
         StringBuilder data = new StringBuilder();
         JSONObject json = null;
