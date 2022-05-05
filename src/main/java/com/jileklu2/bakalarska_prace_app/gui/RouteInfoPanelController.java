@@ -12,15 +12,21 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.util.List;
 
 public class RouteInfoPanelController implements RouteInfoPanelContext {
-    RoutesContext routesContext;
+    private final RoutesContext routesContext;
 
-    private ListView<RouteStepListViewWrapper> listView;
+    private final MainContext mainContext;
 
-    public RouteInfoPanelController(RoutesContext routesContext, ListView<RouteStepListViewWrapper> listView) {
+    private final ListView<RouteStepListViewWrapper> listView;
+
+    public RouteInfoPanelController(RoutesContext routesContext,
+                                    MainContext mainContext,
+                                    ListView<RouteStepListViewWrapper> listView) {
         this.routesContext = routesContext;
+        this.mainContext = mainContext;
         this.listView = listView;
         setDoubleClickEvent();
     }
@@ -40,11 +46,14 @@ public class RouteInfoPanelController implements RouteInfoPanelContext {
             @Override
             public void handle(MouseEvent click) {
                 if (click.getClickCount() == 2) {
-                    RouteStepListViewWrapper selectedItem = listView.getSelectionModel().getSelectedItem();
-                    System.out.println(selectedItem.getRouteStep().getOrigin());
+                    RouteStepListViewWrapper selectedRouteStep = listView.getSelectionModel().getSelectedItem();
+                    try {
+                        mainContext.openRouteStepEditWindow(selectedRouteStep.getRouteStep());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
     }
-
 }

@@ -29,6 +29,8 @@ module com.example.bakalarska_prace_app {
     opens com.jileklu2.bakalarska_prace_app.gui.errorHandling to javafx.fxml;
     exports com.jileklu2.bakalarska_prace_app.gui.dateIntervalHandling;
     opens com.jileklu2.bakalarska_prace_app.gui.dateIntervalHandling to javafx.fxml;
+    exports com.jileklu2.bakalarska_prace_app.gui.routeStepHandling;
+    opens com.jileklu2.bakalarska_prace_app.gui.routeStepHandling to javafx.fxml;
 
     requires json;
     requires com.fasterxml.jackson.databind;

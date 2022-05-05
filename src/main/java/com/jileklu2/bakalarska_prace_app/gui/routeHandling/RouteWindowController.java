@@ -25,13 +25,13 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
     private RouteInfoPanelContext routeInfoPanelContext;
 
     @FXML
-    private Button okBtn;
+    private Button okButton;
 
     @FXML
-    private Button cancelBtn;
+    private Button cancelButton;
 
     @FXML
-    private Button waypointBtn;
+    private Button addWaypointButton;
 
     @FXML
     private TextField orgLatTextField;
@@ -54,10 +54,8 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
     private String routeDestLng;
 
     private int waypointCount = 0;
-
     private List<String> waypointsLats;
     private List<String> waypointsLngs;
-
     private List<TextField> latTextFields;
     private List<TextField> lngTextFields;
 
@@ -72,7 +70,7 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
     }
 
     @FXML
-    private void okBtnAction() {
+    private void okButtonAction() {
         if(routeOriginLat == null || routeDestLat == null || routeOriginLng == null || routeDestLng == null)
             //todo
             return;
@@ -82,7 +80,7 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
         LinkedHashSet<Coordinates> waypoints = new LinkedHashSet<>();
         for( int i = 0; i < waypointCount; i++) {
             if( waypointsLats.get(i) == null || waypointsLngs.get(i) == null)
-                //todo
+                //todo missing waypoint text
                 continue;
 
             Coordinates waypoint = new Coordinates(Double.parseDouble(waypointsLats.get(i)),
@@ -94,18 +92,18 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
         routesContext.setDefaultRoute(newRoute);
         mapViewContext.showDefaultRoute();
         routeInfoPanelContext.showDefaultRouteInfo();
-        Stage stage = (Stage) okBtn.getScene().getWindow();
+        Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    private void cancelBtnAction() {
-        Stage stage = (Stage) cancelBtn.getScene().getWindow();
+    private void cancelButtonAction() {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    private void waypointBtnAction() {
+    private void addWaypointButtonAction() {
         int row = waypointCount + 2;
         Text text = new Text("Waypoint " + (waypointCount + 1));
         TextField latTextField = new TextField();
@@ -120,10 +118,8 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
             int index = latTextFields.indexOf(source);
             waypointsLats.set(index, source.getText());
         });
-        latTextField.setPromptText("Lat");
-        latTextField.setPrefHeight(25);
-        latTextField.setPrefWidth(100);
-        latTextField.setAlignment(Pos.CENTER_LEFT);
+
+        textFieldSetUp(latTextField, "Lat");
 
         //LngTextField set up
         lngTextField.setOnKeyTyped(event -> {
@@ -131,21 +127,35 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
             int index = lngTextFields.indexOf(source);
             waypointsLngs.set(index, source.getText());
         });
-        lngTextField.setPromptText("Lng");
-        lngTextField.setPrefHeight(25);
-        lngTextField.setPrefWidth(100);
-        lngTextField.setAlignment(Pos.CENTER_LEFT);
 
+        textFieldSetUp(lngTextField, "Lng");
+
+        addGridPaneRow(row, text, latTextField, lngTextField);
+      /*
         gridPane.addRow(row);
         gridPane.add(text,0,row);
         gridPane.add(latTextField, 1, row);
-        gridPane.add(lngTextField, 2, row);
+        gridPane.add(lngTextField, 2, row);*/
 
         //Waypoint lat and lng added to refer to in the future
         waypointsLats.add(null);
         waypointsLngs.add(null);
 
         waypointCount++;
+    }
+
+    private void textFieldSetUp(TextField textField, String promptText) {
+        textField.setPromptText(promptText);
+        textField.setPrefHeight(25);
+        textField.setPrefWidth(100);
+        textField.setAlignment(Pos.CENTER_LEFT);
+    }
+
+    private void addGridPaneRow(int row, Text text,TextField textFieldL,TextField textFieldR) {
+        gridPane.addRow(row);
+        gridPane.add(text,0,row);
+        gridPane.add(textFieldL, 1, row);
+        gridPane.add(textFieldR, 2, row);
     }
 
     @FXML

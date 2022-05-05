@@ -13,13 +13,13 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="400.0">
                      <children>
-                        <Button fx:id="waypointBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#waypointBtnAction" prefHeight="25.0" prefWidth="120.0" text="Add Waypoint" textAlignment="CENTER" />
+                        <Button fx:id="addWaypointButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addWaypointButtonAction" prefHeight="25.0" prefWidth="120.0" text="Add Waypoint" textAlignment="CENTER" />
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="400.0" spacing="20.0">
                      <children>
-                        <Button fx:id="okBtn" mnemonicParsing="false" onAction="#okBtnAction" prefHeight="25.0" prefWidth="80.0" text="OK" />
-                        <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelBtnAction" prefHeight="25.0" prefWidth="80.0" text="Cancel" />
+                        <Button fx:id="okButton" mnemonicParsing="false" onAction="#okButtonAction" prefHeight="25.0" prefWidth="80.0" text="OK" />
+                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonAction" prefHeight="25.0" prefWidth="80.0" text="Cancel" />
                      </children>
                   </HBox>
                </children>

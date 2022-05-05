@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Locale;
 
 public class RouteStep {
-    private final Coordinates origin;
-    private final Coordinates destination;
+    private Coordinates origin;
+    private Coordinates destination;
     private final Double distance;
     private final Double duration;
     private final int stepNumber;
@@ -113,13 +113,25 @@ public class RouteStep {
         formattedString.append("Duration: \n");
         formattedString.append("\t").append(String.format("%.0f", duration)).append(" sec\n");
         formattedString.append("Average speed: \n");
-        formattedString.append("\t").append(String.format("%.2f", averageSpeed)).append(" km/h");
+        formattedString.append("\t").append(String.format("%.2f", averageSpeed)).append(" km/h\n");
         for(Variable variable : variables) {
             formattedString.append(variable.getName()).append(": \n");
-            formattedString.append("\t").append(variable.getValue());
+            formattedString.append("\t").append(variable.getValue()).append("\n");
         }
 
         return formattedString.toString();
+    }
+
+    public void setOrigin(Coordinates origin) {
+        this.origin = origin;
+    }
+
+    public void setDestination(Coordinates destination) {
+        this.destination = destination;
+    }
+
+    public HashSet<Variable> getVariables() {
+        return variables;
     }
 
     @Override
@@ -216,4 +228,7 @@ public class RouteStep {
         return result;
     }
 
+    public void setVariables(HashSet<Variable> variables) {
+        this.variables = variables;
+    }
 }
