@@ -37,10 +37,6 @@ public class Route {
                 this.waypoints.add(new Coordinates(waypointsJsonArr.getJSONObject(i)));
             }
             this.routeSteps = new ArrayList<>();
-            JSONArray stepsJsonArr = jsonObject.getJSONArray("steps");
-            for(int i = 0; i < stepsJsonArr.length(); i++) {
-                this.routeSteps.add(new RouteStep(stepsJsonArr.getJSONObject(i)));
-            }
         } catch (JSONException e) {
             throw new IllegalArgumentException("Wrong JSON file structure.");
         }

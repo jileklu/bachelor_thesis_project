@@ -50,9 +50,15 @@ public class MapContentController implements MapViewContext{
         Route defaultRoute = routesContext.getDefaultRoute();
         List<RouteStep> routeSteps = defaultRoute.getRouteSteps();
         List<Marker> markers = new ArrayList<>();
-        for(int i = 0; i < (routeSteps.size() > 0 ? routeSteps.size() - 1 : 0); i++) {
-            markers.add(new Marker(routeSteps.get(i).getDestination(),
-                        String.valueOf(routeSteps.get(i).getStepNumber())));
+        markers.add(new Marker(defaultRoute.getOrigin(), "Origin"));
+        for(int i = 0; i < routeSteps.size(); i++) {
+            if( i == routeSteps.size() - 1) {
+                markers.add(new Marker(routeSteps.get(i).getDestination(),"Destination"));
+            } else  {
+                markers.add(new Marker(routeSteps.get(i).getDestination(),
+                    String.valueOf(routeSteps.get(i).getStepNumber())));
+            }
+
         }
         showRoute(defaultRoute);
         showMarkers(markers);
@@ -66,6 +72,7 @@ public class MapContentController implements MapViewContext{
     @Override
     public void showMarkers(List<Marker> markers) {
         webEngine.executeScript(JavascriptBuilder.createScriptString("clearMarkers"));
+
         for(Marker marker : markers){
             showMarker(marker);
         }

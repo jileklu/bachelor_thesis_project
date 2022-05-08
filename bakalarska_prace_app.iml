@@ -54,5 +54,10 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.skyscreamer:jsonassert:1.5.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1" level="project" />
+    <orderEntry type="library" name="jquery2" level="application" />
+    <orderEntry type="library" name="@types/jquery" level="application" />
+    <orderEntry type="library" name="@types/google-maps" level="application" />
+    <orderEntry type="library" name="@types/google-polyline" level="application" />
+    <orderEntry type="library" name="@types/google.maps" level="application" />
   </component>
 </module>

@@ -118,64 +118,34 @@ public class RouteStepEditWindowController implements Initializable, RouteStepEd
     }
 
     private void initTypedEvent(TextField textField) {
-        textField.setOnKeyTyped(event -> {
-            coordinatesChanged = true;
-        });
+        textField.setOnKeyTyped(event -> coordinatesChanged = true);
     }
 
     @FXML
     private void okButtonAction() {
-        changeRouteStepVariables();
-
         if (coordinatesChanged) {
-            changeRouteStepCoordinates();
-
-            routesContext.findRouteInfo(routesContext.getDefaultRoute());
+            routesContext.changeRouteCoordinates(routeStep, getCoordinates());
+            routesContext.findRouteStepInfo(routeStep);
             mapViewContext.showDefaultRoute();
         }
+        changeVariables();
 
         routeInfoPanelContext.showDefaultRouteInfo();
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
-    private void changeRouteStepVariables() {
+    private void changeVariables() {
         HashSet<Variable> newVariables = new HashSet<>();
 
         for(int i = 0; i < variableNames.size(); i++) {
             String name = variableNames.get(i);
-            String value = variableNames.get(i);
+            String value = variableValues.get(i);
 
             newVariables.add(new Variable(name, value));
         }
 
         routeStep.setVariables(newVariables);
-    }
-
-    private void changeRouteStepCoordinates() {
-        Pair<Coordinates, Coordinates> coordinatesPair = getCoordinates();
-
-        Coordinates newOrg = new Coordinates(coordinatesPair.getKey());
-        Coordinates newDest = new Coordinates(coordinatesPair.getValue());
-
-        int routeStepIndex = routesContext.getDefaultRoute().getRouteSteps().indexOf(routeStep);
-
-        routeStep.setOrigin(newOrg);
-        routeStep.setDestination(newDest);
-
-        if (routeStepIndex == routesContext.getDefaultRoute().getRouteSteps().size() - 1 && routeStepIndex == 0) {
-            routesContext.getDefaultRoute().setOrigin(newOrg);
-            routesContext.getDefaultRoute().setDestination(newDest);
-        } else if (routeStepIndex == 0) {
-            routesContext.getDefaultRoute().setOrigin(newOrg);
-            routesContext.getDefaultRoute().getRouteSteps().get(routeStepIndex + 1).setOrigin(newDest);
-        } else if (routeStepIndex == routesContext.getDefaultRoute().getRouteSteps().size() - 1) {
-            routesContext.getDefaultRoute().setDestination(newDest);
-            routesContext.getDefaultRoute().getRouteSteps().get(routeStepIndex - 1).setDestination(newOrg);
-        } else {
-            routesContext.getDefaultRoute().getRouteSteps().get(routeStepIndex + 1).setOrigin(newDest);
-            routesContext.getDefaultRoute().getRouteSteps().get(routeStepIndex - 1).setDestination(newOrg);
-        }
     }
 
     private Pair<Coordinates,Coordinates> getCoordinates() {

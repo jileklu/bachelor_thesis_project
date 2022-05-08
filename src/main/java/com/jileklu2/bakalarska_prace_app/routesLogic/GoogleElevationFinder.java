@@ -12,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Iterator;
+import java.util.List;
 
 public class GoogleElevationFinder {
     public static void findRouteWaypointsElevations(Route route) {
@@ -42,12 +43,39 @@ public class GoogleElevationFinder {
                 it.next().setElevation(getElevationOnIndex(elevations, i));
             }
 
-
+            // todo look at this
             for(int i = route.getWaypoints().size() + 2; i < elevations.length(); i += 2) {
-                route.getRouteSteps().get((int) Math.floor((i-2-route.getWaypoints().size())/2)).getOrigin()
-                    .setElevation((getElevationOnIndex(elevations,i)));
-                route.getRouteSteps().get((int) Math.floor((i-2-route.getWaypoints().size())/2)).getDestination()
-                    .setElevation((getElevationOnIndex(elevations,i + 1)));
+                route.getRouteSteps().get((int) Math.floor((i-2-route.getWaypoints().size())/2))
+                    .getOrigin().setElevation((getElevationOnIndex(elevations,i)));
+                route.getRouteSteps().get((int) Math.floor((i-2-route.getWaypoints().size())/2))
+                    .getDestination().setElevation((getElevationOnIndex(elevations,i + 1)));
+            }
+        }
+    }
+
+    public static void findCoordinatesElevation(List<Coordinates> coordinatesList) {
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(HttpRequestStringBuilder.googleElevationRequest(coordinatesList)))
+            .build();
+
+        String response = String.valueOf(client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenApply(HttpResponse::body)
+            .join());
+
+        JSONObject jsonResponse = new JSONObject(response);
+
+        String status = jsonResponse.getString("status");
+
+        if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name())){
+            GoogleDirectionsStatus errorStatus = GoogleDirectionsStatus.valueOf(status);
+            //RoutingError error = new GoogleElevationError(errorStatus);
+            //ErrorHandler errorHandler = new GoogleElevationErrorHandler((GoogleElevationError) error); todo
+            //errorHandler.handleError();
+        } else {
+            JSONArray elevations = jsonResponse.getJSONArray("results");
+            for(int i = 0; i < elevations.length(); i++) {
+                coordinatesList.get(i).setElevation(getElevationOnIndex(elevations, i));
             }
         }
     }

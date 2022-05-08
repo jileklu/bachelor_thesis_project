@@ -7,7 +7,6 @@ import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -31,9 +30,6 @@ public class HttpRequestStringBuilder {
 
             List<String> waypointsStrings = new ArrayList<>();
             for(Coordinates waypoint : route.getWaypoints()) {
-                if(!optimize)
-                    waypointsStrings.add("via%3A");
-
                 waypointsStrings.add(waypoint.getLat() + "%2C" + waypoint.getLng());
             }
             StringJoiner joiner = new StringJoiner("%7C");
@@ -78,6 +74,25 @@ public class HttpRequestStringBuilder {
         return requestStringBuilder.toString();
     }
 
+    public static String googleElevationRequest(List<Coordinates> coordinatesList) {
+        StringBuilder requestStringBuilder = new StringBuilder();
+
+        requestStringBuilder.append("https://maps.googleapis.com/maps/api/elevation/json?");
+        requestStringBuilder.append("locations=");
+
+        for(int i = 0; i < coordinatesList.size(); i++) {
+            requestStringBuilder.append(coordinatesList.get(i).getLat()).append("%2C");
+            requestStringBuilder.append(coordinatesList.get(i).getLng());
+
+            if( i != coordinatesList.size() - 1)
+                requestStringBuilder.append("%7C");
+        }
+
+        requestStringBuilder.append("&key=" + googleApiKey);
+
+        return requestStringBuilder.toString();
+    }
+
     public static String googleMatrixRequest( List<Coordinates> origins,
                                               List<Coordinates> destinations,
                                               LocalDateTime timeStamp) {
@@ -90,7 +105,7 @@ public class HttpRequestStringBuilder {
             requestStringBuilder.append(origin.getLng()).append("%7C");
         }
 
-        requestStringBuilder.delete(requestStringBuilder.length()-3, requestStringBuilder.length()-1);
+        requestStringBuilder.delete(requestStringBuilder.length()-3, requestStringBuilder.length());
         requestStringBuilder.append("&destinations=");
 
         for(Coordinates destination : destinations) {
@@ -98,7 +113,7 @@ public class HttpRequestStringBuilder {
             requestStringBuilder.append(destination.getLng()).append("%7C");
         }
 
-        requestStringBuilder.delete(requestStringBuilder.length()-3, requestStringBuilder.length()-1);
+        requestStringBuilder.delete(requestStringBuilder.length()-3, requestStringBuilder.length());
         long epochSecond = timeStamp.atZone(ZoneId.of("UTC")).toEpochSecond();
 
         requestStringBuilder.append("&departure_time=").append(epochSecond);

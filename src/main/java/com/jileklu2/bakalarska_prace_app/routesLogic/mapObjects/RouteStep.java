@@ -11,10 +11,10 @@ import java.util.Locale;
 public class RouteStep {
     private Coordinates origin;
     private Coordinates destination;
-    private final Double distance;
-    private final Double duration;
+    private Double distance;
+    private Double duration;
     private final int stepNumber;
-    private final Double averageSpeed;
+    private Double averageSpeed;
 
     private HashSet<Variable> variables;
 
@@ -76,11 +76,9 @@ public class RouteStep {
 
     @Override
     public String toString() {
-        return String.format("{stepNumber:%s,origin:%s,destination:%s,distance:%s,duration:%s,averageSpeed:%s" +
-                ",variables:%s}",
+        return String.format("{stepNumber:%s,origin:%s,destination:%s,distance:%s,duration:%s,averageSpeed:%s}",
             stepNumber, origin, destination, String.format("%.0f", distance),
-            String.format("%.0f", duration), String.format(Locale.US, "%.2f", averageSpeed),
-            variables
+            String.format("%.0f", duration), String.format(Locale.US, "%.2f", averageSpeed)
         );
     }
 
@@ -130,8 +128,28 @@ public class RouteStep {
         this.destination = destination;
     }
 
+    public Double getDistance() {
+        return distance;
+    }
+
+    public Double getAverageSpeed() {
+        return averageSpeed;
+    }
+
     public HashSet<Variable> getVariables() {
         return variables;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public void setDuration(Double duration) {
+        this.duration = duration;
+    }
+
+    public void setAverageSpeed(Double averageSpeed) {
+        this.averageSpeed = averageSpeed;
     }
 
     @Override

@@ -34,4 +34,5 @@ module com.example.bakalarska_prace_app {
 
     requires json;
     requires com.fasterxml.jackson.databind;
+    requires jdk.jsobject;
 }

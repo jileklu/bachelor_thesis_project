@@ -14,6 +14,8 @@ public class CoordinatesTest {
     private Coordinates testCoordinates02;
     private Coordinates testCoordinates03;
     private Coordinates testCoordinates04;
+    private Coordinates testCoordinates05;
+    private Coordinates testCoordinates06;
 
     @BeforeEach
     public void setUp(){
@@ -21,6 +23,8 @@ public class CoordinatesTest {
         testCoordinates02 = new Coordinates(8.0,10.0);
         testCoordinates03 = new Coordinates(5.0,10.0);
         testCoordinates04 = new Coordinates(testCoordinates03);
+        testCoordinates05 = new Coordinates(51.970390, 0.979328);
+        testCoordinates06 = new Coordinates(51.9702667, 0.9794579000000001);
     }
 
     @Test
@@ -94,12 +98,12 @@ public class CoordinatesTest {
 
     @Test
     public void toStringTest() {
-        Assertions.assertEquals("{lat:10.0, lng:8.0}", testCoordinates01.toString());
+        Assertions.assertEquals("{lat:10.0, lng:8.0, ele:0.0}", testCoordinates01.toString());
     }
 
     @Test
     public void toFormattedStringTest(){
-        Assertions.assertEquals("lat: 10.0, lng: 8.0", testCoordinates01.toFormattedString());
+        Assertions.assertEquals("lat: 10.0, lng: 8.0, ele: 0.0", testCoordinates01.toFormattedString());
     }
 
     @Test
@@ -124,5 +128,12 @@ public class CoordinatesTest {
             if(!Objects.equals(e.getMessage(), "Wrong JSON file structure."))
                 Assertions.fail("Wrong exception message.");
         }
+    }
+
+    @Test
+    public void distanceTest() {
+        Assertions.assertEquals(0, Coordinates.distanceBetween(testCoordinates01, testCoordinates01));
+        Assertions.assertEquals(0, Coordinates.distanceBetween(testCoordinates05, testCoordinates05));
+        Assertions.assertEquals(16.345, Coordinates.distanceBetween(testCoordinates05, testCoordinates06));
     }
 }

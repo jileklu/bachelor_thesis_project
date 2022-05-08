@@ -10,10 +10,8 @@ import com.jileklu2.bakalarska_prace_app.gui.fileHandling.FileImportWindowContro
 import com.jileklu2.bakalarska_prace_app.gui.routeHandling.*;
 import com.jileklu2.bakalarska_prace_app.gui.routeStepHandling.RouteStepEditWindowContext;
 import com.jileklu2.bakalarska_prace_app.gui.routeStepHandling.RouteStepEditWindowController;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.wrappers.RouteStepListViewWrapper;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,11 +19,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -66,8 +63,16 @@ public class MainViewController implements Initializable, MainContext {
         routesContext = new RoutesHandler();
         mapViewContext = new MapContentController(webView, routesContext);
         routeInfoPanelContext = new RouteInfoPanelController(routesContext, this, listView);
+        routesContext.setMapViewContext(mapViewContext);
+        routesContext.setRouteInfoPanelContext(routeInfoPanelContext);
+        initWebView();
+    }
+
+    private void initWebView() {
         mapViewContext.loadMap();
         webView.requestFocus();
+        JSObject window = (JSObject) webView.getEngine().executeScript("window");
+        window.setMember("routesContext", routesContext);
     }
 
     @FXML

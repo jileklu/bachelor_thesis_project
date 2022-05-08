@@ -10,16 +10,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import javafx.util.Pair;
 
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import static java.time.DayOfWeek.*;
 
@@ -88,15 +85,15 @@ public class DateIntervalWindowController implements DateIntervalWindowContext, 
     private void fromDatePickerLimitation() {
         final Callback<DatePicker, DateCell> limits = new Callback<DatePicker, DateCell>() {
             @Override
-            public DateCell call(final DatePicker datePicker) {
+            public DateCell call(DatePicker datePicker) {
                 return new DateCell() {
                     @Override
                     public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (item.isBefore(LocalDate.now().minusYears(2))) {
+                        if (item.isAfter(LocalDate.now().plusYears(2))) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
-                        }else if (item.isAfter(LocalDate.now())) {
+                        }else if (item.isBefore(LocalDate.now())) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
                         }
@@ -110,18 +107,19 @@ public class DateIntervalWindowController implements DateIntervalWindowContext, 
     private void toDatePickerLimitation() {
         final Callback<DatePicker, DateCell> limits = new Callback<DatePicker, DateCell>() {
             @Override
-            public DateCell call(final DatePicker datePicker) {
+            public DateCell call(DatePicker datePicker) {
                 return new DateCell() {
                     @Override
                     public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (item.isBefore(LocalDate.now().minusYears(2))) {
+                        if (item.isAfter(LocalDate.now().plusYears(2))) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
-                        }else if (item.isAfter(LocalDate.now())) {
+                        }else if (item.isBefore(LocalDate.now())) {
                             setDisable(true);
                             setStyle("-fx-background-color: #ffc0cb;");
-                        }else if(item.isBefore(
+                        }else if(item.isBefore(fromDatePicker.getValue() == null ?
+                            LocalDate.now().plusDays(1) :
                             fromDatePicker.getValue().plusDays(1))
                         ) {
                             setDisable(true);
@@ -179,11 +177,12 @@ public class DateIntervalWindowController implements DateIntervalWindowContext, 
 
             HashSet <LocalDateTime> selectedTimeStamps = DateTimeHandler.combineTimesDates(selectedDates, relevantTimes);
 
-            checkTotalTimeStampsNumber(selectedTimeStamps);
+            checkTimeStamps(selectedTimeStamps);
 
             Route newRoute = new Route(routesContext.getDefaultRoute());
             routesContext.setTimeStamps(selectedTimeStamps);
             routesContext.findRouteInfo(newRoute);
+            routesContext.setDefaultRoute(newRoute);
             routeInfoPanelContext.showDefaultRouteInfo();
             mapViewContext.showDefaultRoute();
 
@@ -195,9 +194,14 @@ public class DateIntervalWindowController implements DateIntervalWindowContext, 
         }
     }
 
-    private void checkTotalTimeStampsNumber(HashSet<LocalDateTime> timeStamps) throws IllegalStateException {
+    private void checkTimeStamps(HashSet<LocalDateTime> timeStamps) throws IllegalStateException {
         if(timeStamps.size() > 60)
             throw new IllegalStateException("Too many time stamps to process.");
+
+        for (LocalDateTime timeStamp : timeStamps) {
+            if(timeStamp.isBefore(LocalDateTime.now()))
+                throw new IllegalArgumentException("Dates must be after current time.");
+        }
     }
 
     private void checkSelectedDaysValidity(HashSet<DayOfWeek> selectedDays) throws IllegalStateException {
@@ -219,6 +223,11 @@ public class DateIntervalWindowController implements DateIntervalWindowContext, 
 
         if(toTimeComboBox.getValue() == null || fromTimeComboBox.getValue() == null)
             throw new IllegalStateException("Time was not selected.");
+
+        if(fromDatePicker.getValue().isAfter(toDatePicker.getValue()) ||
+            fromDatePicker.getValue().isEqual(toDatePicker.getValue()) ) {
+            throw new IllegalStateException("toDate < fromDate.");
+        }
     }
 
     @FXML

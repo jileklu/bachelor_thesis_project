@@ -3,6 +3,8 @@ package com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 public class Coordinates {
     private Double lat;
     private Double lng;
@@ -150,5 +152,36 @@ public class Coordinates {
         return Double.compare(lat, other.lat) == 0 &&
             Double.compare(lng, other.lng) == 0 &&
             Double.compare(elevation, other.elevation) == 0;
+    }
+
+    public boolean isWithinDistance(Coordinates other, Double distance) {
+        return distanceBetween(this, other) <= distance;
+    }
+
+    public boolean isSame(Coordinates other) {
+        return isWithinDistance(other, 3.0);
+    }
+
+    public static Double distanceBetween(Coordinates start, Coordinates target) {
+        //https://www.movable-type.co.uk/scripts/latlong.html
+
+        double toRads = Math.PI/180;
+
+        double r = 6371e3; // Earth radius in meters
+        double startPhi = start.lat * toRads;
+        double targetPhi = target.lat * toRads;
+
+        double diffPhi = (target.lat - start.lat) * toRads;
+        double diffLambda = (target.lng - start.lng) * toRads;
+
+        double a = Math.sin(diffPhi / 2) * Math.sin(diffPhi / 2) +
+                   Math.cos(startPhi) * Math.cos(targetPhi) *
+                   Math.sin(diffLambda / 2) * Math.sin(diffLambda / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        Double dist = Double.valueOf(String.format(Locale.US,"%.3f",r * c)); // in meters, rounded to 3 decimal places to account for error
+
+        return dist;
     }
 }
