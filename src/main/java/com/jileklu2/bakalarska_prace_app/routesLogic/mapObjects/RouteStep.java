@@ -13,7 +13,7 @@ public class RouteStep {
     private Coordinates destination;
     private Double distance;
     private Double duration;
-    private final int stepNumber;
+    private int stepNumber;
     private Double averageSpeed;
 
     private HashSet<Variable> variables;
@@ -50,6 +50,10 @@ public class RouteStep {
             throw new IllegalArgumentException("Wrong JSON file structure.");
         }
 
+    }
+
+    public void setStepNumber(int stepNumber) {
+        this.stepNumber = stepNumber;
     }
 
     public int getStepNumber() {

@@ -7,11 +7,13 @@ import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
 
 public class HttpRequestStringBuilder {
     private static final String googleApiKey = "AIzaSyBwJIjpDQrNDJG0Z-DFtb7hc9M1eaZAmP4";
+    private static final String hereApiKey = "aU1GP1NBOpOFOOGnicr0IHXXA8iAoK18spAb2krayhM";
 
     public static String googleDirectionsRequest(Route route, Boolean optimize) {
         StringBuilder requestStringBuilder = new StringBuilder();
@@ -118,6 +120,34 @@ public class HttpRequestStringBuilder {
 
         requestStringBuilder.append("&departure_time=").append(epochSecond);
         requestStringBuilder.append("&key=" + googleApiKey);
+
+        return requestStringBuilder.toString();
+    }
+
+    public static String hereWaypointsOptimizationRequest(Route route) {
+        StringBuilder requestStringBuilder = new StringBuilder();
+        requestStringBuilder.append("https://wse.ls.hereapi.com/2/findsequence.json?");
+        requestStringBuilder.append("apiKey=");
+        requestStringBuilder.append(hereApiKey);
+        requestStringBuilder.append("&start=origin;");
+        requestStringBuilder.append(route.getOrigin().getLat()).append(",");
+        requestStringBuilder.append(route.getOrigin().getLng());
+
+        Iterator<Coordinates> it = route.getWaypoints().iterator();
+        for(int i = 0; i < route.getWaypoints().size(); i++) {
+            requestStringBuilder.append("&destination").append(i+1).append("=").append(i).append(";");
+            Coordinates waypoint = it.next();
+            requestStringBuilder.append(waypoint.getLat()).append(",").append(waypoint.getLng());
+        }
+
+
+        requestStringBuilder.append("&end=destination;");
+        requestStringBuilder.append(route.getDestination().getLat()).append(",");
+        requestStringBuilder.append(route.getDestination().getLng());
+        requestStringBuilder.append("&improveFor=distance");
+        requestStringBuilder.append("&departure=now");
+        requestStringBuilder.append("&mode=fastest;car;traffic:enabled;");
+
 
         return requestStringBuilder.toString();
     }

@@ -17,7 +17,13 @@ public class Route {
         this.origin = new Coordinates(origin);
         this.destination = new Coordinates(destination);
         this.routeSteps = new ArrayList<>();
-        this.waypoints = waypoints.length > 0 ? new LinkedHashSet<>(waypoints[0]) : new LinkedHashSet<>();
+
+        if(waypoints.length == 0 )
+            this.waypoints = new LinkedHashSet<>();
+        else if(waypoints[0].size() > 98)
+            throw new IllegalArgumentException("Too many waypoints");
+        else
+            this.waypoints = new LinkedHashSet<>(waypoints[0]);
     }
 
     public Route(Route another) {
@@ -33,10 +39,15 @@ public class Route {
             this.destination = new Coordinates(jsonObject.getJSONObject("destination"));
             this.waypoints = new LinkedHashSet<>();
             JSONArray waypointsJsonArr = jsonObject.getJSONArray("waypoints");
+
+            if(waypointsJsonArr.length() > 98)
+                throw new IllegalArgumentException("Too many waypoints");
+
             for(int i = 0; i < waypointsJsonArr.length(); i++) {
                 this.waypoints.add(new Coordinates(waypointsJsonArr.getJSONObject(i)));
             }
             this.routeSteps = new ArrayList<>();
+
         } catch (JSONException e) {
             throw new IllegalArgumentException("Wrong JSON file structure.");
         }
@@ -110,6 +121,14 @@ public class Route {
         this.routeSteps = new ArrayList<>(routeSteps);
     }
 
+    public void addRouteSteps(List<RouteStep> routeSteps) {
+        this.routeSteps.addAll(routeSteps);
+    }
+
+    public void addRouteStep(RouteStep routeStep) {
+        this.routeSteps.add(routeStep);
+    }
+
     /**
      * Chains two routes together by following rules:
      *         this Route := A
@@ -152,23 +171,25 @@ public class Route {
     public Route chainWithRoute(Route anotherRoute) {
         Route resultingRoute;
 
-        if (this.destination.equals(anotherRoute.getOrigin())) {
+        if (this.destination.isSame(anotherRoute.getOrigin())) {
             resultingRoute = new Route(this);
             resultingRoute.setDestination(anotherRoute.getDestination());
             resultingRoute.addWaypoint(this.destination);
             resultingRoute.addWaypoints(anotherRoute.getWaypoints());
-        } else if (this.origin.equals(anotherRoute.getDestination())) {
+            resultingRoute.setRouteSteps(this.routeSteps);
+            resultingRoute.addRouteSteps(anotherRoute.getRouteSteps());
+        } else if (this.origin.isSame(anotherRoute.getDestination())) {
             resultingRoute = new Route(anotherRoute);
             resultingRoute.setDestination(this.destination);
             resultingRoute.addWaypoint(this.origin);
             resultingRoute.addWaypoints(this.waypoints);
-        } else if (this.origin.equals(anotherRoute.getOrigin())) {
+        } else if (this.origin.isSame(anotherRoute.getOrigin())) {
             resultingRoute = new Route(this);
             resultingRoute.setOrigin(this.destination);
             resultingRoute.setDestination(anotherRoute.getDestination());
             resultingRoute.addWaypoint(this.origin);
             resultingRoute.addWaypoints(anotherRoute.getWaypoints());
-        } else if (this.destination.equals(anotherRoute.getDestination())) {
+        } else if (this.destination.isSame(anotherRoute.getDestination())) {
             resultingRoute = new Route(this);
             resultingRoute.setDestination(anotherRoute.getOrigin());
             resultingRoute.addWaypoint(this.destination);

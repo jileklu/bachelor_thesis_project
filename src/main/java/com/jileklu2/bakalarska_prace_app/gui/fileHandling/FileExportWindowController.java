@@ -1,6 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.gui.fileHandling;
 
 import com.jileklu2.bakalarska_prace_app.builders.GpxBuilder;
+import com.jileklu2.bakalarska_prace_app.cli.route.RouteHandlerCli;
 import com.jileklu2.bakalarska_prace_app.gui.routeHandling.RoutesContext;
 import com.jileklu2.bakalarska_prace_app.handlers.FileHandler;
 import javafx.fxml.FXML;
@@ -11,6 +12,8 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static com.jileklu2.bakalarska_prace_app.cli.arguments.ArgumentType.OUT_FILE;
 
 public class FileExportWindowController implements FileExportWindowContext, Initializable {
     @FXML
@@ -48,11 +51,16 @@ public class FileExportWindowController implements FileExportWindowContext, Init
                 throw new IllegalArgumentException("Please enter the path in the correct format.");
             }
 
+            FileHandler.createJsonFile(
+                String.valueOf(path),
+                routesContext.getDefaultRoute().toJSON()
+            );
+/*
             FileHandler.createGpxFile(
                 String.valueOf(path),
                 GpxBuilder.buildRouteGpx(routesContext.getDefaultRoute())
             );
-
+*/
             Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();
         }catch (NullPointerException | IllegalArgumentException e) {

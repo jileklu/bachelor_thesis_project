@@ -2,12 +2,20 @@ package com.jileklu2.bakalarska_prace_app.gui;
 
 import com.jileklu2.bakalarska_prace_app.gui.routeHandling.RoutesContext;
 import com.jileklu2.bakalarska_prace_app.builders.scriptBuilders.JavascriptBuilder;
+import com.jileklu2.bakalarska_prace_app.routesLogic.RouteSplitter;
+import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Marker;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -29,7 +37,9 @@ public class MapContentController implements MapViewContext{
 
     @Override
     public void showRoute(Route route) {
-        webEngine.executeScript(JavascriptBuilder.createScriptString("viewRoute", route));
+        List<Route> helpingRoutes = RouteSplitter.splitRoute(route);
+
+        webEngine.executeScript(JavascriptBuilder.createScriptString("viewRoutes", helpingRoutes));
     }
 
     @Override

@@ -20,7 +20,42 @@ import java.net.http.HttpResponse;
 import java.util.*;
 
 public class GoogleRouteStepFinder {
+    private static int totalStepsNum = 0;
     public static void findRouteSteps(Route route, Boolean optimize) {
+        List<Route> helpingRoutes = RouteSplitter.splitRoute(route);
+
+        for(Route helpingRoute : helpingRoutes) {
+            findRouteStepsInfo(helpingRoute, optimize);
+            totalStepsNum++;
+        }
+
+        totalStepsNum = 0;
+
+        for(int i = 0; i < helpingRoutes.size(); i++) {
+            if(i == 0)
+                route.setOrigin(helpingRoutes.get(i).getOrigin());
+
+            route.addRouteSteps(helpingRoutes.get(i).getRouteSteps());
+
+            if(i + 1 != helpingRoutes.size()) {
+                Route helpingRoute = new Route(helpingRoutes.get(i).getDestination(),
+                                               helpingRoutes.get(i+1).getOrigin()
+                );
+                int tmpStepNumber = helpingRoutes.get(i+1).getRouteSteps().get(0).getStepNumber() - 1;
+
+                findRouteStepsInfo(helpingRoute, optimize);
+                helpingRoute.getRouteSteps().get(0).setStepNumber(tmpStepNumber);
+                route.addRouteStep(helpingRoute.getRouteSteps().get(0));
+            }
+
+            if(i == helpingRoutes.size() - 1)
+                route.setDestination(helpingRoutes.get(i).getDestination());
+        }
+
+
+    }
+
+    private static void findRouteStepsInfo(Route route, Boolean optimize) {
         JSONObject response = getRouteResponse(route, optimize);
         String status = response.getString("status");
 
@@ -33,8 +68,6 @@ public class GoogleRouteStepFinder {
             LinkedHashSet<Coordinates> newWaypointsOrder = new LinkedHashSet<>();
             List<RouteStep> newRouteSteps = new ArrayList<>();
             JSONArray routes = response.getJSONArray("routes");
-
-            int totalStepsNum = 0;
 
             for(int i = 0; i < routes.length(); i++) {
                 JSONObject jsonRoute = routes.getJSONObject(i);
@@ -79,10 +112,6 @@ public class GoogleRouteStepFinder {
                 route.setWaypoints(newWaypointsOrder);
             }
         }
-    }
-
-    public static void findRouteStepDetails(RouteStep routeStep, boolean optimize) {
-
     }
 
     private static JSONObject getRouteResponse(Route route, boolean optimize) {

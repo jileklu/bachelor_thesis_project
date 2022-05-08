@@ -16,16 +16,11 @@ import java.util.List;
 
 public class GoogleElevationFinder {
     public static void findRouteWaypointsElevations(Route route) {
-        HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(HttpRequestStringBuilder.googleElevationRequest(route)))
             .build();
 
-        String response = String.valueOf(client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-            .thenApply(HttpResponse::body)
-            .join());
-
-        JSONObject jsonResponse = new JSONObject(response);
+        JSONObject jsonResponse = getElevationResponse(request);
 
         String status = jsonResponse.getString("status");
 
@@ -43,7 +38,6 @@ public class GoogleElevationFinder {
                 it.next().setElevation(getElevationOnIndex(elevations, i));
             }
 
-            // todo look at this
             for(int i = route.getWaypoints().size() + 2; i < elevations.length(); i += 2) {
                 route.getRouteSteps().get((int) Math.floor((i-2-route.getWaypoints().size())/2))
                     .getOrigin().setElevation((getElevationOnIndex(elevations,i)));
@@ -54,16 +48,12 @@ public class GoogleElevationFinder {
     }
 
     public static void findCoordinatesElevation(List<Coordinates> coordinatesList) {
-        HttpClient client = HttpClient.newBuilder().build();
+
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(HttpRequestStringBuilder.googleElevationRequest(coordinatesList)))
             .build();
 
-        String response = String.valueOf(client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-            .thenApply(HttpResponse::body)
-            .join());
-
-        JSONObject jsonResponse = new JSONObject(response);
+        JSONObject jsonResponse = getElevationResponse(request);
 
         String status = jsonResponse.getString("status");
 
@@ -78,6 +68,16 @@ public class GoogleElevationFinder {
                 coordinatesList.get(i).setElevation(getElevationOnIndex(elevations, i));
             }
         }
+    }
+
+    private static JSONObject getElevationResponse(HttpRequest request) {
+        HttpClient client = HttpClient.newBuilder().build();
+
+        String response = String.valueOf(client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenApply(HttpResponse::body)
+            .join());
+
+        return new JSONObject(response);
     }
 
     private static Double getElevationOnIndex(JSONArray elevations, int i) {

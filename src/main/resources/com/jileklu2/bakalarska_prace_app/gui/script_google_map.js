@@ -8,6 +8,7 @@ let polylines = [];
 let snappedCoordinates = [];
 let apiKey = 'AIzaSyBwJIjpDQrNDJG0Z-DFtb7hc9M1eaZAmP4';
 
+// Initializes map window
 function initMap() {
     directionsService = new google.maps.DirectionsService();
     const prague = { lat: 50.073658, lng: 14.418540 };
@@ -172,7 +173,7 @@ function addRoute(origin, waypoints, destination, directionsRenderer) {
     }
 }
 
-// creates new route renderer
+// Creates new route renderer
 function addRenderer() {
     var newRenderer = new google.maps.DirectionsRenderer({
         suppressMarkers : true,
@@ -184,7 +185,7 @@ function addRenderer() {
     return newRenderer;
 }
 
-// deletes all currently used renderers
+// Deletes all currently used renderers
 function clearRenderers() {
     directionsRenderers.forEach( function(directionRenderer) {
         clearRenderer(directionRenderer);
@@ -193,13 +194,13 @@ function clearRenderers() {
     directionsRenderers = [];
 }
 
-// deletes given renderer
+// Deletes given renderer
 function clearRenderer(directionsRenderer) {
     directionsRenderer.setMap(null);
     directionsRenderer = null;
 }
 
-// shows given route
+// Shows given route
 function viewRoute(route) {
     initMap();
     clearRenderers();
@@ -209,7 +210,7 @@ function viewRoute(route) {
     addRoute(route.origin, route.waypoints, route.destination, directionsRenderer);
 }
 
-//show given routes
+// Show given routes
 function viewRoutes(routes) {
     initMap();
     clearRenderers();
