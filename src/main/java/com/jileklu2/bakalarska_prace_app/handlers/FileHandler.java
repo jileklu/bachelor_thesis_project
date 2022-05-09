@@ -1,5 +1,6 @@
 package com.jileklu2.bakalarska_prace_app.handlers;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -28,7 +29,7 @@ public class FileHandler {
         }
     }
 
-    public static JSONObject readJsonFile(String filePath) throws FileNotFoundException {
+    public static JSONObject readJsonFile(String filePath) throws FileNotFoundException, JSONException {
         StringBuilder data = new StringBuilder();
         JSONObject json = null;
 

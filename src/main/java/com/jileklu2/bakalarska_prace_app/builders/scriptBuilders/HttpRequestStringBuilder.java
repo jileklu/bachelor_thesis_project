@@ -1,5 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.builders.scriptBuilders;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyCoordinatesListException;
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
@@ -16,6 +18,9 @@ public class HttpRequestStringBuilder {
     private static final String hereApiKey = "aU1GP1NBOpOFOOGnicr0IHXXA8iAoK18spAb2krayhM";
 
     public static String googleDirectionsRequest(Route route, Boolean optimize) {
+        if(route == null || optimize == null)
+            throw new NullPointerException("Arguments can't be null.");
+
         StringBuilder requestStringBuilder = new StringBuilder();
         requestStringBuilder.append("https://maps.googleapis.com/maps/api/directions/json?");
         requestStringBuilder.append("origin=");
@@ -46,6 +51,9 @@ public class HttpRequestStringBuilder {
     }
 
     public static String googleElevationRequest(Route route) {
+        if(route == null)
+            throw new NullPointerException("Arguments can't be null.");
+
         StringBuilder requestStringBuilder = new StringBuilder();
 
         requestStringBuilder.append("https://maps.googleapis.com/maps/api/elevation/json?");
@@ -76,7 +84,14 @@ public class HttpRequestStringBuilder {
         return requestStringBuilder.toString();
     }
 
-    public static String googleElevationRequest(List<Coordinates> coordinatesList) {
+    public static String googleElevationRequest(List<Coordinates> coordinatesList)
+        throws EmptyCoordinatesListException {
+        if(coordinatesList == null)
+            throw new NullPointerException("Arguments can't be null.");
+
+        if(coordinatesList.isEmpty())
+            throw new EmptyCoordinatesListException("Request can't be created with an empty list.");
+
         StringBuilder requestStringBuilder = new StringBuilder();
 
         requestStringBuilder.append("https://maps.googleapis.com/maps/api/elevation/json?");
@@ -97,7 +112,17 @@ public class HttpRequestStringBuilder {
 
     public static String googleMatrixRequest( List<Coordinates> origins,
                                               List<Coordinates> destinations,
-                                              LocalDateTime timeStamp) {
+                                              LocalDateTime timeStamp)
+        throws EmptyDestinationsListException {
+        if(origins == null || destinations == null || timeStamp == null)
+            throw new NullPointerException("Arguments can't be null.");
+
+        if(origins.isEmpty())
+            throw new EmptyDestinationsListException("Matrix request can't be created with an empty origins list.");
+
+        if(destinations.isEmpty())
+            throw new EmptyDestinationsListException("Matrix request can't be created with an empty directions list.");
+
         StringBuilder requestStringBuilder = new StringBuilder();
         requestStringBuilder.append("https://maps.googleapis.com/maps/api/distancematrix/json?");
         requestStringBuilder.append("origins=");
@@ -125,6 +150,9 @@ public class HttpRequestStringBuilder {
     }
 
     public static String hereWaypointsOptimizationRequest(Route route) {
+        if(route == null)
+            throw new NullPointerException("Arguments can't be null.");
+
         StringBuilder requestStringBuilder = new StringBuilder();
         requestStringBuilder.append("https://wse.ls.hereapi.com/2/findsequence.json?");
         requestStringBuilder.append("apiKey=");

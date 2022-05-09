@@ -1,5 +1,15 @@
 package com.jileklu2.bakalarska_prace_app.gui.routeHandling;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.AverageSpeedOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.gui.MainContext;
 import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
 import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
@@ -17,23 +27,48 @@ public interface RoutesContext {
 
     void setTimeStamps(HashSet<LocalDateTime> timeStamps);
 
-    Route getDefaultRoute();
+    Route getDefaultRoute() throws DefaultRouteNotSetException;
 
-    void findRouteInfo(Route route);
+    void findRouteInfo(Route route) throws IdenticalCoordinatesException, DistanceOutOfBoundsException,
+                                           EmptyTimeStampsSetException, CoordinatesOutOfBoundsException,
+                                           EmptyDestinationsListException, DurationOutOfBoundsException;
 
-    void loadJsonRoute(String path) throws FileNotFoundException;
+    void loadJsonRoute(String path) throws FileNotFoundException, IdenticalCoordinatesException,
+                                           CoordinatesOutOfBoundsException, DistanceOutOfBoundsException,
+                                           EmptyTimeStampsSetException, EmptyDestinationsListException,
+                                           DurationOutOfBoundsException;
 
-    int getDefaultRouteStepIndex(RouteStep routeStep);
+    int getDefaultRouteStepIndex(RouteStep routeStep) throws DefaultRouteNotSetException;
 
-    int getDefaultRouteStepsNum();
+    int getDefaultRouteStepsNum() throws DefaultRouteNotSetException;
 
-    RouteStep getDefaultRouteStepOnIndex(int index);
+    RouteStep getDefaultRouteStepOnIndex(int index) throws DefaultRouteNotSetException;
 
-    void changeRouteCoordinates(RouteStep routeStep, Pair<Coordinates, Coordinates> coordinatesPair);
+    void changeRouteCoordinates(RouteStep routeStep, Pair<Coordinates, Coordinates> coordinatesPair)
+        throws CoordinatesOutOfBoundsException, DefaultRouteNotSetException;
 
-    void findRouteStepInfo(RouteStep routeStep);
+    void findRouteStepInfo(RouteStep routeStep) throws IdenticalCoordinatesException, DistanceOutOfBoundsException,
+                                                       DurationOutOfBoundsException, AverageSpeedOutOfBoundsException,
+                                                       EmptyTimeStampsSetException, CoordinatesOutOfBoundsException,
+                                                       EmptyDestinationsListException, DefaultRouteNotSetException;
 
     void setMapViewContext(MapViewContext mapViewContext);
 
     void setRouteInfoPanelContext(RouteInfoPanelContext routeInfoPanelContext);
+
+    void collectNewWaypoint(String waypoint) throws CoordinatesOutOfBoundsException, IdenticalCoordinatesException,
+                                                    DistanceOutOfBoundsException, EmptyTimeStampsSetException,
+                                                    EmptyDestinationsListException, DurationOutOfBoundsException,
+                                                    DefaultRouteNotSetException, BlankScriptNameStringException;
+
+    void collectChangedMarker(String marker) throws CoordinatesOutOfBoundsException, IdenticalCoordinatesException,
+                                                    DistanceOutOfBoundsException, AverageSpeedOutOfBoundsException,
+                                                    DurationOutOfBoundsException, EmptyTimeStampsSetException,
+                                                    EmptyDestinationsListException, DefaultRouteNotSetException,
+                                                    BlankScriptNameStringException;
+
+    void collectCoordinates(String coordinates) throws CoordinatesOutOfBoundsException, IdenticalCoordinatesException,
+                                                       DistanceOutOfBoundsException, EmptyTimeStampsSetException,
+                                                       EmptyDestinationsListException, DurationOutOfBoundsException,
+                                                       DefaultRouteNotSetException, BlankScriptNameStringException;
 }

@@ -1,0 +1,15 @@
+.grid:focused {
+    -fx-background-color: #0f1114;
+}
+
+.grid {
+    -fx-background-color: #0f1114;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #0f1114;
+}
+
+.scroll-pane {
+    -fx-background-color: #0f1114;
+}

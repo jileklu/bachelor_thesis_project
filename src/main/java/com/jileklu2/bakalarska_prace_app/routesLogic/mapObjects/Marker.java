@@ -5,6 +5,9 @@ public class Marker {
     private final String title;
 
     public Marker(Coordinates coordinates, String title) {
+        if(coordinates == null || title == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.coordinates = coordinates;
         this.title = title;
     }

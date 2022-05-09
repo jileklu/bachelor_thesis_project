@@ -1,5 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +15,12 @@ public class Route {
     private LinkedHashSet<Coordinates> waypoints;
 
     @SafeVarargs
-    public Route(Coordinates origin, Coordinates destination, Collection<Coordinates>... waypoints) {
+    public Route(Coordinates origin, Coordinates destination, Collection<Coordinates>... waypoints)
+        throws IdenticalCoordinatesException {
+        if(origin == null || destination == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        checkArgumentCoordinates(origin, destination);
         this.origin = new Coordinates(origin);
         this.destination = new Coordinates(destination);
         this.routeSteps = new ArrayList<>();
@@ -27,16 +34,27 @@ public class Route {
     }
 
     public Route(Route another) {
+        if(another == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.origin = new Coordinates(another.getOrigin());
         this.destination = new Coordinates(another.getDestination());
         this.routeSteps = new ArrayList<>(another.getRouteSteps());
         this.waypoints = new LinkedHashSet<>(another.getWaypoints());
     }
 
-    public Route(JSONObject jsonObject) {
+    public Route(JSONObject jsonObject) throws CoordinatesOutOfBoundsException, IdenticalCoordinatesException {
+        if(jsonObject == null)
+            throw new NullPointerException("Arguments can't be null");
+
         try{
-            this.origin = new Coordinates(jsonObject.getJSONObject("origin"));
-            this.destination = new Coordinates(jsonObject.getJSONObject("destination"));
+            Coordinates origin = new Coordinates(jsonObject.getJSONObject("origin"));
+            Coordinates destination = new Coordinates(jsonObject.getJSONObject("destination"));
+            checkArgumentCoordinates(origin, destination);
+            this.origin = origin;
+            this.destination = destination;
+
+
             this.waypoints = new LinkedHashSet<>();
             JSONArray waypointsJsonArr = jsonObject.getJSONArray("waypoints");
 
@@ -49,8 +67,94 @@ public class Route {
             this.routeSteps = new ArrayList<>();
 
         } catch (JSONException e) {
-            throw new IllegalArgumentException("Wrong JSON file structure.");
+            throw new JSONException("Wrong JSON file structure.");
         }
+    }
+
+    private void checkArgumentCoordinates(Coordinates origin, Coordinates destination) throws IdenticalCoordinatesException {
+        if(origin.equals(destination))
+            throw new IdenticalCoordinatesException("Origin and destination can't be equal.");
+    }
+
+    public Coordinates getOrigin() {
+        return origin;
+    }
+
+    public Coordinates getDestination() {
+        return destination;
+    }
+
+    public LinkedHashSet<Coordinates> getWaypoints() {
+        return waypoints;
+    }
+
+    public List<RouteStep> getRouteSteps() {
+        return routeSteps;
+    }
+
+    public Double getDuration() {
+        Double duration = 0.0;
+        for(RouteStep routeStep : routeSteps) {
+            duration += routeStep.getDuration();
+        }
+
+        return duration;
+    }
+
+    public void setOrigin(Coordinates origin) {
+        if(origin == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.origin = origin;
+    }
+
+    public void setDestination(Coordinates destination) {
+        if(destination == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.destination = destination;
+    }
+
+    public void setWaypoints(Collection<Coordinates> waypoints) {
+        if(waypoints == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.waypoints = new LinkedHashSet<>(waypoints);
+    }
+
+    public void setRouteSteps(List<RouteStep> routeSteps) {
+        if(routeSteps == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.routeSteps = new ArrayList<>(routeSteps);
+    }
+
+    public void addWaypoint(Coordinates waypoint) {
+        if(waypoint == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.waypoints.add(new Coordinates(waypoint));
+    }
+
+    public void addWaypoints(Collection<Coordinates> waypoints) {
+        if(waypoints == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.waypoints.addAll(new LinkedHashSet<>(waypoints));
+    }
+
+    public void addRouteSteps(List<RouteStep> routeSteps) {
+        if(routeSteps == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.routeSteps.addAll(routeSteps);
+    }
+
+    public void addRouteStep(RouteStep routeStep) {
+        if(routeStep == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.routeSteps.add(routeStep);
     }
 
     @Override
@@ -70,138 +174,6 @@ public class Route {
         }
         gpxStringBuilder.append("</trk>");
         return gpxStringBuilder.toString();
-    }
-
-    public Coordinates getOrigin() {
-        return origin;
-    }
-
-    public Coordinates getDestination() {
-        return destination;
-    }
-
-    public LinkedHashSet<Coordinates> getWaypoints() {
-        return waypoints;
-    }
-
-    public void setOrigin(Coordinates origin) {
-        this.origin = origin;
-    }
-
-    public void setDestination(Coordinates destination) {
-        this.destination = destination;
-    }
-
-    public void setWaypoints(Collection<Coordinates> waypoints) {
-        this.waypoints = new LinkedHashSet<>(waypoints);
-    }
-
-    public void addWaypoint(Coordinates waypoint) {
-        this.waypoints.add(new Coordinates(waypoint));
-    }
-
-    public void addWaypoints(Collection<Coordinates> waypoints) {
-        this.waypoints.addAll(new LinkedHashSet<>(waypoints));
-    }
-
-    public Double getDuration() {
-        Double duration = 0.0;
-        for(RouteStep routeStep : routeSteps) {
-            duration += routeStep.getDuration();
-        }
-
-        return duration;
-    }
-
-    public List<RouteStep> getRouteSteps() {
-        return routeSteps;
-    }
-
-    public void setRouteSteps(List<RouteStep> routeSteps) {
-        this.routeSteps = new ArrayList<>(routeSteps);
-    }
-
-    public void addRouteSteps(List<RouteStep> routeSteps) {
-        this.routeSteps.addAll(routeSteps);
-    }
-
-    public void addRouteStep(RouteStep routeStep) {
-        this.routeSteps.add(routeStep);
-    }
-
-    /**
-     * Chains two routes together by following rules:
-     *         this Route := A
-     *         anotherRoute := B
-     *         resultingRoute := C
-     *      I) A.origin != (B.origin, B.destination)
-     *         A.destination != (B.origin, B.destination)
-     *              * C.origin = A.origin
-     *              * C.destination = B.destination
-     *              * C.waypoints = A.waypoints + B.waypoints + A.destination + B.origin
-     *
-     *      II) A.origin != (B.origin, B.destination),
-     *          A.destination = B.origin, A.destination != B.destination
-     *              * C.origin = A.origin
-     *              * C.destination = B.destination
-     *              * C.waypoints = A.waypoints + B.waypoints + A.destination
-     *
-     *      III) A.origin = B.destination, A.origin != B.origin,
-     *           A.destination != (B.origin, B.destination)
-     *              * C.origin = B.origin
-     *              * C.destination = A.destination
-     *              * C.waypoints = A.waypoints + B.waypoints + A.origin
-     *
-     *      IV) A.origin = B.origin, A.origin != B.destination,
-     *          A.destination != (B.origin, B.destination)
-     *              * C.origin = A.destination
-     *              * C.destination = B.destination
-     *              * C.waypoints = A.waypoints + B.waypoints + A.origin
-     *
-     *      V) A.origin != (B.origin, B.destination),
-     *         A.destination = B.destination, A.destination != B.origin
-     *              * C.origin = A.origin
-     *              * C.destination = B.origin
-     *              * C.waypoints = A.waypoints + B.waypoints + A.destination
-     *
-     *
-     * @param anotherRoute - (Route) route to be chained with
-     * @return (Route) chained route
-     */
-    public Route chainWithRoute(Route anotherRoute) {
-        Route resultingRoute;
-
-        if (this.destination.isSame(anotherRoute.getOrigin())) {
-            resultingRoute = new Route(this);
-            resultingRoute.setDestination(anotherRoute.getDestination());
-            resultingRoute.addWaypoint(this.destination);
-            resultingRoute.addWaypoints(anotherRoute.getWaypoints());
-            resultingRoute.setRouteSteps(this.routeSteps);
-            resultingRoute.addRouteSteps(anotherRoute.getRouteSteps());
-        } else if (this.origin.isSame(anotherRoute.getDestination())) {
-            resultingRoute = new Route(anotherRoute);
-            resultingRoute.setDestination(this.destination);
-            resultingRoute.addWaypoint(this.origin);
-            resultingRoute.addWaypoints(this.waypoints);
-        } else if (this.origin.isSame(anotherRoute.getOrigin())) {
-            resultingRoute = new Route(this);
-            resultingRoute.setOrigin(this.destination);
-            resultingRoute.setDestination(anotherRoute.getDestination());
-            resultingRoute.addWaypoint(this.origin);
-            resultingRoute.addWaypoints(anotherRoute.getWaypoints());
-        } else if (this.destination.isSame(anotherRoute.getDestination())) {
-            resultingRoute = new Route(this);
-            resultingRoute.setDestination(anotherRoute.getOrigin());
-            resultingRoute.addWaypoint(this.destination);
-            resultingRoute.addWaypoints(anotherRoute.getWaypoints());
-        } else {
-            resultingRoute = new Route(this);
-            resultingRoute.setDestination(anotherRoute.getDestination());
-            resultingRoute.addWaypoints(new LinkedHashSet<>(Arrays.asList(this.destination, anotherRoute.getOrigin())));
-            resultingRoute.addWaypoints(anotherRoute.getWaypoints());
-        }
-
-        return resultingRoute;
     }
 
     /**
@@ -277,22 +249,5 @@ public class Route {
 
         result = prime * result + add;
         return result;
-    }
-
-    public static Route chainRoutes(LinkedHashSet<Route> routes) {
-        /*todo add google routes api call for optimization
-               TSP problem without returning salesman home
-        */
-        if(routes.isEmpty())
-            return null;
-
-        Iterator<Route> it = routes.iterator();
-        Route resultingRoute = new Route(it.next());
-
-        while(it.hasNext()) {
-            resultingRoute = resultingRoute.chainWithRoute(it.next());
-        }
-
-        return resultingRoute;
     }
 }

@@ -1,5 +1,6 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,18 +12,19 @@ public class Coordinates {
 
     private Double elevation;
 
-    public Coordinates(Double lat, Double lng) {
-        if( lat < -180.0 || lat > 180.0 || lng < -180.0 || lng > 180.0)
-            throw new IllegalArgumentException("Lat or Lng is out of expected bounds.");
+    public Coordinates(Double lat, Double lng) throws CoordinatesOutOfBoundsException {
+        checkCoordinates(lat, lng);
 
         this.lat = lat;
         this.lng = lng;
         this.elevation = 0.0;
     }
 
-    public Coordinates(Double lat, Double lng, Double elevation) {
-        if( lat < -180.0 || lat > 180.0 || lng < -180.0 || lng > 180.0)
-            throw new IllegalArgumentException("Lat or Lng is out of expected bounds.");
+    public Coordinates(Double lat, Double lng, Double elevation) throws CoordinatesOutOfBoundsException {
+        if(elevation == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        checkCoordinates(lat, lng);
 
         this.lat = lat;
         this.lng = lng;
@@ -30,20 +32,45 @@ public class Coordinates {
     }
 
     public Coordinates(Coordinates other) {
-        this.lat = Double.valueOf(other.getLat());
-        this.lng = Double.valueOf(other.getLng());
-        this.elevation = Double.valueOf(other.getElevation());
+        if(other == null)
+            throw new NullPointerException("Arguments can't be null.");
+
+        this.lat = other.getLat();
+        this.lng = other.getLng();
+        this.elevation = other.getElevation();
     }
 
-    public Coordinates(JSONObject jsonObject) {
+    public Coordinates(JSONObject jsonObject) throws CoordinatesOutOfBoundsException {
+        if(jsonObject == null)
+            throw new NullPointerException("JSONObject can't be null.");
+
         try{
-            this.lat = jsonObject.getDouble("lat");
-            this.lng = jsonObject.getDouble("lng");
+            Double lat = jsonObject.getDouble("lat");
+            Double lng = jsonObject.getDouble("lng");
+
+            checkCoordinates(lat, lng);
+
+            this.lat = lat;
+            this.lng = lng;
             this.elevation = 0.0;
         } catch (JSONException e) {
-            throw new IllegalArgumentException("Wrong JSON file structure.");
+            throw new JSONException("Wrong JSON file structure.");
         }
 
+    }
+
+    private void checkCoordinates(Double lat, Double lng) throws CoordinatesOutOfBoundsException {
+        checkPoint(lat);
+        checkPoint(lng);
+    }
+
+    private void checkPoint(Double point) throws CoordinatesOutOfBoundsException {
+        if(point == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        if( point < -180.0 || point > 180.0 ) {
+            throw new CoordinatesOutOfBoundsException("Point is out of expected bounds.");
+        }
     }
 
     @Override
@@ -56,6 +83,9 @@ public class Coordinates {
     }
 
     public String toGPX(String prefix){
+        if(prefix == null)
+            throw new NullPointerException("Arguments can't be null");
+
         StringBuilder gpxStringBuilder = new StringBuilder(prefix + "<trkpt ");
         gpxStringBuilder.append(String.format("lat=%s ", lat));
         gpxStringBuilder.append(String.format("lon=%s>\n", lng));
@@ -81,15 +111,20 @@ public class Coordinates {
         return elevation;
     }
 
-    public void setLng(Double lng) {
+    public void setLng(Double lng) throws CoordinatesOutOfBoundsException {
+        checkPoint(lng);
         this.lng = lng;
     }
 
-    public void setLat(Double lat) {
+    public void setLat(Double lat) throws CoordinatesOutOfBoundsException {
+        checkPoint(lat);
         this.lat = lat;
     }
 
     public void setElevation(Double elevation) {
+        if(elevation == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.elevation = elevation;
     }
     @Override
@@ -99,10 +134,12 @@ public class Coordinates {
         int add = 0;
         if(lat == null && lng == null && elevation == null) {
             add = 0;
-        } else if(lat == null) {
+        } else if(lat == null && lng != null) {
             add = lng.hashCode();
-        } else if(lng == null){
+        } else if(lng == null && lat != null){
             add = lat.hashCode();
+        } else if(lat == null) {
+            add = elevation.hashCode();
         } else {
             add = lat.hashCode();
         }
@@ -155,14 +192,24 @@ public class Coordinates {
     }
 
     public boolean isWithinDistance(Coordinates other, Double distance) {
+        if(other == null || distance == null)
+            throw new NullPointerException("Arguments can't be null");
+
         return distanceBetween(this, other) <= distance;
     }
 
     public boolean isSame(Coordinates other) {
+        if(other == null)
+            throw new NullPointerException("Arguments can't be null");
+
         return isWithinDistance(other, 3.0);
     }
 
     public static Double distanceBetween(Coordinates start, Coordinates target) {
+        if(start == null || target == null)
+            throw new NullPointerException("Arguments can't be null");
+
+
         //https://www.movable-type.co.uk/scripts/latlong.html
 
         double toRads = Math.PI/180;

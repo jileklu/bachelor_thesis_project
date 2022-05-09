@@ -1,5 +1,6 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 
@@ -7,7 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RouteSplitter {
-    public static List<Route> splitRoute(Route route) {
+    public static List<Route> splitRoute(Route route) throws IdenticalCoordinatesException {
+        if(route == null)
+            throw new NullPointerException("Arguments can't be null");
+
         List<Route> helpingRoutes = new ArrayList<>();
         List<Coordinates> waypoints = new ArrayList<>(route.getWaypoints());
 

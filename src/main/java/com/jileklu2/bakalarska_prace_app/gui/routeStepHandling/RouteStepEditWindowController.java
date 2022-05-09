@@ -1,5 +1,16 @@
 package com.jileklu2.bakalarska_prace_app.gui.routeStepHandling;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.AverageSpeedOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.strings.BlankStringException;
+import com.jileklu2.bakalarska_prace_app.gui.MainContext;
 import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
 import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
 import com.jileklu2.bakalarska_prace_app.gui.routeHandling.RoutesContext;
@@ -12,10 +23,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,23 +62,15 @@ public class RouteStepEditWindowController implements Initializable, RouteStepEd
     private GridPane gridPane;
 
     private RoutesContext routesContext;
-
     private MapViewContext mapViewContext;
-
     private RouteInfoPanelContext routeInfoPanelContext;
-
+    private MainContext mainContext;
     private RouteStep routeStep;
-
     private List<TextField> variableNamesTextFields;
-
     private List<TextField> variableValuesTextFields;
-
     private List<String> variableNames;
-
     private List<String> variableValues;
-
     private int variablesCount = 0;
-
     private boolean coordinatesChanged = false;
 
     @Override
@@ -78,23 +83,43 @@ public class RouteStepEditWindowController implements Initializable, RouteStepEd
 
     @Override
     public void setRoutesContext(RoutesContext routesContext) {
+        if(routesContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.routesContext = routesContext;
     }
 
     @Override
     public void setMapViewContext(MapViewContext mapViewContext) {
+        if(mapViewContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.mapViewContext = mapViewContext;
     }
 
     @Override
     public void setRouteInfoPanelContext(RouteInfoPanelContext routeInfoPanelContext) {
+        if(routeInfoPanelContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.routeInfoPanelContext = routeInfoPanelContext;
     }
 
     @Override
     public void setRouteStep(RouteStep routeStep) {
+        if(routeStep == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.routeStep = routeStep;
         initTextFields();
+    }
+
+    @Override
+    public void setMainContext(MainContext mainContext) {
+        if(mainContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.mainContext = mainContext;
     }
 
     private void initTextFields() {
@@ -122,20 +147,79 @@ public class RouteStepEditWindowController implements Initializable, RouteStepEd
     }
 
     @FXML
-    private void okButtonAction() {
+    private void okButtonAction() throws DistanceOutOfBoundsException, AverageSpeedOutOfBoundsException,
+    EmptyTimeStampsSetException, EmptyDestinationsListException, DurationOutOfBoundsException,
+    IdenticalCoordinatesException, BlankScriptNameStringException, IOException {
         if (coordinatesChanged) {
-            routesContext.changeRouteCoordinates(routeStep, getCoordinates());
-            routesContext.findRouteStepInfo(routeStep);
-            mapViewContext.showDefaultRoute();
-        }
-        changeVariables();
+            try {
+                routesContext.changeRouteCoordinates(routeStep, getCoordinates());
+            } catch (CoordinatesOutOfBoundsException e) {
+                mainContext.createErrorWindow("Coordinates are out of expected bounds.");
+                System.out.println("Coordinates are out of expected bounds.");
+                e.printStackTrace();
+                return;
+            } catch (DefaultRouteNotSetException e) {
+                mainContext.createErrorWindow("Route has to be created before changing its steps.");
+                System.out.println("Route has to be created before changing its steps.");
+                e.printStackTrace();
+                return;
+            } catch (NullPointerException e) {
+                mainContext.createErrorWindow("Coordinates can't be null.");
+                System.out.println("Coordinates can't be null.");
+                e.printStackTrace();
+                return;
+            }
 
-        routeInfoPanelContext.showDefaultRouteInfo();
+            try {
+                routesContext.findRouteStepInfo(routeStep);
+            } catch (IdenticalCoordinatesException e) {
+                mainContext.createErrorWindow("Origin and destination can't be the same coordinates.");
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                return;
+            } catch (CoordinatesOutOfBoundsException e) {
+                mainContext.createErrorWindow("Coordinates are out of expected bounds.");
+                System.out.println("Coordinates are out of expected bounds.");
+                e.printStackTrace();
+                return;
+            } catch (DefaultRouteNotSetException e) {
+                mainContext.createErrorWindow("Route has to be created before changing its steps.");
+                System.out.println("Route has to be created before changing its steps.");
+                e.printStackTrace();
+                return;
+            }
+            try {
+                mapViewContext.showDefaultRoute();
+            } catch (DefaultRouteNotSetException e) {
+                mainContext.createErrorWindow("Route has to be created before changing its steps.");
+                System.out.println("Route has to be created before changing its steps.");
+                e.printStackTrace();
+                return;
+            }
+        }
+        try {
+            changeVariables();
+        } catch (BlankStringException e) {
+            mainContext.createErrorWindow("Variable can't be a blank string.");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            routeInfoPanelContext.showDefaultRouteInfo();
+        } catch (DefaultRouteNotSetException e) {
+            mainContext.createErrorWindow("Route has to be created before changing its steps.");
+            System.out.println("Route has to be created before changing its steps.");
+            e.printStackTrace();
+            return;
+        }
+
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
-    private void changeVariables() {
+    private void changeVariables() throws BlankStringException {
         HashSet<Variable> newVariables = new HashSet<>();
 
         for(int i = 0; i < variableNames.size(); i++) {
@@ -148,7 +232,7 @@ public class RouteStepEditWindowController implements Initializable, RouteStepEd
         routeStep.setVariables(newVariables);
     }
 
-    private Pair<Coordinates,Coordinates> getCoordinates() {
+    private Pair<Coordinates,Coordinates> getCoordinates() throws CoordinatesOutOfBoundsException {
         Double orgLat = Double.valueOf(orgLatTextField.getText());
         Double orgLng = Double.valueOf(orgLngTextField.getText());
         Double destLat = Double.valueOf(destLatTextField.getText());
@@ -167,6 +251,7 @@ public class RouteStepEditWindowController implements Initializable, RouteStepEd
         int row = variablesCount + 2;
 
         Text text = new Text("Variable " + (variablesCount + 1));
+        text.setFill(Color.WHITE);
         TextField variableNameTextField = new TextField();
         TextField variableValueTextField = new TextField();
 

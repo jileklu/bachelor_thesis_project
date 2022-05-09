@@ -1,7 +1,8 @@
 package com.jileklu2.bakalarska_prace_app.gui.fileHandling;
 
-import com.jileklu2.bakalarska_prace_app.builders.GpxBuilder;
-import com.jileklu2.bakalarska_prace_app.cli.route.RouteHandlerCli;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.files.IllegalFilePathFormatException;
+import com.jileklu2.bakalarska_prace_app.gui.MainContext;
 import com.jileklu2.bakalarska_prace_app.gui.routeHandling.RoutesContext;
 import com.jileklu2.bakalarska_prace_app.handlers.FileHandler;
 import javafx.fxml.FXML;
@@ -10,10 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static com.jileklu2.bakalarska_prace_app.cli.arguments.ArgumentType.OUT_FILE;
 
 public class FileExportWindowController implements FileExportWindowContext, Initializable {
     @FXML
@@ -25,8 +25,9 @@ public class FileExportWindowController implements FileExportWindowContext, Init
     @FXML
     Button cancelButton;
 
-    String filePath;
+    private String filePath;
     private RoutesContext routesContext;
+    private MainContext mainContext;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,20 +40,31 @@ public class FileExportWindowController implements FileExportWindowContext, Init
     }
 
     public void setRoutesContext(RoutesContext routesContext) {
+        if(routesContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.routesContext = routesContext;
     }
 
+    @Override
+    public void setMainContext(MainContext mainContext) {
+        if(mainContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.mainContext = mainContext;
+    }
+
     @FXML
-    private void okButtonAction() {
+    private void okButtonAction() throws IOException {
         try {
             String path = filePath;
 
             if(path.length() < 5) {
-                throw new IllegalArgumentException("Please enter the path in the correct format.");
+                throw new IllegalFilePathFormatException("Please enter the path in the correct format.");
             }
 
             FileHandler.createJsonFile(
-                String.valueOf(path),
+                path,
                 routesContext.getDefaultRoute().toJSON()
             );
 /*
@@ -63,8 +75,14 @@ public class FileExportWindowController implements FileExportWindowContext, Init
 */
             Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();
-        }catch (NullPointerException | IllegalArgumentException e) {
-            System.out.println("Please enter the path or file in the correct format.");
+        }catch (NullPointerException | IllegalFilePathFormatException e) {
+            mainContext.createErrorWindow("Please enter the path in the correct format.");
+            System.out.println("Please enter the path in the correct format.");
+            e.printStackTrace();
+        } catch (DefaultRouteNotSetException e) {
+            mainContext.createErrorWindow("Route has to be created before creating route file.");
+            System.out.println("Route has to be created before creating file.");
+            e.printStackTrace();
         }
     }
 

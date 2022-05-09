@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #0f1114; -fx-border-color: #2c323a; -fx-border-width: 1px 1px 1px 1px;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.errorHandling.ErrorWindowController">
+   <children>
+      <Text fx:id="textField" fill="WHITE" layoutX="25.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Test" textAlignment="CENTER" wrappingWidth="300.13671875" />
+      <Button fx:id="okButton" alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="61.0" mnemonicParsing="false" onAction="#okButtonAction" text="OK" textAlignment="CENTER">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Button>
+   </children>
+</AnchorPane>

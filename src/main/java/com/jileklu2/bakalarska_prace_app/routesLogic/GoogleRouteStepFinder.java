@@ -1,10 +1,10 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic;
 
-import com.jileklu2.bakalarska_prace_app.handlers.errorHandlers.ErrorHandler;
-import com.jileklu2.bakalarska_prace_app.handlers.errorHandlers.GoogleRoutingErrorHandler;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.errors.GoogleDirectionsStatus;
-import com.jileklu2.bakalarska_prace_app.errors.GoogleRoutingError;
-import com.jileklu2.bakalarska_prace_app.errors.RoutingError;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
@@ -21,7 +21,12 @@ import java.util.*;
 
 public class GoogleRouteStepFinder {
     private static int totalStepsNum = 0;
-    public static void findRouteSteps(Route route, Boolean optimize) {
+    public static void findRouteSteps(Route route, Boolean optimize)
+    throws IdenticalCoordinatesException, DistanceOutOfBoundsException, DurationOutOfBoundsException,
+    CoordinatesOutOfBoundsException {
+        if(route == null || optimize == null)
+            throw new NullPointerException("Arguments can't be null.");
+
         List<Route> helpingRoutes = RouteSplitter.splitRoute(route);
 
         for(Route helpingRoute : helpingRoutes) {
@@ -55,15 +60,13 @@ public class GoogleRouteStepFinder {
 
     }
 
-    private static void findRouteStepsInfo(Route route, Boolean optimize) {
+    private static void findRouteStepsInfo(Route route, Boolean optimize)
+    throws DistanceOutOfBoundsException, DurationOutOfBoundsException, CoordinatesOutOfBoundsException {
         JSONObject response = getRouteResponse(route, optimize);
         String status = response.getString("status");
 
         if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name())){
-            GoogleDirectionsStatus errorStatus = GoogleDirectionsStatus.valueOf(status);
-            RoutingError error = new GoogleRoutingError(errorStatus);
-            ErrorHandler errorHandler = new GoogleRoutingErrorHandler((GoogleRoutingError) error);
-            errorHandler.handleError();
+            // todo
         } else {
             LinkedHashSet<Coordinates> newWaypointsOrder = new LinkedHashSet<>();
             List<RouteStep> newRouteSteps = new ArrayList<>();

@@ -1,21 +1,17 @@
 package com.jileklu2.bakalarska_prace_app.gui;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
 import com.jileklu2.bakalarska_prace_app.gui.routeHandling.RoutesContext;
 import com.jileklu2.bakalarska_prace_app.builders.scriptBuilders.JavascriptBuilder;
 import com.jileklu2.bakalarska_prace_app.routesLogic.RouteSplitter;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Marker;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import netscape.javascript.JSObject;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,7 +32,7 @@ public class MapContentController implements MapViewContext{
     }
 
     @Override
-    public void showRoute(Route route) {
+    public void showRoute(Route route) throws IdenticalCoordinatesException, BlankScriptNameStringException {
         List<Route> helpingRoutes = RouteSplitter.splitRoute(route);
 
         webEngine.executeScript(JavascriptBuilder.createScriptString("viewRoutes", helpingRoutes));
@@ -51,12 +47,13 @@ public class MapContentController implements MapViewContext{
     }
 
     @Override
-    public void initMap() {
+    public void initMap() throws BlankScriptNameStringException {
         webEngine.executeScript(JavascriptBuilder.createScriptString("initMap"));
     }
 
     @Override
-    public void showDefaultRoute() {
+    public void showDefaultRoute() throws DefaultRouteNotSetException, IdenticalCoordinatesException,
+    BlankScriptNameStringException {
         Route defaultRoute = routesContext.getDefaultRoute();
         List<RouteStep> routeSteps = defaultRoute.getRouteSteps();
         List<Marker> markers = new ArrayList<>();
@@ -75,12 +72,12 @@ public class MapContentController implements MapViewContext{
     }
 
     @Override
-    public void showMarker(Marker marker) {
+    public void showMarker(Marker marker) throws BlankScriptNameStringException {
         webEngine.executeScript(JavascriptBuilder.createScriptString("addMarker", marker));
     }
 
     @Override
-    public void showMarkers(List<Marker> markers) {
+    public void showMarkers(List<Marker> markers) throws BlankScriptNameStringException {
         webEngine.executeScript(JavascriptBuilder.createScriptString("clearMarkers"));
 
         for(Marker marker : markers){

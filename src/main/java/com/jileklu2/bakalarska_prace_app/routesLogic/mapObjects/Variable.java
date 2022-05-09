@@ -1,13 +1,21 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.strings.BlankStringException;
+
 public class Variable {
 
     private final String name;
     private final String value;
 
-    public Variable(String name, String value) {
-        this.name = String.valueOf(name);
-        this.value =  String.valueOf(value);
+    public Variable(String name, String value) throws BlankStringException {
+        if(name.isBlank())
+            throw new BlankStringException("Name can't be blank or null");
+
+        if(value.isBlank())
+            throw new BlankStringException("Value can't be blank or null");
+
+        this.name = name;
+        this.value = value;
     }
 
     public String getName() {

@@ -1,6 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic;
 
 import com.jileklu2.bakalarska_prace_app.errors.GoogleDirectionsStatus;
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyCoordinatesListException;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.builders.scriptBuilders.HttpRequestStringBuilder;
@@ -16,6 +17,9 @@ import java.util.List;
 
 public class GoogleElevationFinder {
     public static void findRouteWaypointsElevations(Route route) {
+        if(route == null)
+            throw new NullPointerException("Arguments can't be null.");
+
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(HttpRequestStringBuilder.googleElevationRequest(route)))
             .build();
@@ -25,10 +29,7 @@ public class GoogleElevationFinder {
         String status = jsonResponse.getString("status");
 
         if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name())){
-            GoogleDirectionsStatus errorStatus = GoogleDirectionsStatus.valueOf(status);
-            //RoutingError error = new GoogleElevationError(errorStatus);
-            //ErrorHandler errorHandler = new GoogleElevationErrorHandler((GoogleElevationError) error); todo
-            //errorHandler.handleError();
+            //todo
         } else {
             JSONArray elevations = jsonResponse.getJSONArray("results");
             route.getOrigin().setElevation(getElevationOnIndex(elevations,0));
@@ -48,20 +49,28 @@ public class GoogleElevationFinder {
     }
 
     public static void findCoordinatesElevation(List<Coordinates> coordinatesList) {
+        if(coordinatesList == null)
+            throw new NullPointerException("Arguments can't be null.");
 
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(HttpRequestStringBuilder.googleElevationRequest(coordinatesList)))
-            .build();
+        if(coordinatesList.isEmpty())
+            return;
+
+        HttpRequest request;
+        try {
+            request = HttpRequest.newBuilder()
+                .uri(URI.create(HttpRequestStringBuilder.googleElevationRequest(coordinatesList)))
+                .build();
+        } catch (EmptyCoordinatesListException e) {
+            e.printStackTrace();
+            return;
+        }
 
         JSONObject jsonResponse = getElevationResponse(request);
 
         String status = jsonResponse.getString("status");
 
         if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name())){
-            GoogleDirectionsStatus errorStatus = GoogleDirectionsStatus.valueOf(status);
-            //RoutingError error = new GoogleElevationError(errorStatus);
-            //ErrorHandler errorHandler = new GoogleElevationErrorHandler((GoogleElevationError) error); todo
-            //errorHandler.handleError();
+            // todo
         } else {
             JSONArray elevations = jsonResponse.getJSONArray("results");
             for(int i = 0; i < elevations.length(); i++) {

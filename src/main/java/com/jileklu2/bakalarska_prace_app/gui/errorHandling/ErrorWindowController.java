@@ -5,22 +5,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class FileErrorWindowController implements ErrorWindowContext, Initializable {
+public class ErrorWindowController implements ErrorWindowContext, Initializable {
 
     @FXML
     Text textField;
 
     @FXML
     Button okButton;
-
-    @Override
-    public void showErrorPopUp(String message) {
-        textField.setText(message);
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -30,5 +26,10 @@ public class FileErrorWindowController implements ErrorWindowContext, Initializa
     public void okButtonAction() {
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
+    }
+
+    @Override
+    public void setMessage(String message) {
+        textField.setText(message);
     }
 }

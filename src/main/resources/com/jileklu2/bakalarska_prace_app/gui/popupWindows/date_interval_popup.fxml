@@ -2,22 +2,28 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.dateIntervalHandling.DateIntervalWindowController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="pane" stylesheets="@../styles/style_border_pane.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.dateIntervalHandling.DateIntervalWindowController">
    <children>
-      <DatePicker fx:id="fromDatePicker" layoutX="300.0" layoutY="64.0" promptText="dd.mm.yyyy" />
-      <DatePicker fx:id="toDatePicker" layoutX="300.0" layoutY="109.0" promptText="dd.mm.yyyy" />
-      <CheckBox fx:id="mondayCheckBox" layoutX="350.0" layoutY="150.0" mnemonicParsing="false" selected="true" text="Monday" />
-      <CheckBox fx:id="wednesdayCheckBox" layoutX="350.0" layoutY="200.0" mnemonicParsing="false" selected="true" text="Wednesday" />
-      <CheckBox fx:id="thursdayCheckBox" layoutX="350.0" layoutY="225.0" mnemonicParsing="false" selected="true" text="Thursday" />
-      <CheckBox fx:id="fridayCheckBox" layoutX="350.0" layoutY="250.0" mnemonicParsing="false" selected="true" text="Friday" />
-      <CheckBox fx:id="tuesdayCheckBox" layoutX="350.0" layoutY="175.0" mnemonicParsing="false" selected="true" text="Tuesday" />
+      <DatePicker fx:id="fromDatePicker" layoutX="345.0" layoutY="70.0" promptText="dd.mm.yyyy" styleClass="date-picker" stylesheets="@../styles/style_date_picker.css" />
+      <DatePicker fx:id="toDatePicker" layoutX="345.0" layoutY="150.0" promptText="dd.mm.yyyy" stylesheets="@../styles/style_date_picker.css" />
+      <CheckBox fx:id="mondayCheckBox" layoutX="345.0" layoutY="200.0" mnemonicParsing="false" selected="true" text="Monday" textFill="WHITE" />
+      <CheckBox fx:id="wednesdayCheckBox" layoutX="345.0" layoutY="250.0" mnemonicParsing="false" selected="true" text="Wednesday" textFill="WHITE" />
+      <CheckBox fx:id="thursdayCheckBox" layoutX="345.0" layoutY="275.0" mnemonicParsing="false" selected="true" text="Thursday" textFill="WHITE" />
+      <CheckBox fx:id="fridayCheckBox" layoutX="460.0" layoutY="200.0" mnemonicParsing="false" selected="true" text="Friday" textFill="WHITE" />
+      <CheckBox fx:id="tuesdayCheckBox" layoutX="345.0" layoutY="225.0" mnemonicParsing="false" selected="true" text="Tuesday" textFill="WHITE" />
       <Button fx:id="okButton" layoutX="169.0" layoutY="348.0" mnemonicParsing="false" onAction="#okButtonAction" text="OK" />
       <Button fx:id="cancelButton" layoutX="387.0" layoutY="348.0" mnemonicParsing="false" onAction="#cancelButtonAction" text="Cancel" />
-      <CheckBox fx:id="saturdayCheckBox" layoutX="350.0" layoutY="275.0" mnemonicParsing="false" selected="true" text="Saturday" />
-      <CheckBox fx:id="sundayCheckBox" layoutX="350.0" layoutY="300.0" mnemonicParsing="false" selected="true" text="Sunday" />
-      <ComboBox fx:id="fromTimeComboBox" layoutX="94.0" layoutY="64.0" prefWidth="150.0" />
-      <ComboBox fx:id="toTimeComboBox" layoutX="94.0" layoutY="109.0" prefWidth="150.0" />
-      <ComboBox fx:id="intervalComboBox" layoutX="94.0" layoutY="159.0" prefWidth="150.0" />
+      <CheckBox fx:id="saturdayCheckBox" layoutX="460.0" layoutY="235.0" mnemonicParsing="false" selected="true" text="Saturday" textFill="WHITE" />
+      <CheckBox fx:id="sundayCheckBox" layoutX="460.0" layoutY="270.0" mnemonicParsing="false" selected="true" text="Sunday" textFill="WHITE" />
+      <ComboBox fx:id="fromTimeComboBox" layoutX="90.0" layoutY="70.0" prefWidth="150.0" stylesheets="@../styles/style_combo_box.css" />
+      <ComboBox fx:id="toTimeComboBox" layoutX="90.0" layoutY="150.0" prefWidth="150.0" stylesheets="@../styles/style_combo_box.css" />
+      <ComboBox fx:id="intervalComboBox" layoutX="94.0" layoutY="231.0" prefWidth="150.0" stylesheets="@../styles/style_combo_box.css" />
+      <Text fill="WHITE" layoutX="130.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From (Time)" />
+      <Text fill="WHITE" layoutX="130.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Until (Time)" />
+      <Text fill="WHITE" layoutX="402.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From (Date)" />
+      <Text fill="WHITE" layoutX="403.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Until (Date)" />
+      <Text fill="WHITE" layoutX="145.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Interval" />
    </children>
 </AnchorPane>

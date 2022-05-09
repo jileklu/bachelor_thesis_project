@@ -1,5 +1,15 @@
 package com.jileklu2.bakalarska_prace_app.gui.routeHandling;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.strings.BlankStringException;
+import com.jileklu2.bakalarska_prace_app.gui.MainContext;
 import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
 import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
@@ -10,9 +20,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -52,12 +64,12 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
     private String routeDestLat;
     private String routeOriginLng;
     private String routeDestLng;
-
     private int waypointCount = 0;
     private List<String> waypointsLats;
     private List<String> waypointsLngs;
     private List<TextField> latTextFields;
     private List<TextField> lngTextFields;
+    private MainContext mainContext;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -69,29 +81,114 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
         waypointsLngs = new ArrayList<>();
     }
 
+    @Override
+    public void setRoutesContext(RoutesContext routesContext) {
+        if(routesContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.routesContext = routesContext;
+    }
+
+    @Override
+    public void setMapViewContext(MapViewContext mapViewContext) {
+        if(mapViewContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.mapViewContext = mapViewContext;
+    }
+
+    @Override
+    public void setMainContext(MainContext mainContext) {
+        if(mapViewContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.mainContext = mainContext;
+    }
+
+    public void setRouteInfoPanelContext(RouteInfoPanelContext routeInfoPanelContext) {
+        if(routeInfoPanelContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.routeInfoPanelContext = routeInfoPanelContext;
+    }
+
     @FXML
-    private void okButtonAction() {
-        if(routeOriginLat == null || routeDestLat == null || routeOriginLng == null || routeDestLng == null)
-            //todo
+    private void okButtonAction() throws IdenticalCoordinatesException, DistanceOutOfBoundsException,
+    EmptyTimeStampsSetException,CoordinatesOutOfBoundsException, EmptyDestinationsListException,
+    DurationOutOfBoundsException, BlankScriptNameStringException, IOException {
+        Coordinates origin;
+        Coordinates destination;
+
+        try {
+            origin = new Coordinates(Double.parseDouble(routeOriginLat), Double.parseDouble(routeOriginLng));
+            destination = new Coordinates(Double.parseDouble(routeDestLat), Double.parseDouble(routeDestLng));
+        } catch (NullPointerException e) {
+            mainContext.createErrorWindow("Origin and destination coordinates can't be null.");
+            System.out.println("Origin and destination coordinates can't be null.");
+            e.printStackTrace();
             return;
+        } catch (CoordinatesOutOfBoundsException e) {
+            mainContext.createErrorWindow("Origin or destination coordinates are out of expected bounds.");
+            System.out.println("Origin or destination coordinates are out of expected bounds.");
+            e.printStackTrace();
+            return;
+        } catch (NumberFormatException e) {
+            mainContext.createErrorWindow("Coordinates are not in the correct format.");
+            System.out.println("Coordinates are not in the correct format.");
+            e.printStackTrace();
+            return;
+        }
 
-        Coordinates origin = new Coordinates(Double.parseDouble(routeOriginLat), Double.parseDouble(routeOriginLng));
-        Coordinates destination = new Coordinates(Double.parseDouble(routeDestLat), Double.parseDouble(routeDestLng));
         LinkedHashSet<Coordinates> waypoints = new LinkedHashSet<>();
-        for( int i = 0; i < waypointCount; i++) {
-            if( waypointsLats.get(i) == null || waypointsLngs.get(i) == null)
-                //todo missing waypoint text
-                continue;
 
-            Coordinates waypoint = new Coordinates(Double.parseDouble(waypointsLats.get(i)),
-                                                   Double.parseDouble(waypointsLngs.get(i)));
+        for( int i = 0; i < waypointCount; i++) {
+            Coordinates waypoint;
+
+            try {
+                waypoint = new Coordinates(Double.parseDouble(waypointsLats.get(i)),
+                                                       Double.parseDouble(waypointsLngs.get(i)));
+            } catch (NullPointerException e) {
+                mainContext.createErrorWindow("Waypoint" + i + " can't be null");
+                System.out.println("Waypoint" + i + "point can't be null");
+                e.printStackTrace();
+                return;
+            } catch (CoordinatesOutOfBoundsException e) {
+                mainContext.createErrorWindow("Waypoint" + i + " coordinates are out of expected bounds.");
+                System.out.println("Waypoint" + i + " coordinates are out of expected bounds.");
+                e.printStackTrace();
+                return;
+            }  catch (NumberFormatException e) {
+                mainContext.createErrorWindow("Waypoint" + i + "coordinates are not in the correct format.");
+                System.out.println("Waypoint" + i + "coordinates are not in the correct format.");
+                e.printStackTrace();
+                return;
+            }
+
             waypoints.add(waypoint);
         }
-        Route newRoute = new Route(origin, destination, waypoints);
+
+        Route newRoute;
+        try {
+            newRoute = new Route(origin, destination, waypoints);
+        } catch (IdenticalCoordinatesException e) {
+            mainContext.createErrorWindow("Origin and destination can't be the same coordinates.");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return;
+        }
+
         routesContext.findRouteInfo(newRoute);
         routesContext.setDefaultRoute(newRoute);
-        mapViewContext.showDefaultRoute();
-        routeInfoPanelContext.showDefaultRouteInfo();
+
+        try {
+            mapViewContext.showDefaultRoute();
+            routeInfoPanelContext.showDefaultRouteInfo();
+        } catch (DefaultRouteNotSetException e) {
+            mainContext.createErrorWindow("Route has to be created before showing.");
+            System.out.println("Route has to be created before showing.");
+            e.printStackTrace();
+            return;
+        }
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }
@@ -106,45 +203,46 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
     private void addWaypointButtonAction() {
         int row = waypointCount + 2;
         Text text = new Text("Waypoint " + (waypointCount + 1));
+        text.setFill(Color.WHITE);
         TextField latTextField = new TextField();
         TextField lngTextField = new TextField();
 
         latTextFields.add(latTextField);
         lngTextFields.add(lngTextField);
 
-        //LatTextField set up
-        latTextField.setOnKeyTyped(event -> {
-            TextField source = (TextField) event.getSource();
-            int index = latTextFields.indexOf(source);
-            waypointsLats.set(index, source.getText());
-        });
-
-        textFieldSetUp(latTextField, "Lat");
-
-        //LngTextField set up
-        lngTextField.setOnKeyTyped(event -> {
-            TextField source = (TextField) event.getSource();
-            int index = lngTextFields.indexOf(source);
-            waypointsLngs.set(index, source.getText());
-        });
-
-        textFieldSetUp(lngTextField, "Lng");
+        latTextFieldSetUp(latTextField);
+        lngTextFieldSetUp(lngTextField);
 
         addGridPaneRow(row, text, latTextField, lngTextField);
-      /*
-        gridPane.addRow(row);
-        gridPane.add(text,0,row);
-        gridPane.add(latTextField, 1, row);
-        gridPane.add(lngTextField, 2, row);*/
 
-        //Waypoint lat and lng added to refer to in the future
+        //Waypoint lat and lng objects added for future referencing
         waypointsLats.add(null);
         waypointsLngs.add(null);
 
         waypointCount++;
     }
 
-    private void textFieldSetUp(TextField textField, String promptText) {
+    private void latTextFieldSetUp(TextField textField) {
+        textField.setOnKeyTyped(event -> {
+            TextField source = (TextField) event.getSource();
+            int index = latTextFields.indexOf(source);
+            waypointsLats.set(index, source.getText());
+        });
+
+        textFieldPositionSetUp(textField, "Lat");
+    }
+
+    private void lngTextFieldSetUp(TextField textField) {
+        textField.setOnKeyTyped(event -> {
+            TextField source = (TextField) event.getSource();
+            int index = lngTextFields.indexOf(source);
+            waypointsLngs.set(index, source.getText());
+        });
+
+        textFieldPositionSetUp(textField, "Lng");
+    }
+
+    private void textFieldPositionSetUp(TextField textField, String promptText) {
         textField.setPromptText(promptText);
         textField.setPrefHeight(25);
         textField.setPrefWidth(100);
@@ -176,17 +274,5 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
     @FXML
     private void destinationLngKeyTextFieldTypedAction() {
         routeDestLng = destLngTextField.getText();
-    }
-
-    public void setRoutesContext(RoutesContext routesContext) {
-        this.routesContext = routesContext;
-    }
-
-    public void setMapViewContext(MapViewContext mapViewContext) {
-        this.mapViewContext = mapViewContext;
-    }
-
-    public void setRouteInfoPanelContext(RouteInfoPanelContext routeInfoPanelContext) {
-        this.routeInfoPanelContext = routeInfoPanelContext;
     }
 }

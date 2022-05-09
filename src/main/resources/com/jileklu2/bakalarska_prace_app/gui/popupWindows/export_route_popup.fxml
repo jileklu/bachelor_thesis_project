@@ -4,11 +4,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="100.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.fileHandling.FileExportWindowController">
+<AnchorPane prefHeight="100.0" prefWidth="450.0" style="-fx-background-color: #0f1114; -fx-border-color: #2c323a; -fx-border-width: 1px 1px 1px 1px;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.fileHandling.FileExportWindowController">
     <children>
-        <TextField fx:id="textField" layoutX="115.0" layoutY="25.0" prefHeight="25.0" prefWidth="315.0" />
+        <TextField fx:id="textField" layoutX="115.0" layoutY="25.0" prefHeight="25.0" prefWidth="315.0" styleClass="text-input" stylesheets="@../styles/style_text_field.css" />
         <Button fx:id="okButton" layoutX="150.0" layoutY="60.0" mnemonicParsing="false" onAction="#okButtonAction" text="OK" />
         <Button fx:id="cancelButton" layoutX="270.0" layoutY="60.0" mnemonicParsing="false" onAction="#cancelButtonAction" text="Cancel" />
-        <Text layoutX="35.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File path:" />
+        <Text fill="WHITE" layoutX="35.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File path:" />
     </children>
 </AnchorPane>

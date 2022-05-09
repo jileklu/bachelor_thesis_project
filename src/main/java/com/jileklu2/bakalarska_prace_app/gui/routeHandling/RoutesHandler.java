@@ -1,5 +1,14 @@
 package com.jileklu2.bakalarska_prace_app.gui.routeHandling;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.AverageSpeedOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
 import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
 import com.jileklu2.bakalarska_prace_app.handlers.FileHandler;
@@ -10,6 +19,7 @@ import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.enums.RouteStepArrayRole;
 import javafx.util.Pair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
@@ -25,11 +35,8 @@ import static com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.enums.Rou
 
 public class RoutesHandler implements RoutesContext {
     private Route defaultRoute;
-
     private MapViewContext mapViewContext;
-
     private RouteInfoPanelContext routeInfoPanelContext;
-
     private HashSet<LocalDateTime> timeStamps;
 
     public RoutesHandler() {
@@ -37,49 +44,78 @@ public class RoutesHandler implements RoutesContext {
     }
 
     @Override
+    public Route getDefaultRoute() throws DefaultRouteNotSetException {
+        if(defaultRoute == null)
+            throw new DefaultRouteNotSetException("Default route has not been set.");
+
+        return defaultRoute;
+    }
+
+    @Override
+    public int getDefaultRouteStepIndex(RouteStep routeStep) throws DefaultRouteNotSetException {
+        return getDefaultRoute().getRouteSteps().indexOf(routeStep);
+    }
+
+    @Override
+    public int getDefaultRouteStepsNum() throws DefaultRouteNotSetException {
+        return getDefaultRoute().getRouteSteps().size();
+    }
+
+    @Override
+    public RouteStep getDefaultRouteStepOnIndex(int index) throws DefaultRouteNotSetException {
+        return getDefaultRoute().getRouteSteps().get(index);
+    }
+
+    @Override
     public void setDefaultRoute(Route defaultRoute){
+        if(defaultRoute == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.defaultRoute = defaultRoute;
     }
 
     @Override
     public void setTimeStamps(HashSet<LocalDateTime> timeStamps) {
+        if(timeStamps == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.timeStamps = new HashSet<>(timeStamps);
     }
 
     @Override
-    public Route getDefaultRoute() {
-        return defaultRoute;
+    public void setMapViewContext(MapViewContext mapViewContext) {
+        if(mapViewContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.mapViewContext = mapViewContext;
     }
 
     @Override
-    public void findRouteInfo(Route route) {
+    public void setRouteInfoPanelContext(RouteInfoPanelContext routeInfoPanelContext) {
+        if(routeInfoPanelContext == null)
+            throw new NullPointerException("Arguments can't be null");
+
+        this.routeInfoPanelContext = routeInfoPanelContext;
+    }
+
+    @Override
+    public void findRouteInfo(Route route)
+    throws IdenticalCoordinatesException, DistanceOutOfBoundsException, EmptyTimeStampsSetException,
+    CoordinatesOutOfBoundsException, EmptyDestinationsListException, DurationOutOfBoundsException {
         RouteInfoFinder.findRouteInfo(route, true, timeStamps);
     }
 
     @Override
-    public void loadJsonRoute(String path) throws FileNotFoundException {
+    public void loadJsonRoute(String path)
+    throws FileNotFoundException, IdenticalCoordinatesException, CoordinatesOutOfBoundsException,
+    DistanceOutOfBoundsException, EmptyTimeStampsSetException, EmptyDestinationsListException,
+    DurationOutOfBoundsException, JSONException {
         JSONObject routeJson = FileHandler.readJsonFile(Paths.get(path).toString());
         Route newRoute = new Route(routeJson);
         findRouteInfo(newRoute);
         setDefaultRoute(newRoute);
     }
-
-    @Override
-    public int getDefaultRouteStepIndex(RouteStep routeStep) {
-        return getDefaultRoute().getRouteSteps().indexOf(routeStep);
-    }
-
-    @Override
-    public int getDefaultRouteStepsNum() {
-        return getDefaultRoute().getRouteSteps().size();
-    }
-
-    @Override
-    public RouteStep getDefaultRouteStepOnIndex(int index) {
-        return getDefaultRoute().getRouteSteps().get(index);
-    }
-
-    public void getChangedCoordinatesElevations(RouteStep routeStep) {
+    public void getChangedCoordinatesElevations(RouteStep routeStep) throws DefaultRouteNotSetException {
         RouteStepArrayRole routeStepRole = getRouteStepRole(routeStep);
         List<Coordinates> coordinatesList = new ArrayList<>();
         coordinatesList.add(routeStep.getOrigin());
@@ -118,7 +154,8 @@ public class RoutesHandler implements RoutesContext {
     }
 
     @Override
-    public void changeRouteCoordinates(RouteStep routeStep, Pair<Coordinates,Coordinates>coordinatesPair) {
+    public void changeRouteCoordinates(RouteStep routeStep, Pair<Coordinates,Coordinates>coordinatesPair)
+    throws CoordinatesOutOfBoundsException, DefaultRouteNotSetException {
         int routeStepIndex = getDefaultRouteStepIndex(routeStep);
 
         Coordinates newOrg = new Coordinates(coordinatesPair.getKey());
@@ -152,7 +189,10 @@ public class RoutesHandler implements RoutesContext {
     }
 
     @Override
-    public void findRouteStepInfo(RouteStep routeStep) {
+    public void findRouteStepInfo(RouteStep routeStep)
+    throws IdenticalCoordinatesException, DistanceOutOfBoundsException,
+    DurationOutOfBoundsException, AverageSpeedOutOfBoundsException, EmptyTimeStampsSetException,
+    CoordinatesOutOfBoundsException, EmptyDestinationsListException, DefaultRouteNotSetException {
         Route wrapRoute = new Route(routeStep.getOrigin(),routeStep.getDestination());
         findRouteInfo(wrapRoute);
         routeStep.setDistance(wrapRoute.getRouteSteps().get(0).getDistance());
@@ -162,7 +202,7 @@ public class RoutesHandler implements RoutesContext {
         getChangedCoordinatesElevations(routeStep);
     }
 
-    private RouteStepArrayRole getRouteStepRole(RouteStep routeStep) {
+    private RouteStepArrayRole getRouteStepRole(RouteStep routeStep) throws DefaultRouteNotSetException {
         int routeStepIndex = getDefaultRouteStepIndex(routeStep);
 
         if (routeStepIndex == getDefaultRouteStepsNum() - 1 && routeStepIndex == 0)
@@ -175,30 +215,37 @@ public class RoutesHandler implements RoutesContext {
             return MID;
     }
 
-    private void changePreWaypointCoordinates(int routeStepIndex, Coordinates newOrg) {
+    private void changePreWaypointCoordinates(int routeStepIndex, Coordinates newOrg)
+    throws CoordinatesOutOfBoundsException, DefaultRouteNotSetException {
         List<Coordinates> waypoints = new ArrayList<>(
             getDefaultRoute().getWaypoints()
         );
 
-        waypoints.get(routeStepIndex - 1).setLng(Double.valueOf(newOrg.getLng()));
-        waypoints.get(routeStepIndex - 1).setLat(Double.valueOf(newOrg.getLat()));
+        waypoints.get(routeStepIndex - 1).setLng(newOrg.getLng());
+        waypoints.get(routeStepIndex - 1).setLat(newOrg.getLat());
     }
 
-    private void changePostWaypointCoordinates(int routeStepIndex, Coordinates newDest) {
+    private void changePostWaypointCoordinates(int routeStepIndex, Coordinates newDest)
+    throws CoordinatesOutOfBoundsException, DefaultRouteNotSetException {
         List<Coordinates> waypoints = new ArrayList<>(
             getDefaultRoute().getWaypoints()
         );
 
-        waypoints.get(routeStepIndex).setLng(Double.valueOf(newDest.getLng()));
-        waypoints.get(routeStepIndex).setLat(Double.valueOf(newDest.getLat()));
+        waypoints.get(routeStepIndex).setLng(newDest.getLng());
+        waypoints.get(routeStepIndex).setLat(newDest.getLat());
     }
 
-    public void collectCoordinates(String coordinates) {
+    @Override
+    public void collectCoordinates(String coordinates) throws CoordinatesOutOfBoundsException,
+    IdenticalCoordinatesException, DistanceOutOfBoundsException, EmptyTimeStampsSetException,
+    EmptyDestinationsListException, DurationOutOfBoundsException, DefaultRouteNotSetException,
+    BlankScriptNameStringException {
         JSONArray coordinatesJsonArr = new JSONArray(coordinates);
         JSONObject newOriginJson = (JSONObject) coordinatesJsonArr.get(0);
         JSONObject newDestinationJson = (JSONObject) coordinatesJsonArr.get(coordinatesJsonArr.length() - 1);
         Coordinates newOrigin = new Coordinates(newOriginJson);
         Coordinates newDestination = new Coordinates(newDestinationJson);
+
         LinkedHashSet<Coordinates> newWaypoints = new LinkedHashSet<>();
 
         for(int i = 1; i < coordinatesJsonArr.length() - 1; i++){
@@ -214,7 +261,11 @@ public class RoutesHandler implements RoutesContext {
         routeInfoPanelContext.showDefaultRouteInfo();
     }
 
-    public void collectChangedMarker(String marker) {
+    @Override
+    public void collectChangedMarker(String marker) throws CoordinatesOutOfBoundsException,
+    IdenticalCoordinatesException, DistanceOutOfBoundsException, AverageSpeedOutOfBoundsException,
+    DurationOutOfBoundsException, EmptyTimeStampsSetException, EmptyDestinationsListException,
+    DefaultRouteNotSetException, BlankScriptNameStringException {
         JSONObject markerJSON = new JSONObject(marker);
         Double lat = ((JSONObject) markerJSON.get("coordinates")).getDouble("lat");
         Double lng = ((JSONObject) markerJSON.get("coordinates")).getDouble("lng");
@@ -244,7 +295,11 @@ public class RoutesHandler implements RoutesContext {
         routeInfoPanelContext.showDefaultRouteInfo();
     }
 
-    public void collectNewWaypoint(String waypoint) {
+    @Override
+    public void collectNewWaypoint(String waypoint) throws CoordinatesOutOfBoundsException,
+    IdenticalCoordinatesException, DistanceOutOfBoundsException, EmptyTimeStampsSetException,
+    EmptyDestinationsListException, DurationOutOfBoundsException, DefaultRouteNotSetException,
+    BlankScriptNameStringException {
         JSONObject markerJSON = new JSONObject(waypoint);
         Double lat = markerJSON.getDouble("lat");
         Double lng = markerJSON.getDouble("lng");
@@ -256,15 +311,5 @@ public class RoutesHandler implements RoutesContext {
         setDefaultRoute(newRoute);
         mapViewContext.showDefaultRoute();
         routeInfoPanelContext.showDefaultRouteInfo();
-    }
-
-    @Override
-    public void setMapViewContext(MapViewContext mapViewContext) {
-        this.mapViewContext = mapViewContext;
-    }
-
-    @Override
-    public void setRouteInfoPanelContext(RouteInfoPanelContext routeInfoPanelContext) {
-        this.routeInfoPanelContext = routeInfoPanelContext;
     }
 }

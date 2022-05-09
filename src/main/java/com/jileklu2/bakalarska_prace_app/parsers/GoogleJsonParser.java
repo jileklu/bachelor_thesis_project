@@ -1,5 +1,6 @@
 package com.jileklu2.bakalarska_prace_app.parsers;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,13 +19,13 @@ public class GoogleJsonParser {
         return jsonDistance.getInt("value");
     }
 
-    public static Coordinates parseOrigin(JSONObject object) {
+    public static Coordinates parseOrigin(JSONObject object) throws CoordinatesOutOfBoundsException {
         JSONObject jsonOrigin = object.getJSONObject("start_location");
 
         return new Coordinates(jsonOrigin.getDouble("lat"), jsonOrigin.getDouble("lng"));
     }
 
-    public static Coordinates parseDestination(JSONObject object) {
+    public static Coordinates parseDestination(JSONObject object) throws CoordinatesOutOfBoundsException {
         JSONObject jsonDestination = object.getJSONObject("end_location");
         return new Coordinates(jsonDestination.getDouble("lat"), jsonDestination.getDouble("lng"));
     }

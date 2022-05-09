@@ -1,5 +1,11 @@
 package com.jileklu2.bakalarska_prace_app.cli;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.routesLogic.RouteInfoFinder;
@@ -24,8 +30,17 @@ public class MakeRouteConsoleScreen {
         Coordinates destination = getCoordinates();
         LinkedHashSet<Coordinates> waypoints = getWaypoints();
 
-        route = new Route(origin, destination, waypoints);
-        RouteInfoFinder.findRouteInfo(route, true, new HashSet<>());
+        try {
+            route = new Route(origin, destination, waypoints);
+        } catch (IdenticalCoordinatesException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            RouteInfoFinder.findRouteInfo(route, true, new HashSet<>());
+        } catch (CoordinatesOutOfBoundsException | EmptyDestinationsListException | EmptyTimeStampsSetException |
+                 DurationOutOfBoundsException | DistanceOutOfBoundsException | IdenticalCoordinatesException e) {
+            throw new RuntimeException(e);
+        }
         controller.setCurrentRoute(route);
     }
 
@@ -72,8 +87,8 @@ public class MakeRouteConsoleScreen {
     private Coordinates getCoordinates() {
         controller.resetScanner();
         Scanner scanner = controller.getScanner();
-        Double lat;
-        Double lng;
+        double lat;
+        double lng;
         Double elevation;
         Coordinates coordinates;
         while(true) {
@@ -98,8 +113,8 @@ public class MakeRouteConsoleScreen {
             try {
                 coordinates = new Coordinates(lat, lng);
                 break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Coordinates out of boundaries.");
+            }catch (CoordinatesOutOfBoundsException e) {
+                throw new RuntimeException(e);
             }
         }
         return coordinates;

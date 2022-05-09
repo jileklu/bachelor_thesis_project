@@ -2,11 +2,13 @@ package com.jileklu2.bakalarska_prace_app.routesLogic;
 
 import com.jileklu2.bakalarska_prace_app.builders.scriptBuilders.HttpRequestStringBuilder;
 import com.jileklu2.bakalarska_prace_app.errors.GoogleDirectionsStatus;
+import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.parsers.GoogleJsonParser;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
-import javafx.util.Pair;
 import org.json.JSONObject;
 
 import java.net.URI;
@@ -18,18 +20,21 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class GoogleTravelTimeFinder {
-    public static void FindRouteStepsTravelTime(Route route, HashSet<LocalDateTime> timeStamps) {
+public class GoogleAvgTravelTimeFinder {
+    public static void findRouteStepsAvgTravelTime(Route route, HashSet<LocalDateTime> timeStamps)
+        throws DurationOutOfBoundsException, EmptyDestinationsListException, EmptyTimeStampsSetException {
+        if(route == null || timeStamps == null)
+            throw new NullPointerException("Arguments can't be null.");
+
+        if(timeStamps.isEmpty())
+            throw new EmptyTimeStampsSetException("Can't create average travel time from an empty time stamps set");
+
         List<Coordinates> origins = new ArrayList<>();
         List<Coordinates> destinations = new ArrayList<>();
         List<Double> durations = new ArrayList<>();
 
-        List<Pair<List<Coordinates>,List<Coordinates>>> orgDestListPairs = new ArrayList<>();
-
-       // int counter = 0;
-
         for(RouteStep routeStep : route.getRouteSteps() ) {
-            /*
+            /* todo
             if(counter == 10) {
                 orgDestListPairs.add(new Pair<>(new ArrayList<>(origins), new ArrayList<>(destinations)));
                 origins.clear();
@@ -44,24 +49,16 @@ public class GoogleTravelTimeFinder {
         }
 
         for(LocalDateTime timeStamp : timeStamps) {
-            HttpClient client = HttpClient.newBuilder().build();
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(HttpRequestStringBuilder.googleMatrixRequest(origins, destinations, timeStamp)))
                 .build();
 
-            String response = String.valueOf(client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .join());
-
-            JSONObject jsonResponse = new JSONObject(response);
+            JSONObject jsonResponse = getTravelTimeMatrixResponse(request);
 
             String status = jsonResponse.getString("status");
 
             if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name())){
-                GoogleDirectionsStatus errorStatus = GoogleDirectionsStatus.valueOf(status);
-                //RoutingError error = new GoogleElevationError(errorStatus);
-                //ErrorHandler errorHandler = new GoogleElevationErrorHandler((GoogleElevationError) error); todo
-                //errorHandler.handleError();
+                // todo
             } else {
                 List<Double> receivedDurations = GoogleJsonParser.parseDurations(jsonResponse);
 
@@ -78,5 +75,15 @@ public class GoogleTravelTimeFinder {
             tmpDuration /= timeStamps.size();
             route.getRouteSteps().get(i).setDuration(tmpDuration);
         }
+    }
+
+    private static JSONObject getTravelTimeMatrixResponse(HttpRequest request) {
+        HttpClient client = HttpClient.newBuilder().build();
+
+        String response = String.valueOf(client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenApply(HttpResponse::body)
+            .join());
+
+        return new JSONObject(response);
     }
 }

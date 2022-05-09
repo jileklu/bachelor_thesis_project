@@ -7,6 +7,9 @@ public class RouteStepListViewWrapper {
     private final RouteStep routeStep;
 
     public RouteStepListViewWrapper(RouteStep routeStep) {
+        if(routeStep == null)
+            throw new NullPointerException("Arguments can't be null");
+
         this.routeStep = routeStep;
     }
 
@@ -24,12 +27,6 @@ public class RouteStepListViewWrapper {
         if (getClass() != obj.getClass())
             return false;
         RouteStepListViewWrapper other = (RouteStepListViewWrapper) obj;
-
-        if(this.routeStep == null && other.routeStep == null)
-            return true;
-        if(this.routeStep == null && other.routeStep != null ||
-           this.routeStep != null && other.routeStep == null)
-            return false;
 
         return routeStep.equals(obj);
     }

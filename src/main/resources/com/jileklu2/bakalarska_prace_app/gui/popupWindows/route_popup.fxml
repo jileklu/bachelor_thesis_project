@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeHandling.RouteWindowController">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="pane" stylesheets="@../styles/style_border_pane.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeHandling.RouteWindowController">
    <children>
-      <BorderPane prefHeight="300.0" prefWidth="400.0">
-         <bottom>
-            <VBox prefHeight="71.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+      <VBox layoutX="5.0" layoutY="210.0" prefHeight="80.0" prefWidth="390.0" style="-fx-background-color: #0f1114;">
+         <children>
+            <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="390.0" style="-fx-background-color: #0f1114;">
                <children>
-                  <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="400.0">
-                     <children>
-                        <Button fx:id="addWaypointButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addWaypointButtonAction" prefHeight="25.0" prefWidth="120.0" text="Add Waypoint" textAlignment="CENTER" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="400.0" spacing="20.0">
-                     <children>
-                        <Button fx:id="okButton" mnemonicParsing="false" onAction="#okButtonAction" prefHeight="25.0" prefWidth="80.0" text="OK" />
-                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonAction" prefHeight="25.0" prefWidth="80.0" text="Cancel" />
-                     </children>
-                  </HBox>
+                  <Button fx:id="addWaypointButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addWaypointButtonAction" prefHeight="25.0" prefWidth="120.0" text="Add Waypoint" textAlignment="CENTER" />
                </children>
-            </VBox>
-         </bottom>
-         <center>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="grid" stylesheets="@../style_scroll_pane.css" BorderPane.alignment="CENTER">
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="390.0" spacing="20.0" style="-fx-background-color: #0f1114;">
+               <children>
+                  <Button fx:id="okButton" mnemonicParsing="false" onAction="#okButtonAction" prefHeight="25.0" prefWidth="80.0" text="OK" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonAction" prefHeight="25.0" prefWidth="80.0" text="Cancel" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <AnchorPane layoutX="5.0" layoutY="10.0" prefHeight="200.0" prefWidth="390.0">
+         <children>
+            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="390.0">
                <content>
-                  <GridPane fx:id="gridPane" alignment="TOP_CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0">
+                  <GridPane fx:id="gridPane" alignment="TOP_CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="390.0" vgap="5.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
@@ -39,30 +38,24 @@
                       <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Origin Coordinates" />
-                        <TextField fx:id="orgLatTextField" onKeyTyped="#originLatKeyTextFieldTypedAction" prefHeight="25.0" prefWidth="100.0" promptText="Lat" GridPane.columnIndex="1" />
-                        <TextField fx:id="orgLngTextField" onKeyTyped="#originLngTextFieldKeyTypedAction" prefHeight="25.0" prefWidth="100.0" promptText="Lng" GridPane.columnIndex="2" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination Coordinates" GridPane.rowIndex="1" />
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Origin Coordinates" />
+                        <TextField fx:id="orgLatTextField" onKeyTyped="#originLatKeyTextFieldTypedAction" prefHeight="25.0" prefWidth="100.0" promptText="Lat" styleClass="text-input" GridPane.columnIndex="1" />
+                        <TextField fx:id="orgLngTextField" onKeyTyped="#originLngTextFieldKeyTypedAction" prefHeight="25.0" prefWidth="100.0" promptText="Lng" styleClass="text-input" GridPane.columnIndex="2" />
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination Coordinates" GridPane.rowIndex="1" />
                         <TextField fx:id="destLatTextField" onKeyTyped="#destinationLatKeyTextFieldTypedAction" prefHeight="25.0" prefWidth="100.0" promptText="Lat" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="destLngTextField" onKeyTyped="#destinationLngKeyTextFieldTypedAction" prefHeight="25.0" prefWidth="100.0" promptText="Lng" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                      </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </GridPane>
                </content>
+               <stylesheets>
+                  <URL value="@../styles/style_scroll_pane.css" />
+                  <URL value="@../styles/style_text_field.css" />
+               </stylesheets>
             </ScrollPane>
-         </center>
-         <top>
-            <Text fx:id="mainText" strokeType="OUTSIDE" strokeWidth="0.0" text="Route waypoints" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="MS Outlook" size="20.0" />
-               </font>
-            </Text>
-         </top>
-      </BorderPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
