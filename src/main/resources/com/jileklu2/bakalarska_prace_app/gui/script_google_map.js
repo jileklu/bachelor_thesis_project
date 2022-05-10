@@ -106,8 +106,9 @@ function removePolyLines() {
 function addMarker(lat, lng, title) {
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(lat, lng),
-        label: title,
-        draggable: true
+        draggable: true,
+        label: {color: '#FFF', fontSize: '12px', fontWeight: '600',
+            text: markers.length.toString()}
     });
 
     marker.addListener("dragend", () => {
