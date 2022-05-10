@@ -1,6 +1,6 @@
-package com.jileklu2.bakalarska_prace_app.errors;
+package com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums;
 
-public enum HereResponseStatus {
+public enum HereOptimizationStatus {
     OK(200),
     CREATED(201),
     UNAUTHORIZED(401),
@@ -9,7 +9,7 @@ public enum HereResponseStatus {
 
     public final int value;
 
-    HereResponseStatus(int value) {
+    HereOptimizationStatus(int value) {
         this.value = value;
     }
 }

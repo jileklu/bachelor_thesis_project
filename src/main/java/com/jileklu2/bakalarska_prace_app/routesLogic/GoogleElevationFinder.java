@@ -1,7 +1,10 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic;
 
-import com.jileklu2.bakalarska_prace_app.errors.GoogleDirectionsStatus;
+import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums.GoogleElevationStatus;
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyCoordinatesListException;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.google.GoogleElevationResponseStatusHandler;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.GoogleResponseStatusHandler;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.builders.scriptBuilders.HttpRequestStringBuilder;
@@ -15,8 +18,13 @@ import java.net.http.HttpResponse;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums.GoogleElevationStatus.*;
+
 public class GoogleElevationFinder {
-    public static void findRouteWaypointsElevations(Route route) {
+    private static final GoogleResponseStatusHandler responseStatusHandler = new GoogleElevationResponseStatusHandler();
+    public static void findRouteWaypointsElevations(Route route) throws RouteLengthExceededException,
+    RequestDeniedException, OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException,
+    ZeroResultsException, InvalidRequestException, DataNotAvailableException, LocationNotFoundException, UnknownStatusException {
         if(route == null)
             throw new NullPointerException("Arguments can't be null.");
 
@@ -28,8 +36,8 @@ public class GoogleElevationFinder {
 
         String status = jsonResponse.getString("status");
 
-        if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name())){
-            //todo
+        if(!status.equalsIgnoreCase(OK.name())){
+            responseStatusHandler.handle(status);
         } else {
             JSONArray elevations = jsonResponse.getJSONArray("results");
             route.getOrigin().setElevation(getElevationOnIndex(elevations,0));
@@ -48,7 +56,10 @@ public class GoogleElevationFinder {
         }
     }
 
-    public static void findCoordinatesElevation(List<Coordinates> coordinatesList) {
+    public static void findCoordinatesElevation(List<Coordinates> coordinatesList) throws RouteLengthExceededException,
+    RequestDeniedException, OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException,
+    ZeroResultsException, InvalidRequestException, DataNotAvailableException, LocationNotFoundException,
+    UnknownStatusException {
         if(coordinatesList == null)
             throw new NullPointerException("Arguments can't be null.");
 
@@ -69,8 +80,8 @@ public class GoogleElevationFinder {
 
         String status = jsonResponse.getString("status");
 
-        if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name())){
-            // todo
+        if(!status.equalsIgnoreCase(GoogleElevationStatus.OK.name())){
+            responseStatusHandler.handle(status);
         } else {
             JSONArray elevations = jsonResponse.getJSONArray("results");
             for(int i = 0; i < elevations.length(); i++) {

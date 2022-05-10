@@ -1,6 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.gui.routeStepHandling;
 
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
+import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
@@ -187,7 +188,22 @@ public class RouteStepEditWindowController implements Initializable, RouteStepEd
                 System.out.println("Route has to be created before changing its steps.");
                 e.printStackTrace();
                 return;
+            } catch (InterruptedException e) {
+                mainContext.createErrorWindow("Working thread interrupted.");
+                System.out.println("Thread error.");
+                e.printStackTrace();
+                return;
+            } catch (RouteLengthExceededException | CreatedException | RequestDeniedException | OverDailyLimitException |
+                     OverQueryLimitException | WaypointsNumberExceededException | ZeroResultsException |
+                     InvalidRequestException | DataNotAvailableException | LocationNotFoundException |
+                     UnknownStatusException e) {
+                mainContext.createErrorWindow(e.getMessage());
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                return;
             }
+
+
             try {
                 mapViewContext.showDefaultRoute();
             } catch (DefaultRouteNotSetException e) {

@@ -1,6 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.gui.routeHandling;
 
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
+import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
@@ -30,13 +31,13 @@ public interface RoutesContext {
     Route getDefaultRoute() throws DefaultRouteNotSetException;
 
     void findRouteInfo(Route route) throws IdenticalCoordinatesException, DistanceOutOfBoundsException,
-                                           EmptyTimeStampsSetException, CoordinatesOutOfBoundsException,
-                                           EmptyDestinationsListException, DurationOutOfBoundsException;
+        EmptyTimeStampsSetException, CoordinatesOutOfBoundsException,
+        EmptyDestinationsListException, DurationOutOfBoundsException, InterruptedException, RouteLengthExceededException, CreatedException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException, LocationNotFoundException, UnknownStatusException;
 
     void loadJsonRoute(String path) throws FileNotFoundException, IdenticalCoordinatesException,
-                                           CoordinatesOutOfBoundsException, DistanceOutOfBoundsException,
-                                           EmptyTimeStampsSetException, EmptyDestinationsListException,
-                                           DurationOutOfBoundsException;
+        CoordinatesOutOfBoundsException, DistanceOutOfBoundsException,
+        EmptyTimeStampsSetException, EmptyDestinationsListException,
+        DurationOutOfBoundsException, InterruptedException, RouteLengthExceededException, CreatedException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException, LocationNotFoundException, UnknownStatusException;
 
     int getDefaultRouteStepIndex(RouteStep routeStep) throws DefaultRouteNotSetException;
 
@@ -48,27 +49,30 @@ public interface RoutesContext {
         throws CoordinatesOutOfBoundsException, DefaultRouteNotSetException;
 
     void findRouteStepInfo(RouteStep routeStep) throws IdenticalCoordinatesException, DistanceOutOfBoundsException,
-                                                       DurationOutOfBoundsException, AverageSpeedOutOfBoundsException,
-                                                       EmptyTimeStampsSetException, CoordinatesOutOfBoundsException,
-                                                       EmptyDestinationsListException, DefaultRouteNotSetException;
+        DurationOutOfBoundsException, AverageSpeedOutOfBoundsException,
+        EmptyTimeStampsSetException, CoordinatesOutOfBoundsException,
+        EmptyDestinationsListException, DefaultRouteNotSetException,
+        InterruptedException, RouteLengthExceededException, CreatedException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException, LocationNotFoundException, UnknownStatusException;
 
     void setMapViewContext(MapViewContext mapViewContext);
 
     void setRouteInfoPanelContext(RouteInfoPanelContext routeInfoPanelContext);
 
     void collectNewWaypoint(String waypoint) throws CoordinatesOutOfBoundsException, IdenticalCoordinatesException,
-                                                    DistanceOutOfBoundsException, EmptyTimeStampsSetException,
-                                                    EmptyDestinationsListException, DurationOutOfBoundsException,
-                                                    DefaultRouteNotSetException, BlankScriptNameStringException;
+        DistanceOutOfBoundsException, EmptyTimeStampsSetException,
+        EmptyDestinationsListException, DurationOutOfBoundsException,
+        DefaultRouteNotSetException, BlankScriptNameStringException,
+        InterruptedException, RouteLengthExceededException, CreatedException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException, LocationNotFoundException, UnknownStatusException;
 
     void collectChangedMarker(String marker) throws CoordinatesOutOfBoundsException, IdenticalCoordinatesException,
-                                                    DistanceOutOfBoundsException, AverageSpeedOutOfBoundsException,
-                                                    DurationOutOfBoundsException, EmptyTimeStampsSetException,
-                                                    EmptyDestinationsListException, DefaultRouteNotSetException,
-                                                    BlankScriptNameStringException;
+        DistanceOutOfBoundsException, AverageSpeedOutOfBoundsException,
+        DurationOutOfBoundsException, EmptyTimeStampsSetException,
+        EmptyDestinationsListException, DefaultRouteNotSetException,
+        BlankScriptNameStringException, InterruptedException, RouteLengthExceededException, CreatedException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException, LocationNotFoundException, UnknownStatusException;
 
     void collectCoordinates(String coordinates) throws CoordinatesOutOfBoundsException, IdenticalCoordinatesException,
-                                                       DistanceOutOfBoundsException, EmptyTimeStampsSetException,
-                                                       EmptyDestinationsListException, DurationOutOfBoundsException,
-                                                       DefaultRouteNotSetException, BlankScriptNameStringException;
+        DistanceOutOfBoundsException, EmptyTimeStampsSetException,
+        EmptyDestinationsListException, DurationOutOfBoundsException,
+        DefaultRouteNotSetException, BlankScriptNameStringException,
+        InterruptedException, RouteLengthExceededException, CreatedException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException, LocationNotFoundException, UnknownStatusException;
 }

@@ -38,6 +38,10 @@ public class RouteHandlerCli {
             throw new RuntimeException(e);
         } catch (EmptyDestinationsListException e) {
             throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

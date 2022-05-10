@@ -1,6 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.gui.routeHandling;
 
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
+import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
@@ -101,7 +102,10 @@ public class RoutesHandler implements RoutesContext {
     @Override
     public void findRouteInfo(Route route)
     throws IdenticalCoordinatesException, DistanceOutOfBoundsException, EmptyTimeStampsSetException,
-    CoordinatesOutOfBoundsException, EmptyDestinationsListException, DurationOutOfBoundsException {
+    CoordinatesOutOfBoundsException, EmptyDestinationsListException, DurationOutOfBoundsException, InterruptedException,
+    RouteLengthExceededException, CreatedException, RequestDeniedException, OverDailyLimitException,
+    OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException,
+    DataNotAvailableException, LocationNotFoundException, UnknownStatusException {
         RouteInfoFinder.findRouteInfo(route, true, timeStamps);
     }
 
@@ -109,13 +113,19 @@ public class RoutesHandler implements RoutesContext {
     public void loadJsonRoute(String path)
     throws FileNotFoundException, IdenticalCoordinatesException, CoordinatesOutOfBoundsException,
     DistanceOutOfBoundsException, EmptyTimeStampsSetException, EmptyDestinationsListException,
-    DurationOutOfBoundsException, JSONException {
+    DurationOutOfBoundsException, JSONException, InterruptedException, RouteLengthExceededException,
+    CreatedException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException,
+    WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException,
+    LocationNotFoundException, UnknownStatusException {
         JSONObject routeJson = FileHandler.readJsonFile(Paths.get(path).toString());
         Route newRoute = new Route(routeJson);
         findRouteInfo(newRoute);
         setDefaultRoute(newRoute);
     }
-    public void getChangedCoordinatesElevations(RouteStep routeStep) throws DefaultRouteNotSetException {
+    public void getChangedCoordinatesElevations(RouteStep routeStep) throws DefaultRouteNotSetException,
+    RouteLengthExceededException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException,
+    WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException,
+    LocationNotFoundException, UnknownStatusException {
         RouteStepArrayRole routeStepRole = getRouteStepRole(routeStep);
         List<Coordinates> coordinatesList = new ArrayList<>();
         coordinatesList.add(routeStep.getOrigin());
@@ -189,10 +199,13 @@ public class RoutesHandler implements RoutesContext {
     }
 
     @Override
-    public void findRouteStepInfo(RouteStep routeStep)
-    throws IdenticalCoordinatesException, DistanceOutOfBoundsException,
-    DurationOutOfBoundsException, AverageSpeedOutOfBoundsException, EmptyTimeStampsSetException,
-    CoordinatesOutOfBoundsException, EmptyDestinationsListException, DefaultRouteNotSetException {
+    public void findRouteStepInfo(RouteStep routeStep) throws IdenticalCoordinatesException,
+    DistanceOutOfBoundsException, DurationOutOfBoundsException, AverageSpeedOutOfBoundsException,
+    EmptyTimeStampsSetException, CoordinatesOutOfBoundsException, EmptyDestinationsListException,
+    DefaultRouteNotSetException, InterruptedException, RouteLengthExceededException, CreatedException,
+    RequestDeniedException, OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException,
+    ZeroResultsException, InvalidRequestException, DataNotAvailableException, LocationNotFoundException,
+    UnknownStatusException {
         Route wrapRoute = new Route(routeStep.getOrigin(),routeStep.getDestination());
         findRouteInfo(wrapRoute);
         routeStep.setDistance(wrapRoute.getRouteSteps().get(0).getDistance());
@@ -239,7 +252,10 @@ public class RoutesHandler implements RoutesContext {
     public void collectCoordinates(String coordinates) throws CoordinatesOutOfBoundsException,
     IdenticalCoordinatesException, DistanceOutOfBoundsException, EmptyTimeStampsSetException,
     EmptyDestinationsListException, DurationOutOfBoundsException, DefaultRouteNotSetException,
-    BlankScriptNameStringException {
+    BlankScriptNameStringException, InterruptedException, RouteLengthExceededException,
+    CreatedException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException,
+    WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException,
+    LocationNotFoundException, UnknownStatusException {
         JSONArray coordinatesJsonArr = new JSONArray(coordinates);
         JSONObject newOriginJson = (JSONObject) coordinatesJsonArr.get(0);
         JSONObject newDestinationJson = (JSONObject) coordinatesJsonArr.get(coordinatesJsonArr.length() - 1);
@@ -265,7 +281,10 @@ public class RoutesHandler implements RoutesContext {
     public void collectChangedMarker(String marker) throws CoordinatesOutOfBoundsException,
     IdenticalCoordinatesException, DistanceOutOfBoundsException, AverageSpeedOutOfBoundsException,
     DurationOutOfBoundsException, EmptyTimeStampsSetException, EmptyDestinationsListException,
-    DefaultRouteNotSetException, BlankScriptNameStringException {
+    DefaultRouteNotSetException, BlankScriptNameStringException, InterruptedException,
+    RouteLengthExceededException, CreatedException, RequestDeniedException, OverDailyLimitException,
+    OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException,
+    DataNotAvailableException, LocationNotFoundException, UnknownStatusException {
         JSONObject markerJSON = new JSONObject(marker);
         Double lat = ((JSONObject) markerJSON.get("coordinates")).getDouble("lat");
         Double lng = ((JSONObject) markerJSON.get("coordinates")).getDouble("lng");
@@ -299,7 +318,10 @@ public class RoutesHandler implements RoutesContext {
     public void collectNewWaypoint(String waypoint) throws CoordinatesOutOfBoundsException,
     IdenticalCoordinatesException, DistanceOutOfBoundsException, EmptyTimeStampsSetException,
     EmptyDestinationsListException, DurationOutOfBoundsException, DefaultRouteNotSetException,
-    BlankScriptNameStringException {
+    BlankScriptNameStringException, InterruptedException, RouteLengthExceededException,
+    CreatedException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException,
+    WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException,
+    LocationNotFoundException, UnknownStatusException {
         JSONObject markerJSON = new JSONObject(waypoint);
         Double lat = markerJSON.getDouble("lat");
         Double lng = markerJSON.getDouble("lng");

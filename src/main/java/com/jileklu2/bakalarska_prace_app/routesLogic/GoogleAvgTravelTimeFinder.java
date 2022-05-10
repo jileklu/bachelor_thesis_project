@@ -1,10 +1,13 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic;
 
 import com.jileklu2.bakalarska_prace_app.builders.scriptBuilders.HttpRequestStringBuilder;
-import com.jileklu2.bakalarska_prace_app.errors.GoogleDirectionsStatus;
+import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums.GoogleDirectionsStatus;
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.GoogleResponseStatusHandler;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.google.GoogleMatrixResponseStatusHandler;
 import com.jileklu2.bakalarska_prace_app.parsers.GoogleJsonParser;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
@@ -19,35 +22,75 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GoogleAvgTravelTimeFinder {
+    private static final GoogleResponseStatusHandler responseStatusHandler = new GoogleMatrixResponseStatusHandler();
     public static void findRouteStepsAvgTravelTime(Route route, HashSet<LocalDateTime> timeStamps)
-        throws DurationOutOfBoundsException, EmptyDestinationsListException, EmptyTimeStampsSetException {
+        throws EmptyTimeStampsSetException, InterruptedException, RouteLengthExceededException, RequestDeniedException,
+        OverDailyLimitException, OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException,
+        InvalidRequestException, DataNotAvailableException, LocationNotFoundException, UnknownStatusException {
         if(route == null || timeStamps == null)
             throw new NullPointerException("Arguments can't be null.");
 
         if(timeStamps.isEmpty())
             throw new EmptyTimeStampsSetException("Can't create average travel time from an empty time stamps set");
 
-        List<Coordinates> origins = new ArrayList<>();
-        List<Coordinates> destinations = new ArrayList<>();
-        List<Double> durations = new ArrayList<>();
+        List<Thread> threads = new ArrayList<>();
+        List<List<RouteStep>> helpingSteps = RouteSplitter.splitRouteSteps(route);
+        BlockingQueue<String> responseStatuses = new LinkedBlockingQueue<>();
 
-        for(RouteStep routeStep : route.getRouteSteps() ) {
-            /* todo
-            if(counter == 10) {
-                orgDestListPairs.add(new Pair<>(new ArrayList<>(origins), new ArrayList<>(destinations)));
-                origins.clear();
-                destinations.clear();
-                counter = 0;
+        for(List<RouteStep> steps : helpingSteps) {
+            List<Coordinates> origins = new ArrayList<>();
+            List<Coordinates> destinations = new ArrayList<>();
+            List<Double> durations = new ArrayList<>();
+
+            for(RouteStep routeStep : steps) {
+                origins.add(routeStep.getOrigin());
+                destinations.add(routeStep.getDestination());
+                durations.add(0.0);
             }
-            */
-            origins.add(routeStep.getOrigin());
-            destinations.add(routeStep.getDestination());
-            durations.add(0.0);
-           // counter++;
+
+            Runnable r = () -> {
+                try {
+                    responseStatuses.add(findAvgTravelTime(new ArrayList<>(origins),
+                                                   new ArrayList<>(destinations),
+                                                   new ArrayList<>(durations),
+                                                   steps,
+                                                   timeStamps)
+                    );
+                } catch (EmptyDestinationsListException | DurationOutOfBoundsException e) {
+                    throw new RuntimeException(e);
+                }
+            };
+
+            Thread t = new Thread(r);
+            threads.add(new Thread(r));
+            t.start();
         }
 
+        for(Thread thread : threads) {
+            System.out.println("join");
+            thread.join();
+        }
+
+        for (String status : responseStatuses) {
+            if(status == null)
+                throw new NullPointerException("Response status is null");
+
+            if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name()))
+                responseStatusHandler.handle(status);
+        }
+    }
+
+    private static String findAvgTravelTime(List<Coordinates> origins,
+                                          List<Coordinates> destinations,
+                                          List<Double> durations,
+                                          List<RouteStep> routeSteps,
+                                          HashSet<LocalDateTime> timeStamps) throws EmptyDestinationsListException,
+                                                                                    DurationOutOfBoundsException {
+        String status = null;
         for(LocalDateTime timeStamp : timeStamps) {
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(HttpRequestStringBuilder.googleMatrixRequest(origins, destinations, timeStamp)))
@@ -55,10 +98,10 @@ public class GoogleAvgTravelTimeFinder {
 
             JSONObject jsonResponse = getTravelTimeMatrixResponse(request);
 
-            String status = jsonResponse.getString("status");
+            status = jsonResponse.getString("status");
 
             if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name())){
-                // todo
+                return status;
             } else {
                 List<Double> receivedDurations = GoogleJsonParser.parseDurations(jsonResponse);
 
@@ -73,8 +116,10 @@ public class GoogleAvgTravelTimeFinder {
         for (int i = 0; i < durations.size(); i++) {
             Double tmpDuration = durations.get(i);
             tmpDuration /= timeStamps.size();
-            route.getRouteSteps().get(i).setDuration(tmpDuration);
+            routeSteps.get(i).setDuration(tmpDuration);
         }
+
+        return status;
     }
 
     private static JSONObject getTravelTimeMatrixResponse(HttpRequest request) {

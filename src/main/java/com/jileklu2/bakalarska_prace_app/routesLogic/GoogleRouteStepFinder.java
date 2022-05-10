@@ -1,10 +1,13 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic;
 
+import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
-import com.jileklu2.bakalarska_prace_app.errors.GoogleDirectionsStatus;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums.GoogleDirectionsStatus;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.GoogleResponseStatusHandler;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.google.GoogleDirectionsResponseStatusHandler;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
@@ -20,12 +23,20 @@ import java.net.http.HttpResponse;
 import java.util.*;
 
 public class GoogleRouteStepFinder {
+    private static final GoogleResponseStatusHandler responseStatusHandler = new GoogleDirectionsResponseStatusHandler();
+
     private static int totalStepsNum = 0;
+
     public static void findRouteSteps(Route route, Boolean optimize)
     throws IdenticalCoordinatesException, DistanceOutOfBoundsException, DurationOutOfBoundsException,
-    CoordinatesOutOfBoundsException {
+    CoordinatesOutOfBoundsException, RouteLengthExceededException, RequestDeniedException, OverDailyLimitException,
+    OverQueryLimitException, WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException,
+    DataNotAvailableException, LocationNotFoundException, UnknownStatusException {
         if(route == null || optimize == null)
             throw new NullPointerException("Arguments can't be null.");
+
+        if(!route.getRouteSteps().isEmpty())
+            route.getRouteSteps().clear();
 
         List<Route> helpingRoutes = RouteSplitter.splitRoute(route);
 
@@ -61,12 +72,18 @@ public class GoogleRouteStepFinder {
     }
 
     private static void findRouteStepsInfo(Route route, Boolean optimize)
-    throws DistanceOutOfBoundsException, DurationOutOfBoundsException, CoordinatesOutOfBoundsException {
+    throws DistanceOutOfBoundsException, DurationOutOfBoundsException, CoordinatesOutOfBoundsException,
+    RouteLengthExceededException, RequestDeniedException, OverDailyLimitException, OverQueryLimitException,
+    WaypointsNumberExceededException, ZeroResultsException, InvalidRequestException, DataNotAvailableException,
+    LocationNotFoundException, UnknownStatusException {
         JSONObject response = getRouteResponse(route, optimize);
         String status = response.getString("status");
 
+        if(!route.getRouteSteps().isEmpty())
+            route.getRouteSteps().clear();
+
         if(!status.equalsIgnoreCase(GoogleDirectionsStatus.OK.name())){
-            // todo
+            responseStatusHandler.handle(status);
         } else {
             LinkedHashSet<Coordinates> newWaypointsOrder = new LinkedHashSet<>();
             List<RouteStep> newRouteSteps = new ArrayList<>();

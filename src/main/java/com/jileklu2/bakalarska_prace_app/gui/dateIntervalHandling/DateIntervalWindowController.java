@@ -3,13 +3,13 @@ package com.jileklu2.bakalarska_prace_app.gui.dateIntervalHandling;
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
 import com.jileklu2.bakalarska_prace_app.exceptions.dateSelection.*;
+import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.EmptyTimeStampsSetException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
-import com.jileklu2.bakalarska_prace_app.exceptions.strings.BlankStringException;
 import com.jileklu2.bakalarska_prace_app.gui.MainContext;
 import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
 import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
@@ -285,6 +285,18 @@ public class DateIntervalWindowController implements DateIntervalWindowContext, 
             System.out.println(e.getMessage());
             e.printStackTrace();
             return;
+        } catch (InterruptedException e) {
+            mainContext.createErrorWindow("Working thread interrupted.");
+            System.out.println("Thread error.");
+            e.printStackTrace();
+            return;
+        } catch (RouteLengthExceededException | UnknownStatusException | LocationNotFoundException |
+                 DataNotAvailableException | InvalidRequestException | ZeroResultsException |
+                 WaypointsNumberExceededException | OverQueryLimitException | OverDailyLimitException |
+                 RequestDeniedException | CreatedException e) {
+            mainContext.createErrorWindow(e.getMessage());
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         routesContext.setDefaultRoute(newRoute);
         try {

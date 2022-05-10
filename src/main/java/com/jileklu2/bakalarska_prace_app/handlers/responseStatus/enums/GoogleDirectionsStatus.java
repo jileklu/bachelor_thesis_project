@@ -1,4 +1,4 @@
-package com.jileklu2.bakalarska_prace_app.errors;
+package com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums;
 
 public enum GoogleDirectionsStatus {
     OK(200),

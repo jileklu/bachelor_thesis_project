@@ -76,15 +76,10 @@ public class MainViewController implements Initializable, MainContext {
     private ListView<RouteStepListViewWrapper> listView;
 
     private RoutesContext routesContext;
-
     private MapViewContext mapViewContext;
-
     private RouteInfoPanelContext routeInfoPanelContext;
-
     private static double xOffset = 0;
-
     private static double yOffset = 0;
-
     private boolean maximized = false;
 
     @Override

@@ -38,7 +38,11 @@ public class MakeRouteConsoleScreen {
         try {
             RouteInfoFinder.findRouteInfo(route, true, new HashSet<>());
         } catch (CoordinatesOutOfBoundsException | EmptyDestinationsListException | EmptyTimeStampsSetException |
-                 DurationOutOfBoundsException | DistanceOutOfBoundsException | IdenticalCoordinatesException e) {
+                 DurationOutOfBoundsException | DistanceOutOfBoundsException | IdenticalCoordinatesException |
+                 InterruptedException e) {
+            //todo
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         controller.setCurrentRoute(route);

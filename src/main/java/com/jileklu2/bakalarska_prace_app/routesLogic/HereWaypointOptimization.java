@@ -1,8 +1,11 @@
 package com.jileklu2.bakalarska_prace_app.routesLogic;
 
 import com.jileklu2.bakalarska_prace_app.builders.scriptBuilders.HttpRequestStringBuilder;
-import com.jileklu2.bakalarska_prace_app.errors.HereResponseStatus;
+import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.HereResponseStatusHandler;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums.HereOptimizationStatus;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.here.HereOptimizationResponseStatusHandler;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
 import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
 import org.json.JSONArray;
@@ -15,7 +18,10 @@ import java.net.http.HttpResponse;
 import java.util.HashSet;
 
 public class HereWaypointOptimization {
-    public static void optimizeWaypoints(Route route) throws CoordinatesOutOfBoundsException {
+    private static final HereResponseStatusHandler responseStatusHandler = new HereOptimizationResponseStatusHandler();
+
+    public static void optimizeWaypoints(Route route) throws CoordinatesOutOfBoundsException, CreatedException,
+    RequestDeniedException, OverDailyLimitException, LocationNotFoundException, UnknownStatusException {
         if(route == null)
             throw new NullPointerException("Arguments can't be null.");
 
@@ -27,8 +33,8 @@ public class HereWaypointOptimization {
 
         int status = jsonResponse.getInt("responseCode");
 
-        if(status != HereResponseStatus.OK.value){
-            //todo
+        if(status != HereOptimizationStatus.OK.value){
+            responseStatusHandler.handle(String.valueOf(status));
         } else {
             JSONArray results = jsonResponse.getJSONArray("results");
             JSONArray waypointsJson = results.getJSONObject(0).getJSONArray("waypoints");

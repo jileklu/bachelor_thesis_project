@@ -1,6 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.gui.fileHandling;
 
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
+import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.routesContext.DefaultRouteNotSetException;
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
 import com.jileklu2.bakalarska_prace_app.exceptions.files.IllegalFilePathFormatException;
@@ -9,7 +10,6 @@ import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinate
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
-import com.jileklu2.bakalarska_prace_app.exceptions.strings.BlankStringException;
 import com.jileklu2.bakalarska_prace_app.gui.MainContext;
 import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
 import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
@@ -139,6 +139,17 @@ public class FileImportWindowController implements FileImportWindowContext, Init
         } catch (DefaultRouteNotSetException e) {
             mainContext.createErrorWindow("Route has to be created before showing.");
             System.out.println("Route has to be created before showing.");
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            mainContext.createErrorWindow("Working thread interrupted.");
+            System.out.println("Thread error.");
+            e.printStackTrace();
+        } catch (RouteLengthExceededException | UnknownStatusException | LocationNotFoundException |
+                 DataNotAvailableException | InvalidRequestException | ZeroResultsException |
+                 WaypointsNumberExceededException | OverQueryLimitException | OverDailyLimitException |
+                 RequestDeniedException | CreatedException e) {
+            mainContext.createErrorWindow(e.getMessage());
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
