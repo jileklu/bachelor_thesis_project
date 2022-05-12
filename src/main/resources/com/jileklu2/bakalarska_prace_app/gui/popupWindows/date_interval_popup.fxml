@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="pane" stylesheets="@../styles/style_border_pane.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.dateIntervalHandling.DateIntervalWindowController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeHandling.dateIntervalHandling.DateIntervalWindowController">
    <children>
       <DatePicker fx:id="fromDatePicker" layoutX="345.0" layoutY="70.0" promptText="dd.mm.yyyy" styleClass="date-picker" stylesheets="@../styles/style_date_picker.css" />
       <DatePicker fx:id="toDatePicker" layoutX="345.0" layoutY="150.0" promptText="dd.mm.yyyy" stylesheets="@../styles/style_date_picker.css" />
@@ -26,4 +27,9 @@
       <Text fill="WHITE" layoutX="403.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Until (Date)" />
       <Text fill="WHITE" layoutX="145.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Interval" />
    </children>
+   <stylesheets>
+      <URL value="@../styles/style_border_pane.css" />
+      <URL value="@../styles/style_dark_button.css" />
+      <URL value="@../styles/style_dark_check_box.css" />
+   </stylesheets>
 </AnchorPane>

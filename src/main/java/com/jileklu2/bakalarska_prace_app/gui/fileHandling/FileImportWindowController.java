@@ -11,8 +11,8 @@ import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.Iden
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.gui.MainContext;
-import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
-import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
+import com.jileklu2.bakalarska_prace_app.gui.mapHandling.MapViewContext;
+import com.jileklu2.bakalarska_prace_app.gui.infoPannelHandling.RouteInfoPanelContext;
 import com.jileklu2.bakalarska_prace_app.gui.routeHandling.RoutesContext;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -101,7 +101,7 @@ public class FileImportWindowController implements FileImportWindowContext, Init
 
             routesContext.loadJsonRoute(path);
             mapViewContext.showDefaultRoute();
-            routeInfoPanelContext.showDefaultRouteInfo();
+            routeInfoPanelContext.setDefaultRouteInfo();
 
             Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();

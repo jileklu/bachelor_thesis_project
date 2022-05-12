@@ -1,6 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.mapObjects;
 
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ public class CoordinatesTest {
     private Coordinates testCoordinates06;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() throws CoordinatesOutOfBoundsException {
         testCoordinates01 = new Coordinates(10.0,8.0);
         testCoordinates02 = new Coordinates(8.0,10.0);
         testCoordinates03 = new Coordinates(5.0,10.0);
@@ -28,7 +29,7 @@ public class CoordinatesTest {
     }
 
     @Test
-    public void basicFunctionalitiesTest(){
+    public void basicFunctionalitiesTest() throws CoordinatesOutOfBoundsException {
         Assertions.assertEquals(10.0, testCoordinates01.getLat(), epsilon);
         Assertions.assertEquals(8.0, testCoordinates01.getLng(), epsilon);
 
@@ -51,8 +52,8 @@ public class CoordinatesTest {
             Coordinates testCoordinates05 = new Coordinates(-190.0,8.0);
             Assertions.fail("No exception was thrown");
         }
-        catch (IllegalArgumentException e) {
-            if(!Objects.equals(e.getMessage(), "Lat or Lng is out of expected bounds."))
+        catch (CoordinatesOutOfBoundsException e) {
+            if(!Objects.equals(e.getMessage(), "Point is out of expected bounds."))
                 Assertions.fail("Wrong exception message.");
         }
         catch (Exception e) {
@@ -63,8 +64,8 @@ public class CoordinatesTest {
             Coordinates testCoordinates05 = new Coordinates(190.0,8.0);
             Assertions.fail("No exception was thrown");
         }
-        catch (IllegalArgumentException e) {
-            if(!Objects.equals(e.getMessage(), "Lat or Lng is out of expected bounds."))
+        catch (CoordinatesOutOfBoundsException e) {
+            if(!Objects.equals(e.getMessage(), "Point is out of expected bounds."))
                 Assertions.fail("Wrong exception message.");
         }
         catch (Exception e) {
@@ -75,8 +76,8 @@ public class CoordinatesTest {
             Coordinates testCoordinates05 = new Coordinates(0.0,-190.0);
             Assertions.fail("No exception was thrown");
         }
-        catch (IllegalArgumentException e) {
-            if(!Objects.equals(e.getMessage(), "Lat or Lng is out of expected bounds."))
+        catch (CoordinatesOutOfBoundsException e) {
+            if(!Objects.equals(e.getMessage(), "Point is out of expected bounds."))
                 Assertions.fail("Wrong exception message.");
         }
         catch (Exception e) {
@@ -87,8 +88,8 @@ public class CoordinatesTest {
             Coordinates testCoordinates05 = new Coordinates(0.0,190.0);
             Assertions.fail("No exception was thrown");
         }
-        catch (IllegalArgumentException e) {
-            if(!Objects.equals(e.getMessage(), "Lat or Lng is out of expected bounds."))
+        catch (CoordinatesOutOfBoundsException e) {
+            if(!Objects.equals(e.getMessage(), "Point is out of expected bounds."))
                 Assertions.fail("Wrong exception message.");
         }
         catch (Exception e) {
@@ -107,7 +108,7 @@ public class CoordinatesTest {
     }
 
     @Test
-    public void jsonConstructorTest(){
+    public void jsonConstructorTest() throws CoordinatesOutOfBoundsException {
         JSONObject jsonObject = new JSONObject()
                                 .put("lat", "10")
                                 .put("lng", "8");
@@ -116,7 +117,7 @@ public class CoordinatesTest {
     }
 
     @Test
-    public void jsonConstructorAssertionsTest(){
+    public void jsonConstructorAssertionsTest() throws CoordinatesOutOfBoundsException {
         JSONObject jsonObject = new JSONObject()
                 .put("lat", "10");
 
@@ -124,7 +125,7 @@ public class CoordinatesTest {
             Coordinates testCoordinates = new Coordinates(jsonObject);
             Assertions.fail("No exception was thrown");
         }
-        catch (IllegalArgumentException e) {
+        catch (JSONException e) {
             if(!Objects.equals(e.getMessage(), "Wrong JSON file structure."))
                 Assertions.fail("Wrong exception message.");
         }

@@ -1,7 +1,6 @@
 package com.jileklu2.bakalarska_prace_app.handlers.responseStatus.here;
 
 import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
-import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.HereResponseStatusHandler;
 
 import static com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums.HereOptimizationStatus.*;
 

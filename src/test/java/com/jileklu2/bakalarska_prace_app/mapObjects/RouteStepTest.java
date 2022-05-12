@@ -1,8 +1,10 @@
 package com.jileklu2.bakalarska_prace_app.mapObjects;
 
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Variable;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.AverageSpeedOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.strings.BlankStringException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +27,8 @@ public class RouteStepTest {
 
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() throws CoordinatesOutOfBoundsException, DistanceOutOfBoundsException,
+    DurationOutOfBoundsException, BlankStringException {
         testOrigin01 = new Coordinates(1.0,1.0);
         testDest01 = new Coordinates(2.0,2.0);
         testRouteStep01 = new RouteStep(testOrigin01, testDest01, 10.0,5.0,3);
@@ -45,7 +48,8 @@ public class RouteStepTest {
     }
 
     @Test
-    public void jsonConstructorTest(){
+    public void jsonConstructorTest() throws DistanceOutOfBoundsException, AverageSpeedOutOfBoundsException,
+    BlankStringException, CoordinatesOutOfBoundsException, DurationOutOfBoundsException {
         JSONObject jsonOrigin = new JSONObject()
                 .put("lat", "1")
                 .put("lng", "1")
@@ -85,7 +89,8 @@ public class RouteStepTest {
     }
 
     @Test
-    public void jsonConstructorAssertionsTest(){
+    public void jsonConstructorAssertionsTest() throws DistanceOutOfBoundsException, AverageSpeedOutOfBoundsException,
+    BlankStringException, CoordinatesOutOfBoundsException, DurationOutOfBoundsException {
         JSONObject jsonObject = new JSONObject()
                 .put("origin", "10");
 

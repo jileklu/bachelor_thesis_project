@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="100.0" prefWidth="450.0" style="-fx-background-color: #0f1114; -fx-border-color: #2c323a; -fx-border-width: 1px 1px 1px 1px;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.fileHandling.FileImportWindowController">
+<AnchorPane prefHeight="100.0" prefWidth="450.0" style="-fx-background-color: #0f1114; -fx-border-color: #2c323a; -fx-border-width: 1px 1px 1px 1px;" stylesheets="@../styles/style_dark_button.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.fileHandling.FileImportWindowController">
    <children>
       <TextField fx:id="textField" layoutX="115.0" layoutY="25.0" prefHeight="25.0" prefWidth="315.0" stylesheets="@../styles/style_text_field.css" />
       <Button fx:id="okButton" layoutX="150.0" layoutY="60.0" mnemonicParsing="false" onAction="#okButtonAction" text="OK" />

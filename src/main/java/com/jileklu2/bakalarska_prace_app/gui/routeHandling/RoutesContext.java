@@ -10,12 +10,11 @@ import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.Iden
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.AverageSpeedOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
-import com.jileklu2.bakalarska_prace_app.gui.MainContext;
-import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
-import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
+import com.jileklu2.bakalarska_prace_app.gui.mapHandling.MapViewContext;
+import com.jileklu2.bakalarska_prace_app.gui.infoPannelHandling.RouteInfoPanelContext;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.mapObjects.RouteStep;
 import javafx.util.Pair;
 import org.json.JSONException;
 

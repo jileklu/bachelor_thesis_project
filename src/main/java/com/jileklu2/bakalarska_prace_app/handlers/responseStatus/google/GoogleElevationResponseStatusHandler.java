@@ -1,10 +1,12 @@
 package com.jileklu2.bakalarska_prace_app.handlers.responseStatus.google;
 
 import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.*;
-import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.GoogleResponseStatusHandler;
 
 import static com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums.GoogleElevationStatus.*;
 
+/**
+ *
+ */
 public class GoogleElevationResponseStatusHandler implements GoogleResponseStatusHandler {
     @Override
     public void handle(String status) throws InvalidRequestException, OverDailyLimitException, OverQueryLimitException,

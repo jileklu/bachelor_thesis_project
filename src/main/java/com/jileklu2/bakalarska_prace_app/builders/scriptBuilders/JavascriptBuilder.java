@@ -1,9 +1,18 @@
 package com.jileklu2.bakalarska_prace_app.builders.scriptBuilders;
 
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.BlankScriptNameStringException;
-import com.jileklu2.bakalarska_prace_app.exceptions.strings.BlankStringException;
 
+/**
+ * Class dedicated to building Javascript request strings
+ */
 public class JavascriptBuilder {
+    /**
+     *
+     * @param scriptName JS script name
+     * @param args Arguments of the script
+     * @return Created request
+     * @throws BlankScriptNameStringException
+     */
     public static String createScriptString(String scriptName, Object... args) throws BlankScriptNameStringException {
         if(scriptName == null)
             throw new NullPointerException("Arguments can't be null.");

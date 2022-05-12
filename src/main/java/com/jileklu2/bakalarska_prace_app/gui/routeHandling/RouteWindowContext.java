@@ -1,8 +1,8 @@
 package com.jileklu2.bakalarska_prace_app.gui.routeHandling;
 
 import com.jileklu2.bakalarska_prace_app.gui.MainContext;
-import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
-import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
+import com.jileklu2.bakalarska_prace_app.gui.mapHandling.MapViewContext;
+import com.jileklu2.bakalarska_prace_app.gui.infoPannelHandling.RouteInfoPanelContext;
 
 public interface RouteWindowContext {
     void setRoutesContext(RoutesContext routesContext);

@@ -1,8 +1,16 @@
 package com.jileklu2.bakalarska_prace_app.builders;
 
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
 
+/**
+ *  Class dedicated to building GPX format
+ */
 public class GpxBuilder {
+    /**
+     *
+     * @param route Correct route builder is using
+     * @return Created GPX string
+     */
     public static String buildRouteGpx(Route route) {
         if(route == null)
             throw new NullPointerException("Arguments can't be null.");

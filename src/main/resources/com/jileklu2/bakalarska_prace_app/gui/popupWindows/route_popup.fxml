@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="pane" stylesheets="@../styles/style_border_pane.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeHandling.RouteWindowController">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="pane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeHandling.RouteWindowController">
    <children>
       <VBox layoutX="5.0" layoutY="210.0" prefHeight="80.0" prefWidth="390.0" style="-fx-background-color: #0f1114;">
          <children>
@@ -58,4 +58,8 @@
          </children>
       </AnchorPane>
    </children>
+   <stylesheets>
+      <URL value="@../styles/style_border_pane.css" />
+      <URL value="@../styles/style_dark_button.css" />
+   </stylesheets>
 </AnchorPane>

@@ -1,7 +1,9 @@
 package com.jileklu2.bakalarska_prace_app.builders.scriptBuilders;
 
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +23,7 @@ public class HttpRequestStringBuilderTest {
     private LinkedHashSet<Coordinates> testWaypointsSet01;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws CoordinatesOutOfBoundsException, IdenticalCoordinatesException {
         testOrigin01 = new Coordinates(1.0, 1.0);
         testDestination01 = new Coordinates(3.0,3.0);
 

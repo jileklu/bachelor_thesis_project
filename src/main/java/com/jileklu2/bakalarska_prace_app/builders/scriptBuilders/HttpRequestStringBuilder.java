@@ -2,9 +2,9 @@ package com.jileklu2.bakalarska_prace_app.builders.scriptBuilders;
 
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyCoordinatesListException;
 import com.jileklu2.bakalarska_prace_app.exceptions.builders.scriptBuilders.EmptyDestinationsListException;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.mapObjects.RouteStep;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -13,10 +13,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
 
+/**
+ * Class dedicated to building HttpRequest strings
+ */
 public class HttpRequestStringBuilder {
     private static final String googleApiKey = "AIzaSyBwJIjpDQrNDJG0Z-DFtb7hc9M1eaZAmP4";
     private static final String hereApiKey = "aU1GP1NBOpOFOOGnicr0IHXXA8iAoK18spAb2krayhM";
 
+    /**
+     *
+     * @param route Correct route builder is using
+     * @param optimize Choice for optimization
+     * @return Created request
+     */
     public static String googleDirectionsRequest(Route route, Boolean optimize) {
         if(route == null || optimize == null)
             throw new NullPointerException("Arguments can't be null.");
@@ -50,6 +59,10 @@ public class HttpRequestStringBuilder {
         return requestStringBuilder.toString();
     }
 
+    /**
+     * @param route Correct route that request builder is using
+     * @return Created request
+     */
     public static String googleElevationRequest(Route route) {
         if(route == null)
             throw new NullPointerException("Arguments can't be null.");
@@ -84,6 +97,12 @@ public class HttpRequestStringBuilder {
         return requestStringBuilder.toString();
     }
 
+    /**
+     *
+     * @param coordinatesList Coordinate that request uses
+     * @return Created request
+     * @throws EmptyCoordinatesListException
+     */
     public static String googleElevationRequest(List<Coordinates> coordinatesList)
         throws EmptyCoordinatesListException {
         if(coordinatesList == null)
@@ -110,6 +129,14 @@ public class HttpRequestStringBuilder {
         return requestStringBuilder.toString();
     }
 
+    /**
+     *
+     * @param origins Origins of duration matrix
+     * @param destinations Origins destinations of duration matrix
+     * @param timeStamp Time relevant to the request
+     * @return Created request
+     * @throws EmptyDestinationsListException
+     */
     public static String googleMatrixRequest( List<Coordinates> origins,
                                               List<Coordinates> destinations,
                                               LocalDateTime timeStamp)
@@ -149,6 +176,11 @@ public class HttpRequestStringBuilder {
         return requestStringBuilder.toString();
     }
 
+    /**
+     *
+     * @param route Correct route that request builder is using
+     * @return Created request
+     */
     public static String hereWaypointsOptimizationRequest(Route route) {
         if(route == null)
             throw new NullPointerException("Arguments can't be null.");

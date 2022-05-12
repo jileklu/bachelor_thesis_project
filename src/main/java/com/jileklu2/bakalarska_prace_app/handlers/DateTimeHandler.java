@@ -7,11 +7,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ *
+ */
 public class DateTimeHandler {
+    /**
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     public static List<LocalDate> getDatesBetween(LocalDate startDate, LocalDate endDate) {
         return startDate.datesUntil(endDate).collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @param startTime
+     * @param endTime
+     * @param interval
+     * @return
+     */
     public static List<LocalTime> getTimesBetween(LocalTime startTime, LocalTime endTime, int interval) {
         List<LocalTime> timesBetween = new ArrayList<>();
 
@@ -29,6 +45,12 @@ public class DateTimeHandler {
         return timesBetween;
     }
 
+    /**
+     *
+     * @param dates
+     * @param allowedDays
+     * @return
+     */
     public static List<LocalDate> filterDatesByDays(List<LocalDate> dates, HashSet<DayOfWeek> allowedDays) {
         List<LocalDate> newDatesList = new ArrayList<>();
 
@@ -40,6 +62,12 @@ public class DateTimeHandler {
         return newDatesList;
     }
 
+    /**
+     *
+     * @param dates
+     * @param times
+     * @return
+     */
     public static HashSet<LocalDateTime> combineTimesDates(List<LocalDate> dates, List<LocalTime> times) {
         HashSet<LocalDateTime> stamps = new HashSet<>();
 

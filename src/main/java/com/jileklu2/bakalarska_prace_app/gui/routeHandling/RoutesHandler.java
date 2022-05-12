@@ -10,14 +10,14 @@ import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.Iden
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.AverageSpeedOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
-import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
-import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
+import com.jileklu2.bakalarska_prace_app.gui.mapHandling.MapViewContext;
+import com.jileklu2.bakalarska_prace_app.gui.infoPannelHandling.RouteInfoPanelContext;
 import com.jileklu2.bakalarska_prace_app.handlers.FileHandler;
-import com.jileklu2.bakalarska_prace_app.routesLogic.RouteInfoFinder;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.RouteStep;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.enums.RouteStepArrayRole;
+import com.jileklu2.bakalarska_prace_app.routeInfoFinders.RouteInfoFinder;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.mapObjects.RouteStep;
+import com.jileklu2.bakalarska_prace_app.mapObjects.enums.RouteStepArrayRole;
 import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import static com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.enums.RouteStepArrayRole.*;
+import static com.jileklu2.bakalarska_prace_app.mapObjects.enums.RouteStepArrayRole.*;
 
 
 public class RoutesHandler implements RoutesContext {
@@ -274,7 +274,7 @@ public class RoutesHandler implements RoutesContext {
         findRouteInfo(newRoute);
         setDefaultRoute(newRoute);
         mapViewContext.showDefaultRoute();
-        routeInfoPanelContext.showDefaultRouteInfo();
+        routeInfoPanelContext.setDefaultRouteInfo();
     }
 
     @Override
@@ -311,7 +311,7 @@ public class RoutesHandler implements RoutesContext {
         findRouteStepInfo(routeStep);
         mapViewContext.showDefaultRoute();
 
-        routeInfoPanelContext.showDefaultRouteInfo();
+        routeInfoPanelContext.setDefaultRouteInfo();
     }
 
     @Override
@@ -332,6 +332,6 @@ public class RoutesHandler implements RoutesContext {
         findRouteInfo(newRoute);
         setDefaultRoute(newRoute);
         mapViewContext.showDefaultRoute();
-        routeInfoPanelContext.showDefaultRouteInfo();
+        routeInfoPanelContext.setDefaultRouteInfo();
     }
 }

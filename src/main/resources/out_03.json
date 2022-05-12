@@ -1,0 +1,30 @@
+{
+  "duration": 276,
+  "origin": {
+    "lng": 0.9736072,
+    "lat": 52.0381429,
+    "ele": 54
+  },
+  "destination": {
+    "lng": 0.9645744,
+    "lat": 52.0333085,
+    "ele": 30.05892562866211
+  },
+  "waypoints": [],
+  "steps": [{
+    "duration": 276,
+    "distance": 2593,
+    "origin": {
+      "lng": 0.9736072,
+      "lat": 52.0381429,
+      "ele": 54
+    },
+    "destination": {
+      "lng": 0.9645744,
+      "lat": 52.0333085,
+      "ele": 30.05892562866211
+    },
+    "averageSpeed": 33.82,
+    "stepNumber": 0
+  }]
+}

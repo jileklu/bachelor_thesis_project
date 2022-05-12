@@ -5,10 +5,12 @@ import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.LocationNotFo
 import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.RouteLengthExceededException;
 import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.UnknownStatusException;
 import com.jileklu2.bakalarska_prace_app.exceptions.responseStatus.ZeroResultsException;
-import com.jileklu2.bakalarska_prace_app.handlers.responseStatus.GoogleResponseStatusHandler;
 
 import static com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums.GoogleMatrixStatus.*;
 
+/**
+ *
+ */
 public class GoogleMatrixResponseStatusHandler implements GoogleResponseStatusHandler {
     @Override
     public void handle(String status) throws LocationNotFoundException, ZeroResultsException,

@@ -1,5 +1,8 @@
 package com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums;
 
+/**
+ *
+ */
 public enum GoogleElevationStatus {
     OK(200),
     DATA_NOT_AVAILABLE (404),

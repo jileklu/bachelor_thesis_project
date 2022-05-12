@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../../../.." />
+    <option name="OTHER_OPTIONS" value="--module-path %PATH_TO_FX%;%PATH_TO_FX%\lib --add-modules javafx.swing,javafx.graphics,javafx.fxml,javafx.media,javafx.controls,javafx.media,javafx.swing,javafx.graphics" />
+    <option name="OPTION_INCLUDE_LIBS" value="true" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -7,7 +12,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_18" project-jdk-name="openjdk-18" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="openjdk-18" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SwUserDefinedSpecifications">

@@ -1,5 +1,8 @@
 package com.jileklu2.bakalarska_prace_app.handlers.responseStatus.enums;
 
+/**
+ *
+ */
 public enum GoogleMatrixStatus {
     OK(200),
     NOT_FOUND  (404),

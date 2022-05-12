@@ -9,12 +9,11 @@ import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinate
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DistanceOutOfBoundsException;
 import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.routeStep.DurationOutOfBoundsException;
-import com.jileklu2.bakalarska_prace_app.exceptions.strings.BlankStringException;
 import com.jileklu2.bakalarska_prace_app.gui.MainContext;
-import com.jileklu2.bakalarska_prace_app.gui.MapViewContext;
-import com.jileklu2.bakalarska_prace_app.gui.RouteInfoPanelContext;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.gui.mapHandling.MapViewContext;
+import com.jileklu2.bakalarska_prace_app.gui.infoPannelHandling.RouteInfoPanelContext;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Coordinates;
+import com.jileklu2.bakalarska_prace_app.mapObjects.Route;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -199,7 +198,7 @@ public class RouteWindowController implements RouteWindowContext, Initializable 
 
         try {
             mapViewContext.showDefaultRoute();
-            routeInfoPanelContext.showDefaultRouteInfo();
+            routeInfoPanelContext.setDefaultRouteInfo();
         } catch (DefaultRouteNotSetException e) {
             mainContext.createErrorWindow("Route has to be created before showing.");
             System.out.println("Route has to be created before showing.");

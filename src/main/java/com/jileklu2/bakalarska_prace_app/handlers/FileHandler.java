@@ -9,8 +9,15 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ *
+ */
 public class FileHandler {
-
+    /**
+     *
+     * @param filePath
+     * @param content
+     */
     public static void createJsonFile(String filePath, JSONObject content){
         try (
             PrintWriter out = new PrintWriter(new FileWriter(filePath))) {
@@ -20,6 +27,11 @@ public class FileHandler {
         }
     }
 
+    /**
+     *
+     * @param filePath
+     * @param content
+     */
     public static void createGpxFile(String filePath, String content) {
         try (
             PrintWriter out = new PrintWriter(new FileWriter(filePath))) {
@@ -29,6 +41,13 @@ public class FileHandler {
         }
     }
 
+    /**
+     *
+     * @param filePath
+     * @return
+     * @throws FileNotFoundException
+     * @throws JSONException
+     */
     public static JSONObject readJsonFile(String filePath) throws FileNotFoundException, JSONException {
         StringBuilder data = new StringBuilder();
         JSONObject json = null;

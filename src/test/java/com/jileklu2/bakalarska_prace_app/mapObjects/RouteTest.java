@@ -1,7 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.mapObjects;
 
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Coordinates;
-import com.jileklu2.bakalarska_prace_app.routesLogic.mapObjects.Route;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.coordinates.CoordinatesOutOfBoundsException;
+import com.jileklu2.bakalarska_prace_app.exceptions.routes.mapObjects.route.IdenticalCoordinatesException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
@@ -59,7 +59,7 @@ public class RouteTest {
     private JSONObject testJsonObj02;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IdenticalCoordinatesException, CoordinatesOutOfBoundsException {
         testOrigin01 = new Coordinates(1.0, 1.0);
         testOrigin02 = new Coordinates(2.0,2.0);
 
@@ -172,61 +172,6 @@ public class RouteTest {
     }
 
     @Test
-    public void routeChainingTest(){
-        /*
-         *      I) A.origin != (B.origin, B.destination)
-         *         A.destination != (B.origin, B.destination)
-         *              * C.origin = A.origin
-         *              * C.destination = B.destination
-         *              * C.waypoints = A.waypoints + B.waypoints + A.destination + B.origin
-         */
-        Route chainedTestRoute01 = testRoute04.chainWithRoute(testRoute05);
-        Assertions.assertEquals(chainedTestRoute01, testRoute06);
-
-        /*
-         *      II) A.origin != (B.origin, B.destination),
-         *          A.destination = B.origin, A.destination != B.destination
-         *              * C.origin = A.origin
-         *              * C.destination = B.destination
-         *              * C.waypoints = A.waypoints + B.waypoints + A.destination
-         */
-        Route chainedTestRoute02 = testRoute07.chainWithRoute(testRoute08);
-        Assertions.assertEquals(chainedTestRoute02, testRoute09);
-
-        /*
-         *      III) A.origin = B.destination, A.origin != B.origin,
-         *           A.destination != (B.origin, B.destination)
-         *              * C.origin = B.origin
-         *              * C.destination = A.destination
-         *              * C.waypoints = A.waypoints + B.waypoints + A.origin
-         */
-        Route chainedTestRoute03 = testRoute10.chainWithRoute(testRoute11);
-        Assertions.assertEquals(chainedTestRoute03, testRoute12);
-
-        /*
-         *      IV) A.origin = B.origin, A.origin != B.destination,
-         *          A.destination != (B.origin, B.destination)
-         *              * C.origin = A.destination
-         *              * C.destination = B.destination
-         *              * C.waypoints = A.waypoints + B.waypoints + A.origin
-         */
-        Route chainedTestRoute04 = testRoute13.chainWithRoute(testRoute14);
-        Assertions.assertEquals(chainedTestRoute04, testRoute15);
-
-        /*
-         *      V) A.origin != (B.origin, B.destination),
-         *         A.destination = B.destination, A.destination != B.origin
-         *              * C.origin = A.origin
-         *              * C.destination = B.origin
-         *              * C.waypoints = A.waypoints + B.waypoints + A.destination
-         */
-        Route chainedTestRoute05 = testRoute16.chainWithRoute(testRoute17);
-        Assertions.assertEquals(chainedTestRoute05, testRoute18);
-        //Multiple routes chaining
-        //todo
-    }
-
-    @Test
     public void toStringTest() {
         String string01 = "{origin:{lat:1.0, lng:1.0, ele:0.0},waypoints:[],destination:{lat:3.0, lng:3.0, ele:0.0},steps:[]}";
         String string02 = "{origin:{lat:1.0, lng:1.0, ele:0.0},waypoints:[{lat:5.0, lng:5.0, ele:0.0}, {lat:6.0, lng:6.0, ele:0.0}]," +
@@ -245,7 +190,7 @@ public class RouteTest {
     public void jsonConstructorTest(){
     }
     @Test
-    public void jsonConstructorAssertionsTest(){
+    public void jsonConstructorAssertionsTest() throws IdenticalCoordinatesException, CoordinatesOutOfBoundsException {
         JSONObject jsonObject = new JSONObject()
                 .put("origin", "10");
 

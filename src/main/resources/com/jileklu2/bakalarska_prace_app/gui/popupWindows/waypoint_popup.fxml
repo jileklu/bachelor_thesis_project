@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="100.0" prefWidth="450.0" style="-fx-background-color: #0f1114; -fx-border-color: #2c323a; -fx-border-width: 1px 1px 1px 1px;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeHandling.WaypointWindowController">
+<AnchorPane prefHeight="100.0" prefWidth="450.0" style="-fx-background-color: #0f1114; -fx-border-color: #2c323a; -fx-border-width: 1px 1px 1px 1px;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeHandling.waypointHandling.WaypointWindowController">
    <children>
        <GridPane fx:id="gridPane" alignment="TOP_CENTER" hgap="10.0" layoutX="30.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0">
            <columnConstraints>
@@ -29,7 +29,7 @@
                <Insets />
            </opaqueInsets>
        </GridPane>
-       <Button fx:id="okButton" layoutX="150.0" layoutY="60.0" mnemonicParsing="false" onAction="#okButtonAction" text="OK" />
-       <Button fx:id="cancelButton" layoutX="270.0" layoutY="60.0" mnemonicParsing="false" onAction="#cancelButtonAction" text="Cancel" />
+       <Button fx:id="okButton" layoutX="150.0" layoutY="60.0" mnemonicParsing="false" onAction="#okButtonAction" stylesheets="@../styles/style_dark_button.css" text="OK" />
+       <Button fx:id="cancelButton" layoutX="270.0" layoutY="60.0" mnemonicParsing="false" onAction="#cancelButtonAction" stylesheets="@../styles/style_dark_button.css" text="Cancel" />
    </children>
 </AnchorPane>

@@ -11,8 +11,13 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 
-
 public class GuiApplication extends javafx.application.Application {
+
+    /**
+     *
+     * @param stage
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(GuiApplication.class.getResource("gui/main_view.fxml"));

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="pane" stylesheets="@../styles/style_border_pane.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeStepHandling.RouteStepEditWindowController">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="pane" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jileklu2.bakalarska_prace_app.gui.routeHandling.routeStepHandling.RouteStepEditWindowController">
    <children>
       <AnchorPane layoutX="5.0" layoutY="10.0" prefHeight="200.0" prefWidth="390.0">
          <children>
@@ -29,6 +29,8 @@
                               <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination Coordinates" GridPane.rowIndex="1" />
                               <TextField fx:id="destLatTextField" prefHeight="25.0" prefWidth="100.0" promptText="Lat" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <TextField fx:id="destLngTextField" prefHeight="25.0" prefWidth="100.0" promptText="Lng" styleClass="text-input" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Average Speed" GridPane.rowIndex="2" />
+                              <TextField fx:id="avgSpeedTextFiled" prefHeight="25.0" prefWidth="100.0" promptText="Speed" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                           </children>
                           <padding>
                               <Insets left="10.0" right="10.0" />
@@ -61,4 +63,8 @@
              </children>
          </VBox>
    </children>
+   <stylesheets>
+      <URL value="@../styles/style_border_pane.css" />
+      <URL value="@../styles/style_dark_button.css" />
+   </stylesheets>
 </AnchorPane>

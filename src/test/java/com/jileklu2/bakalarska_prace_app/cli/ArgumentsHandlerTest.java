@@ -1,7 +1,7 @@
 package com.jileklu2.bakalarska_prace_app.cli;
 
-import com.jileklu2.bakalarska_prace_app.cli.arguments.ArgumentType;
-import com.jileklu2.bakalarska_prace_app.cli.arguments.ArgumentsHandlerCli;
+import com.jileklu2.bakalarska_prace_app.handlers.arguments.ArgumentType;
+import com.jileklu2.bakalarska_prace_app.handlers.arguments.ArgumentsCliHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,14 +18,14 @@ public class ArgumentsHandlerTest {
 
     @Test
     public void baseConstructorTest() {
-        ArgumentsHandlerCli testHandler = new ArgumentsHandlerCli(testArgs01);
+        ArgumentsCliHandler testHandler = new ArgumentsCliHandler(testArgs01);
         longArgsCheck(testHandler, testArgs01);
 
-        testHandler = new ArgumentsHandlerCli(testArgs04);
+        testHandler = new ArgumentsCliHandler(testArgs04);
         shortArgsCheck(testHandler, testArgs04);
     }
 
-    private void longArgsCheck(ArgumentsHandlerCli testHandler, String[] testArgs) {
+    private void longArgsCheck(ArgumentsCliHandler testHandler, String[] testArgs) {
         HashMap<ArgumentType, Object> argValues = testHandler.getArgValues();
         for(ArgumentType key : argValues.keySet()) {
             switch (key) {
@@ -44,7 +44,7 @@ public class ArgumentsHandlerTest {
         }
     }
 
-    private void shortArgsCheck(ArgumentsHandlerCli testHandler, String[] testArgs) {
+    private void shortArgsCheck(ArgumentsCliHandler testHandler, String[] testArgs) {
         HashMap<ArgumentType, Object> argValues = testHandler.getArgValues();
         for(ArgumentType key : argValues.keySet()) {
             switch (key) {
@@ -63,7 +63,7 @@ public class ArgumentsHandlerTest {
     @Test
     public void baseConstructorExceptionsTest() {
         try {
-            ArgumentsHandlerCli testHandler = new ArgumentsHandlerCli(testArgs02);
+            ArgumentsCliHandler testHandler = new ArgumentsCliHandler(testArgs02);
             longArgsCheck(testHandler, testArgs02);
             Assertions.fail("No exception was thrown");
         }
@@ -73,7 +73,7 @@ public class ArgumentsHandlerTest {
         }
 
         try {
-            ArgumentsHandlerCli testHandler = new ArgumentsHandlerCli(testArgs03);
+            ArgumentsCliHandler testHandler = new ArgumentsCliHandler(testArgs03);
             longArgsCheck(testHandler, testArgs03);
             Assertions.fail("No exception was thrown");
         }
@@ -83,7 +83,7 @@ public class ArgumentsHandlerTest {
         }
 
         try {
-            ArgumentsHandlerCli testHandler = new ArgumentsHandlerCli(testArgs05);
+            ArgumentsCliHandler testHandler = new ArgumentsCliHandler(testArgs05);
             longArgsCheck(testHandler, testArgs05);
             Assertions.fail("No exception was thrown");
         }
